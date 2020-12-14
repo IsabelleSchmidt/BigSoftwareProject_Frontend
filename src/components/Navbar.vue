@@ -5,7 +5,7 @@
             <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo"/>
         </router-link>
         <ul>
-            <li><router-link to="/product">Produkte</router-link>
+            <li><router-link :to="{ path: '/product/alle', query: { room: 'alle' }}">Produkte</router-link>
                 <ul>
                     <li><a href="#">Pflanzen</a></li>
                     <li><a href="#">Tische</a></li>

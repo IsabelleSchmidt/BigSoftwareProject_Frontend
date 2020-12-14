@@ -36,10 +36,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Rooms',
     component: () => import('../views/Rooms.vue')
   },
+  // {
+  //   path: '/product',
+  //   name: 'Product',
+  //   component: () => import('../views/Product.vue'),
+  // }
+  // ,
   {
-    path: '/product',
+    path: '/product/:room',
     name: 'Product',
-    component: () => import('../views/Product.vue')
+    component: () => import('../views/Product.vue'),
+    props: true
   }
 ]
 
