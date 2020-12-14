@@ -164,7 +164,7 @@ nav ul li input {
 }
 
 .search-box {  
-    height: 30px;
+    height: 26px;
     width: 250px;
     background: #f3f3f3;
     border-radius: 40px;

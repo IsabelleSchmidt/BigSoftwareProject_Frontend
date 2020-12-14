@@ -37,6 +37,7 @@ export default defineComponent({
     width:400px;
     text-align: center;
     border-radius: 0px 0px 10px 10px;
+    color: black;
 }
 .room{
     display: table;
