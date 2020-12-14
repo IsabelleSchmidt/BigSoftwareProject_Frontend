@@ -17,7 +17,7 @@
 //import {defineComponent} from "@vue/composition-api";
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted } from 'vue';
+import { defineComponent, computed, onMounted, watch } from 'vue';
 import {useRoute} from "vue-router";
 
 export default defineComponent({
@@ -32,7 +32,10 @@ export default defineComponent({
 
         const route = useRoute();
         const room = route.query.room;
-        // console.log(room);
+
+        const producttype = route.query.producttype;
+        //console.log(room);
+        //console.log(producttype);
 
         const {list, update}  = useProduct(); //, errormessage
 
@@ -42,16 +45,20 @@ export default defineComponent({
         });
 
         const productlist = computed(() => {
-            if (room === "alle") {
-                console.log("alle");
+            if (room === "alle" && producttype === "alle") {
+                console.log("alles");
                 return list.value;
-            } else {
-                console.log("nicht alle");
+            } else if (room !== "alle" && producttype === "alle") {
+                console.log("nach raum filtern");
                 return list.value.filter(p => p.roomType === room?.toString());
+            } else if (room === "alle" && producttype !== "alle") {
+                console.log("nach produktart filtern");
+                return list.value.filter(p => p.productType === producttype?.toString());
+            } else {
+                console.log("nach beidem filtern");
+                return list.value.filter(p => p.productType === producttype?.toString() && p.roomType === room?.toString());
             }
-          
         });
-
 
         return{ productlist, room}; //, errormessage 
     } 
