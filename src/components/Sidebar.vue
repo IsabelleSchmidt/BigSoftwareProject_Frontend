@@ -2,26 +2,25 @@
     <div class="sidebar">
         <h4 >Produkte</h4>
         <ul>
-            <li><a href="#">Pflanzen</a></li>
-            <li><a href="#">Tische</a></li>
-            <li><a href="#">Stühle</a></li>
-            <li><a href="#">Bett</a></li>
-            <li><a href="#">Deko</a></li>
-            <li><a href="#">Sofa/Couch</a></li>
-            <li><a href="#">Schränke/Kommoden</a></li>
+            <li ><router-link id="link" :to="{ path: '/product/Pflanzen', query: { room: 'alle', producttype: 'Pflanze'  }}">Pflanzen</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Tische', query: { room: 'alle', producttype: 'Tisch'  }}">Tische</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Stuehle', query: { room: 'alle', producttype: 'Stuhl'  }}">Stühle</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Betten', query: { room: 'alle', producttype: 'Bett'  }}">Betten</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Deko', query: { room: 'alle', producttype: 'Dekoration'  }}">Deko</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/SofaCouch', query: { room: 'alle', producttype: 'Sofa/Couch'  }}">Sofa/Couch</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/SchrankKommode', query: { room: 'alle', producttype: 'Schrank/Kommode'  }}">Schränke/Kommoden</router-link></li>
         </ul>
 
         <br>
 
         <h4>Räume</h4>
         <ul>
-            <li><a href="#">Badezimmer</a></li>
-            <li><a href="#">Schlafzimmer</a></li>
-            <li><a href="#">Küche</a></li>
-            <li><a href="#">Wohnzimmer</a></li>
-            <li><a href="#">Esszimmer</a></li>
-            <li><a href="#">Arbeitszimmer</a></li>
-            
+            <li ><router-link id="link" :to="{ path: '/product/Bad', query: { room: 'Bad', producttype: 'alle'  }}">Bad</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Schlafzimmer', query: { room: 'Schlafzimmer', producttype: 'alle'  }}">Schlafzimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Kueche', query: { room: 'Kueche', producttype: 'alle'  }}">Küche</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Wohnzimmer', query: { room: 'Wohnzimmer', producttype: 'alle'  }}">Wohnzimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Esszimmer', query: { room: 'Esszimmer', producttype: 'alle'  }}">Esszimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product/Arbeitszimmer', query: { room: 'Arbeitszimmer', producttype: 'alle'  }}">Arbeitszimmer</router-link></li>
         </ul>
     </div>
 </template>
@@ -42,12 +41,13 @@
     ul{
         list-style-type: none;
     } 
-    ul li a{
+    #link{
         color: black;
         text-decoration: none;
         list-style: none;
+        list-style-type: none;
     } 
-    a:hover{
+    #link:hover{
         color: #6F492D;
         text-decoration: none;
     } 
