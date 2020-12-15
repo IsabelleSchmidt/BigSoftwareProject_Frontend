@@ -47,7 +47,7 @@ export default /*defineComponent*/{
     #listOrder{
         display: inline;
         float: left;
-        width: 33%;
+        width: 27.5%;
         margin-bottom: 20px;
         //margin: 0px 0px 20px 10px;
 
@@ -56,6 +56,6 @@ export default /*defineComponent*/{
     #productList{
         float: left;
         max-width: 83%;
-        margin-left: 20%;
+        margin-left: 15%;
     } 
 </style>
