@@ -29,7 +29,7 @@
             <div class="navright">
                 <li>
                     <div class="search-box">
-                        <input class="search-txt" v-model="search" placeholder="Suchen">
+                        <input class="search-txt" placeholder="Suchen">
                         <a class="search-btn" href="#">
                             <img src="../assets/magnifyingglass.png" alt="" >
 

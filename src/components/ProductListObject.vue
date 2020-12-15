@@ -1,10 +1,11 @@
 <template>        
         <ul class="productlistline">
-
-           <div class="bg">
-                <img v-bind:src="product.picture" alt="Picture" class="pic">
-                <li>{{product.name}}</li>
-                <li>{{product.price}}</li>
+            <div class="bg">
+                <a @click="openproduct()">
+                    <img v-bind:src="product.picture" alt="Picture" class="pic">
+                    <li>{{product.name}}</li>
+                    <li>{{product.price}}</li>
+                </a>
             </div>
         </ul>
 </template>
@@ -12,12 +13,23 @@
 <script lang="ts">
 import '@/service/Product'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
     name: "ProductListObject",
     props: {
         product: Object,
     },
-})
+    setup(props, context) {
+
+        function openproduct(): void {
+            context.emit("open-prod", props.product);
+        }
+
+        return {
+            openproduct
+        };
+    }
+});
 </script>
 
 <style scoped lang="scss">

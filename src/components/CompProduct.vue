@@ -1,34 +1,36 @@
 <template>
-    <div id="productList">
-        <!-- <p>Vom Router: {{$route.params.room}}</p>
-        <p>Als prop: {{ room }}</p> -->
-        <ul>
-                <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id"/> <!-- v-for="product in products"-->
-                <!--Platzhalter 
-                <ProductListObject id="listOrder"/> 
-                <ProductListObject id="listOrder"/>
-                <ProductListObject id="listOrder"/>-->
-        </ul>
+    <div class="compProduct">
+        <div class="columns" id="sidebarBox">
+            <Sidebar/>
+        </div>
+        <div id="productList">
+            <ul>           
+                <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id" @open-prod="openProduct($event)"/>
+            </ul>
+        </div>
         
     </div>
 </template>
 
-<script lang="ts">
-//import {defineComponent} from "@vue/composition-api";
+<script lang = "ts">
+
+import Sidebar from "@/components/Sidebar.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted, watch } from 'vue';
+import { defineComponent, computed, onMounted } from 'vue';
 import {useRoute} from "vue-router";
+import '@/service/Product'
 
 export default defineComponent({
-    name: "ProductList", 
+    name: "CompProducts",
     components:{
-        ProductListObject
+        ProductListObject,
+        Sidebar
+    }, props: {
+        product: Object,
+        tst: String
     },
-    // props: {
-    //     room: String
-    // },
-    setup(){
+    setup(props, context){
 
         const route = useRoute();
         const room = route.query.room;
@@ -46,26 +48,31 @@ export default defineComponent({
 
         const productlist = computed(() => {
             if (room === "alle" && producttype === "alle") {
-                console.log("alles");
+                // console.log("alles");
                 return list.value;
             } else if (room !== "alle" && producttype === "alle") {
-                console.log("nach raum filtern");
+                // console.log("nach raum filtern");
                 return list.value.filter(p => p.roomType === room?.toString());
             } else if (room === "alle" && producttype !== "alle") {
-                console.log("nach produktart filtern");
+                // console.log("nach produktart filtern");
                 return list.value.filter(p => p.productType === producttype?.toString());
             } else {
-                console.log("nach beidem filtern");
+                // console.log("nach beidem filtern");
                 return list.value.filter(p => p.productType === producttype?.toString() && p.roomType === room?.toString());
             }
         });
 
-        return{ productlist, room}; //, errormessage 
+        function openProduct(p: Product): void {
+            console.log(p);
+            context.emit("open-prod", p);
+        }
+
+        return{ productlist, room, openProduct}; //, errormessage 
     } 
 });
-</script>
+ </script>
 
-<style scoped lang="scss">
+ <style scoped lang="scss">
     #listOrder{
         display: inline;
         float: left;

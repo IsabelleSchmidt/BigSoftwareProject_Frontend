@@ -1,7 +1,8 @@
 <template>
-    <div class="product">
+    <div class="compSingle">
+        <h1>{{tst}}</h1>
         <div class="top">
-            <router-link class="back" to="/products"> &laquo; zurück zur Übersicht</router-link>
+            <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a>
         </div>
         <div class="top2">
         <div class="left"> 
@@ -51,6 +52,30 @@
         </div>
     </div>
 </template>
+
+<script lang = "ts">
+import { defineComponent, onMounted} from 'vue';
+
+import '@/service/Product'
+
+export default defineComponent({
+    name: "CompProducts",
+    components:{
+    }, props: {
+        tst: String,
+    }, setup(props, context) {
+        console.log("TETS--- " + props.tst);
+
+        function openproductlist(): void {
+            context.emit("open-all");
+        }
+
+        return {
+            openproductlist
+        }
+    }
+});
+ </script>
 
 <style scoped lang="scss">
 .pic {
