@@ -7,10 +7,10 @@
 </template>
 
 <script lang="ts">
-import CompProduct from "@/components/CompProduct.vue"
-import CompSingle from "@/components/CompSingle.vue"
+import CompProduct from "../components/CompProduct.vue"
+import CompSingle from "../components/CompSingle.vue"
 import { defineComponent, ref } from "vue"
-import '@/service/Product'
+import '../service/Product'
 
 export default defineComponent({
     name: "Product",

@@ -1,5 +1,6 @@
 <template>        
         <ul class="productlistline">
+            <a @click="openproduct()">
            <div class="productListObject">
                 <img v-bind:src="product.allPictures[0].path" alt="Picture" class="pic">
                 <div class="bg">
@@ -7,6 +8,7 @@
                     <li>{{product.price}} €</li>
                 </div>
             </div>
+            </a>
         </ul>
 </template>
 

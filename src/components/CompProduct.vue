@@ -14,12 +14,12 @@
 
 <script lang = "ts">
 
-import Sidebar from "@/components/Sidebar.vue"
+import Sidebar from "../components/Sidebar.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import { defineComponent, computed, onMounted, ref, watch, reactive } from 'vue';
 import {useRoute} from "vue-router";
-import '@/service/Product'
+import '../service/Product'
 
 export default defineComponent({
     name: "CompProducts",
@@ -106,7 +106,7 @@ export default defineComponent({
     #listOrder{
         display: inline;
         float: left;
-        width: 33%;
+        width: 27.5%;
         margin-bottom: 20px;
         //margin: 0px 0px 20px 10px;
 
@@ -115,6 +115,6 @@ export default defineComponent({
     #productList{
         float: left;
         max-width: 83%;
-        margin-left: 20%;
+        margin-left: 15%;
     } 
 </style>
