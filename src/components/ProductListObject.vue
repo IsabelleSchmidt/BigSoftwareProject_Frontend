@@ -38,7 +38,7 @@ export default defineComponent({
     .pic{
         border-radius: 10px 10px 0px 0px;
         width: 300px;
-        height: 400px;
+        height: 300px;
         object-fit:cover;
         object-position: bottom center;
     }

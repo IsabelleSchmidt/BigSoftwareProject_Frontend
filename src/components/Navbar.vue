@@ -89,7 +89,8 @@ nav{
     top:0;
     right:0;
     left:0;
-    transition: transform .25s .1s ease-in-out;
+    position: relative;
+    z-index: 1!important;
 }
 
 .down nav {

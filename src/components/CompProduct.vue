@@ -106,7 +106,6 @@ export default defineComponent({
     #listOrder{
         display: inline;
         float: left;
-        width: 27.5%;
         margin-bottom: 20px;
         //margin: 0px 0px 20px 10px;
 

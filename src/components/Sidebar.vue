@@ -35,11 +35,13 @@
         max-width: 15%;
         margin-left: 20px;
         margin-right: 30px;
+        margin-top: 15px;
         border-radius: 5px;
         position: fixed;
     } 
     ul{
         list-style-type: none;
+        margin: 0px;
     } 
     #link{
         color: black;
@@ -53,8 +55,9 @@
     } 
     li{
         font-size: 1.25vw;
-    } 
+    }
     h4{
-        font-size: 2vw;
+        font-size: 1.5vw;
+        margin: 10px;
     } 
 </style>

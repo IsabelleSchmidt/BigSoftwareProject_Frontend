@@ -20,8 +20,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.pic{
+<style scoped lang="scss">
+img {
     border-radius: 10px 10px 0px 0px;
     width: 400px;
     height: 300px;

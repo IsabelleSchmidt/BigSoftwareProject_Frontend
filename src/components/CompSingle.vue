@@ -79,7 +79,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .pic {
-    width: 280px;
+    width: 45%;
     margin: 0.5em;
 }
 
