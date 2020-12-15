@@ -1,11 +1,11 @@
 <template>        
         <ul class="productlistline">
-            <div class="bg">
-                <a @click="openproduct()">
-                    <img v-bind:src="product.picture" alt="Picture" class="pic">
+           <div class="productListObject">
+                <img v-bind:src="product.allPictures[0].path" alt="Picture" class="pic">
+                <div class="bg">
                     <li>{{product.name}}</li>
-                    <li>{{product.price}}</li>
-                </a>
+                    <li>{{product.price}} €</li>
+                </div>
             </div>
         </ul>
 </template>
@@ -41,10 +41,12 @@ export default defineComponent({
         object-position: bottom center;
     }
     .bg{
-        border-radius: 10px 10px 10px 10px;
+        border-radius: 0px 0px 10px 10px;
+        padding-top: 0.7em;
+        padding-bottom: 0.7em;
         background-color: #f3f3f3;
         width: 300px;
-        
+        text-align: center;
     } 
 
     ul{
