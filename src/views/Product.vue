@@ -12,7 +12,7 @@ import CompSingle from "@/components/CompSingle.vue"
 import { defineComponent, ref } from "vue"
 import '@/service/Product'
 
-export default {
+export default defineComponent({
     name: "Product",
     components:{
         CompProduct,
@@ -73,5 +73,5 @@ export default {
         }
         
     }*/
-}
+});
 </script>
