@@ -96,7 +96,7 @@ export default defineComponent({
 .availablepoint {
     float:left;
     font-size: 2.5em;
-    margin: 0px 10px;
+    margin: 6px 10px;
     width: 5%;
     color: v-bind('farbe');
 }
@@ -229,14 +229,14 @@ ul {
 }
 
 .icontruck {
-    width: 6%;
+    width: 25px;
     margin: 10px 10px 15px 10px;
     float: left;
 }
 .availabletxt {
     float:left;
     margin-bottom: 0px;
-    margin-top: 13px;
+    margin-top: 18px;
 }
 
 
