@@ -1,22 +1,20 @@
 <template>
     <div class="compSingle">
-        <h1>{{tst}}</h1>
         <div class="top">
             <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a>
         </div>
         <div class="top2">
         <div class="left"> 
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
+            <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
+            <div v-for="i in tst.allPictures" :key="i">
+                <img class="pic" v-bind:src="i.path"  alt="Picture"/>
+            </div>    
         </div>
         <div class="right"> 
             <ul>
-                <li><h3 class="name">ProduktName</h3></li>
-                <li><p class="description">Beschreibung bli bla blub</p></li>
-                <li><p class="size">Größe</p></li>
-                <li><p class="price">Preis</p></li>
+                <li><h3 class="name">{{tst.name}}</h3></li>
+                <li><p class="description">{{tst.description}}</p></li>
+                <li><p class="price">{{tst.price}} €</p></li>
                 <li class="buttons">
                     <button class="buttoncart">In den Warenkorb</button>
                     <button class="buttonfav">
@@ -35,18 +33,12 @@
             <hr>
             <details>
                 <summary>Produktinformationen</summary>
-                <p class="p1">  Test Test Hier kommen alle infos aus der Datenbank hfehuhferfeh
-                    fhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-                    hhhhhhhhhhhhhhhhhhhhhhhh
-                    hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh   
-                    hhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhh</p>
+                <p class="p1">  {{tst.information}}</p>
             </details>
             <hr>
             <details>
                 <summary>Produktgröße</summary>
-                <p class="p1"> Höhe</p>
-                <p> Breite </p>
-                <p> Tiefe </p>
+                <p class="p1">{{tst.width}} (Breite) x {{tst.depth}} (Länge) x {{tst.height}} (Höhe) </p>
             </details> 
             <hr>
         </div>
@@ -54,7 +46,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent} from 'vue';
+import { defineComponent, computed} from 'vue';
 
 import '@/service/Product'
 
@@ -62,25 +54,60 @@ export default defineComponent({
     name: "CompProducts",
     components:{
     }, props: {
-        tst: String,
+        tst: {
+            type: Object,
+            default: () => ({}),
+        }
     }, setup(props, context) {
-        console.log("TETS--- " + props.tst);
+        const FARBEN = [
+            "red",
+            "yellow",
+            "green",
+        ];
+
+
+        console.log("TETS--- " + props.tst.name);
 
         function openproductlist(): void {
             context.emit("open-all");
         }
 
         return {
-            openproductlist
-        }
+            openproductlist,
+            farbe: computed(() => {
+                if (props.tst.available <= 0) {
+                    console.log("leer");
+                    return FARBEN[0];
+                } else if (props.tst.available < 20) {
+                    console.log("weniger 20" + props.tst.available);
+                    return FARBEN[1];
+                } else {
+                    console.log("mehr als 20" + props.tst.available);
+                    return FARBEN[2];
+                }
+            }),
+        };
     }
 });
  </script>
 
-<style scoped lang="scss">
+<style scoped>
+
+.availablepoint {
+    float:left;
+    font-size: 1.4em;
+    margin: 0% 2%;
+    width: 5%;
+    color: v-bind('farbe');
+}
+
 .pic {
-    width: 45%;
+    width: 250px;
+    height: 300px;
+    object-fit:cover;
+    object-position: bottom center;
     margin: 0.5em;
+    float: left;
 }
 
 .top {
@@ -109,7 +136,6 @@ export default defineComponent({
     width: 95%;
     position: relative;
     height: 350px;
-    // margin: 0 auto;
     margin-top: 350px;
     margin-left: 3.5em;
     
@@ -126,7 +152,6 @@ hr {
 
 summary {
     list-style: none;
-    //height: 4.5em;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 1.3em;
@@ -161,9 +186,10 @@ details[open] summary::after{
 .back{
     text-decoration: none;
     color: black;
-    &:hover {
-        color: #3BA07C;
-    }
+}
+
+.back:hover{
+    color: #3BA07C;
 }
 
 ul {
@@ -181,13 +207,15 @@ ul {
     background-color: #3BA07C;
     border-style: none;
     color: white;
-    &:hover {
-        background-color: #87E1A6;
-    }
-    &:focus {
-        outline: none;
-    }
     border-radius: 40px;
+}
+
+.buttoncart:hover {
+    background-color: #87E1A6;
+}
+
+.buttoncart:focus {
+    outline: none;
 }
 
 .buttonfav {
@@ -211,12 +239,6 @@ ul {
     margin-top: 0.8%;
 }
 
-.availablepoint {
-    float:left;
-    font-size: 1.4em;
-    margin: 0% 2%;
-    width: 5%;
-    color: green;
-}
+
 
 </style>

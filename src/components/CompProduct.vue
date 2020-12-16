@@ -33,45 +33,40 @@ export default defineComponent({
     setup(props, context){
 
         const route = useRoute();
-        
-        // const r = route.query.room?.toString;
         const ro = ref(route.query.room);
         const pr= ref(route.query.producttype);
         const q = {room: ro, producttype: pr};
         const filter = reactive(q);
 
-        //console.log(room);
-        //console.log(producttype);
-
         const {list, update}  = useProduct(); //, errormessage
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            ro.value = route.query.room;
-            pr.value = route.query.producttype;
+            // ro.value = route.query.room;
+            // pr.value = route.query.producttype;
             await update();
         });
 
         const productlist = computed(() => {
             
             if (filter.room === "alle" && filter.producttype === "alle") {
-                ro.value = route.query.room;
-                pr.value = route.query.producttype;
+                q.room.value = route.query.room;
+                q.producttype.value = route.query.producttype;
                 // console.log("alles");
                 return list.value;
             } else if (filter.room !== "alle" && filter.producttype === "alle") {
-                ro.value = route.query.room;
-                pr.value = route.query.producttype;
+                q.room.value = route.query.room;
+                q.producttype.value = route.query.producttype;
                 // console.log("nach raum filtern");
                 return list.value.filter(p => p.roomType === filter.room?.toString());
             } else if (filter.room === "alle" && filter.producttype !== "alle") {
-                ro.value = route.query.room;
-                pr.value = route.query.producttype;
+                q.room.value = route.query.room;
+                q.producttype.value = route.query.producttype;
                 // console.log("nach produktart filtern");
                 return list.value.filter(p => p.productType === filter.producttype?.toString());
             } else {
-                ro.value = route.query.room;
-                pr.value = route.query.producttype;
+                q.room.value = route.query.room;
+                q.producttype.value = route.query.producttype;
                 console.log("nach beidem filtern");
                 return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
             }

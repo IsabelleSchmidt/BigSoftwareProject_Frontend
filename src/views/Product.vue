@@ -21,10 +21,13 @@ export default defineComponent({
     setup() {
         const component = "CompProduct";
         const compref = ref(component);
-        const prod = "default"
+        const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
+                                'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
+                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
         const prodref = ref(prod);
 
         function toggle(): void {
+
             if (compref.value === "CompProduct") {
                 // component = "CompSingle";
                 compref.value = "CompSingle";
@@ -37,7 +40,7 @@ export default defineComponent({
 
         function changeComp(p: Product): void {
             toggle();
-            prodref.value = p.name;
+            prodref.value = p;
         }
 
 
@@ -50,28 +53,5 @@ export default defineComponent({
             toggle
         }
     }
-
-    /*
-    data() {
-        return {
-            // component: CompSingleProduct
-            component: "CompProduct"
-        }
-    },
-    methods: {
-        toggle(){
-            // if (this.component === CompProducts) {
-            //     this.component = CompSingleProduct;
-            // } else {
-            //     this.component = CompProducts;
-            // }
-            if (this.component === "CompProduct") {
-                this.component = "CompSingle";
-            } else {
-                this.component = "CompProduct";
-            }
-        }
-        
-    }*/
 });
 </script>

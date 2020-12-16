@@ -55,7 +55,7 @@
     } 
     li{
         font-size: 1.25vw;
-    }
+    } 
     h4{
         font-size: 1.5vw;
         margin: 10px;

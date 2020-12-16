@@ -17,5 +17,7 @@ interface Product {
     width: number;
     depth: number;
     // allTags: Tag;
-    nrAvailableItems: number;
+    available: number;
+    description: string;
+    information: string;
 }
