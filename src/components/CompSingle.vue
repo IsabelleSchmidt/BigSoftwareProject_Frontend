@@ -75,14 +75,14 @@ export default defineComponent({
         return {
             openproductlist,
             farbe: computed(() => {
-                if (props.tst.available <= 0) {
+                if (props.tst.nrAvailableItems <= 0) {
                     console.log("leer");
                     return FARBEN[0];
-                } else if (props.tst.available < 20) {
-                    console.log("weniger 20" + props.tst.available);
+                } else if (props.tst.nrAvailableItems < 20) {
+                    console.log("weniger 20" + props.tst.nrAvailableItems);
                     return FARBEN[1];
                 } else {
-                    console.log("mehr als 20" + props.tst.available);
+                    console.log("mehr als 20" + props.tst.nrAvailableItems);
                     return FARBEN[2];
                 }
             }),
