@@ -61,7 +61,7 @@ export default defineComponent({
     }, setup(props, context) {
         const FARBEN = [
             "red",
-            "yellow",
+            "#FFBF00",
             "green",
         ];
 
@@ -95,8 +95,8 @@ export default defineComponent({
 
 .availablepoint {
     float:left;
-    font-size: 1.4em;
-    margin: 0% 2%;
+    font-size: 2.5em;
+    margin: 0px 10px;
     width: 5%;
     color: v-bind('farbe');
 }
@@ -202,7 +202,7 @@ ul {
 }
 
 .buttoncart {
-    margin: 5% 0%;
+    margin: 60px 0px 0px 0px;
     padding: 3% 9%;
     background-color: #3BA07C;
     border-style: none;
@@ -230,13 +230,13 @@ ul {
 
 .icontruck {
     width: 6%;
-    margin: 0% 3%;
+    margin: 10px 10px 15px 10px;
     float: left;
 }
 .availabletxt {
     float:left;
     margin-bottom: 0px;
-    margin-top: 0.8%;
+    margin-top: 13px;
 }
 
 
