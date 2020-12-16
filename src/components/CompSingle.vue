@@ -16,7 +16,7 @@
                 <li><p class="description">{{tst.description}}</p></li>
                 <li><p class="price">{{tst.price}} €</p></li>
                 <li class="buttons">
-                    <button class="buttoncart">In den Warenkorb</button>
+                    <button class="buttoncart" @click="addProduct()">In den Warenkorb</button>
                     <button class="buttonfav">
                         <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
                     </button>
@@ -71,7 +71,6 @@ export default defineComponent({
         function openproductlist(): void {
             context.emit("open-all");
         }
-
         return {
             openproductlist,
             farbe: computed(() => {
@@ -87,8 +86,23 @@ export default defineComponent({
                 }
             }),
         };
-    }
-});
+    },
+    methods:{
+        addProduct(): void{
+
+            if(!localStorage.getItem('cartItems')){
+                const productList =[]; 
+                productList.push(this.tst);
+                localStorage.setItem('cartItems', JSON.stringify(productList));
+        
+            } else{
+                console.log("else fall");
+        
+            } 
+    
+        } 
+    } 
+});  
  </script>
 
 <style scoped>
