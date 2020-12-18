@@ -65,9 +65,6 @@ export default defineComponent({
             "green",
         ];
 
-
-        console.log("TETS--- " + props.tst.name);
-
         function openproductlist(): void {
             context.emit("open-all");
         }
@@ -76,13 +73,10 @@ export default defineComponent({
             openproductlist,
             farbe: computed(() => {
                 if (props.tst.nrAvailableItems <= 0) {
-                    console.log("leer");
                     return FARBEN[0];
                 } else if (props.tst.nrAvailableItems < 20) {
-                    console.log("weniger 20" + props.tst.nrAvailableItems);
                     return FARBEN[1];
                 } else {
-                    console.log("mehr als 20" + props.tst.nrAvailableItems);
                     return FARBEN[2];
                 }
             }),

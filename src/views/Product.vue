@@ -29,13 +29,10 @@ export default defineComponent({
         function toggle(): void {
 
             if (compref.value === "CompProduct") {
-                // component = "CompSingle";
                 compref.value = "CompSingle";
             } else {
-                // component = "CompProduct";
                 compref.value = "CompProduct";
             }
-            console.log("TOGGLE" + compref.value);
         }
 
         function changeComp(p: Product): void {
