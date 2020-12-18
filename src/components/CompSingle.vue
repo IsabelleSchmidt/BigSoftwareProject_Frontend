@@ -89,13 +89,19 @@ export default defineComponent({
     },
     methods:{
         addProduct(): void{
+            let productList;
+            const st = localStorage.getItem('cartItems'); 
 
-            if(!localStorage.getItem('cartItems')){
-                const productList =[]; 
+            if(!st){
+                productList = []; 
                 productList.push(this.tst);
                 localStorage.setItem('cartItems', JSON.stringify(productList));
         
             } else{
+                productList = JSON.parse(st);
+                productList.push(this.tst);
+                localStorage.setItem('cartItems', JSON.stringify(productList));
+                
                 console.log("else fall");
         
             } 

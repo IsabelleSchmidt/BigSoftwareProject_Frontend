@@ -2,15 +2,15 @@
 <div id="line">
     <div class ="productobject">
         <div class="picture">
-            <img src="../assets/monstera.jpg" id="pic">
+                <img v-bind:src="product.allPictures[0].path" alt="Picture" id="pic">
         </div>
         <div class="information">
             <ul>
-                <li id="prName">Monstera deliciosia</li>
-                <li id="prPrice">25,99€</li> 
+                <li id="prName">{{product.name}}</li>
+                <li id="prPrice">{{product.price}}</li> 
                 <li id="prNr">
                     <span>Pnr:</span>
-                    <span> 234987</span>
+                    <span>{{product.artikelnr}} </span>
                 </li>
                 <li id="inTotal"> 
                     <span>Gesamtpreis:</span>
@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div class="close">
-            <button id="delete">
+            <button id="delete" @click="trash()">
                 <img src="../assets/closeImg.png">
             </button>
         </div>
@@ -40,6 +40,31 @@
 </div>
     
 </template>
+<script lang="ts">
+import '@/service/Product'
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+    name: "CartListObject",
+    props: {
+        product:{
+            type: Object,
+            default: ()=> ({}),
+        } ,
+    },
+   setup(props, context) {
+       console.log("Name will ich" + props.product.name);
+
+       function trash(): void {
+           console.log("da" + props.product.artikelnr);
+           context.emit("delete-product", props.product.artikelnr);
+       } 
+       return {
+           trash
+       };
+    },
+});
+</script>
 <style lang = "scss">
 ul{
     list-style: none;
