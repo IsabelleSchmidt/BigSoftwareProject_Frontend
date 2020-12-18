@@ -17,7 +17,7 @@
 import Sidebar from "../components/Sidebar.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted, ref, watch, reactive } from 'vue';
+import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
 
