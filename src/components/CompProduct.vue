@@ -49,25 +49,30 @@ export default defineComponent({
 
         const productlist = computed(() => {
             
+            
             if (filter.room === "alle" && filter.producttype === "alle") {
                 q.room.value = route.query.room;
                 q.producttype.value = route.query.producttype;
                 // console.log("alles");
+                console.log("CHANGELIST: " + productlist.value);
                 return list.value;
             } else if (filter.room !== "alle" && filter.producttype === "alle") {
                 q.room.value = route.query.room;
                 q.producttype.value = route.query.producttype;
+                console.log("CHANGELIST: " + productlist.value);
                 // console.log("nach raum filtern");
                 return list.value.filter(p => p.roomType === filter.room?.toString());
             } else if (filter.room === "alle" && filter.producttype !== "alle") {
                 q.room.value = route.query.room;
                 q.producttype.value = route.query.producttype;
+                console.log("CHANGELIST: " + productlist.value);
                 // console.log("nach produktart filtern");
                 return list.value.filter(p => p.productType === filter.producttype?.toString());
             } else {
                 q.room.value = route.query.room;
                 q.producttype.value = route.query.producttype;
-                console.log("nach beidem filtern");
+                // console.log("nach beidem filtern");
+                console.log("CHANGELIST: " + productlist.value);
                 return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
             }
             
