@@ -17,7 +17,7 @@
 import Sidebar from "../components/Sidebar.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
+import { defineComponent, computed, onMounted, ref, watch, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
 
@@ -42,55 +42,26 @@ export default defineComponent({
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            // ro.value = route.query.room;
-            // pr.value = route.query.producttype;
+            q.room.value = route.query.room;
+            q.producttype.value = route.query.producttype;
             await update();
         });
 
         const productlist = computed(() => {
-            
+            q.room.value = route.query.room;
+            q.producttype.value = route.query.producttype;
             
             if (filter.room === "alle" && filter.producttype === "alle") {
-                q.room.value = route.query.room;
-                q.producttype.value = route.query.producttype;
-                // console.log("alles");
-                console.log("CHANGELIST: " + productlist.value);
                 return list.value;
             } else if (filter.room !== "alle" && filter.producttype === "alle") {
-                q.room.value = route.query.room;
-                q.producttype.value = route.query.producttype;
-                console.log("CHANGELIST: " + productlist.value);
-                // console.log("nach raum filtern");
                 return list.value.filter(p => p.roomType === filter.room?.toString());
             } else if (filter.room === "alle" && filter.producttype !== "alle") {
-                q.room.value = route.query.room;
-                q.producttype.value = route.query.producttype;
-                console.log("CHANGELIST: " + productlist.value);
-                // console.log("nach produktart filtern");
                 return list.value.filter(p => p.productType === filter.producttype?.toString());
             } else {
-                q.room.value = route.query.room;
-                q.producttype.value = route.query.producttype;
-                // console.log("nach beidem filtern");
-                console.log("CHANGELIST: " + productlist.value);
                 return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
             }
             
         });
-
-        // watch(q,
-        //     (neu, alt) => {
-        //         console.log("RELOAD1");
-        //         update();
-        //     }
-        // );
-
-        // watch(p,
-        //     (neu, alt) => {
-        //         console.log("RELOAD2");
-        //         update();
-        //     }
-        // );
 
         function openProduct(p: Product): void {
             console.log(p);
