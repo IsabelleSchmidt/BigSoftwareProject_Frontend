@@ -114,10 +114,9 @@ ul{
         float: left;
         width: 5em;
     } 
-    #line{
+     #line{
         border-bottom: 2px solid #d4d4d4;
-        float: left;
-    } 
+    }  
 
     .information{
         float: left;

@@ -1,9 +1,8 @@
 <template>
-    <div class= "cartlist">
-        <ul>
+    <div class="cartlist--center">
+        <ul class= "cartlist">
             <CartListObject :product="pr" v-for="pr in productList" :key="pr.articlenr" @delete-product="trashRow($event)" />
         </ul>
-
     </div>
 </template>
 <script lang ="ts">
@@ -50,5 +49,17 @@ export default {
 </script>
 <style lang="scss">
     
+    .cartlist--center{
+        display:flex;
+    justify-content: center;
+    } 
+
+    .cartlist{
+        display: inline-grid;
+        grid-template-columns: auto;
+        margin-right: 2.8rem;
+    } 
+    
+
 
 </style>

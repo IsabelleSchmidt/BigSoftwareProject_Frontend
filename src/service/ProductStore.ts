@@ -22,7 +22,7 @@ const state = reactive({
 
   async function update(): Promise<void> {
     const productlist = new Array<Product>();
-    fetch(`http://localhost:8080/api/products`, {
+    fetch(`http://localhost:8083/api/products`, {
         method: 'GET'
     })
       .then((response) => {
