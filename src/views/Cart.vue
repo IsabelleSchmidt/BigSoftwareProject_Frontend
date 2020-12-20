@@ -21,30 +21,30 @@ export default {
 </script>
 <style lang="scss">
     .cart{
-        float: left;
+        display: flex;
+        flex-direction: column;
+        //float: left;
     } 
 
    #cartlist{
-       max-width: 70%;
+      /* max-width: 70%;
        margin-left: auto;
        margin-right: auto;
+       */
 
        
    }  
    #carthead{
-       max-width: 70%;
+       /*max-width: 70%;
        margin-left: auto;
-       margin-right: auto;
+       margin-right: auto;*/
    } 
   #carthead h3{
-       float: left;
        margin-top: 5%;
    
   } 
    #order{
-       max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;
+       text-align: center;
    } 
    #orderB{
        margin: 5%;

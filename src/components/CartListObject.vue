@@ -7,7 +7,7 @@
         <div class="information">
             <ul>
                 <li id="prName">{{product.name}}</li>
-                <li id="prPrice">{{product.price}}</li> 
+                <li id="prPrice">{{product.price}} €</li> 
                 <li id="prNr">
                     <span>Pnr:</span>
                     <span>{{product.artikelnr}} </span>
@@ -53,11 +53,10 @@ export default defineComponent({
         } ,
     },
    setup(props, context) {
-       console.log("Name will ich" + props.product.name);
 
        function trash(): void {
-           console.log("da" + props.product.artikelnr);
-           context.emit("delete-product", props.product.artikelnr);
+           //console.log("da" + props.product.artikelnr);
+           context.emit("delete-product", props.product);
        } 
        return {
            trash
@@ -96,10 +95,11 @@ ul{
     font-size: 14px;
 } 
     .productobject{
-        margin-left: 5%;
-        margin-right: 5%;
-        margin-top: 2.5%;
-        margin-bottom: 2.5%;
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        min-width: 35em;
         float: left;
     } 
     #delete{
@@ -112,7 +112,7 @@ ul{
    
     #pic{
         float: left;
-        width: 19%;
+        width: 5em;
     } 
     #line{
         border-bottom: 2px solid #d4d4d4;
