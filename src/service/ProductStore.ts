@@ -4,8 +4,8 @@ import { reactive } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
 import { computed } from 'vue'
-
 import '@/service/Product'
+import '@/service/Picture'
 
 /**************************************************/
 
@@ -18,6 +18,11 @@ const state = reactive({
     list: Array<Product>(),
     img: String,
     //errormessage: ""
+  })
+
+  const productResponse = reactive({
+    product: Array<Product>(),
+    message: String
   })
 
   async function update(): Promise<void> {
@@ -50,6 +55,32 @@ const state = reactive({
 
   } 
     
+  async function sendProduct(newProduct: Product){
+    console.log(" Sende Produkt mit Namen: "+newProduct.name+" an backend.")
+    console.log("Sende: "+'Product '+JSON.stringify(newProduct))
+    fetch(`http://localhost:9090/api/product/new`,{
+      method: 'POST',
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(newProduct)
+    }).then(function(response){
+     
+      console.log(response)
+      //Dinge mit der Antwort tun?
+    })
+  }
+
+  //Liste an Bildern
+  async function sendPicture(newPicture: Array<Picture>, id: number){
+    fetch(`http://localhost:9090/api/product/${id}/newpicture`,{
+      method: 'POST',
+      headers: {"Content-Type":"application/json"},
+      body: JSON.parse(JSON.stringify(newPicture))
+    }).then(function(response){
+      console.log(response)
+      //Dinge mit der Antwort tun?
+    })
+    //Bilderliste abschicken
+  }
 
     export function useProduct() {
         return {
@@ -59,3 +90,17 @@ const state = reactive({
           update,
         }
       }
+
+    //macht die sendProduct Funktion von außen zugänglich
+    export function postProduct(){
+      return {
+        sendProduct
+      }
+    }
+
+    //sendPicture funktion nach außen anbieten
+    export function postPictures(){
+      return{
+        sendPicture
+      }
+    }

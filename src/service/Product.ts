@@ -6,7 +6,7 @@
 // }
 
 interface Product {
-    articlenr: number;
+    articlenr: any; //damit man neues Produkt mit artikelnr null uebergeben kann
     version: number;
     name: string;
     productType: string;
