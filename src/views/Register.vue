@@ -16,16 +16,20 @@
             </div>
             <div class="row">
                 <div class="col1"><label for="password" class="left">Passwort</label></div>
-                <div class="col2"><input v-model="password" type="text" name="password" size="30" maxlenght="50" class="right"></div>
+                <div class="col2"><input id="pw" v-model="password" type="password" name="password" size="30" maxlenght="50" class="right"></div>
             </div>
             <div class="row">
                 <div class="col1"><label for="password" class="left">Passwort wiederholen</label></div>
-                <div class="col2"><input v-model="password" type="text" name="password" size="30" maxlenght="50" class="right"></div>
+                <div class="col2"><input id="pw" v-model="password" type="password" name="password" size="30" maxlenght="50" class="right"></div>
             </div>
             <input type="submit" name="registerUser" value="Registrieren">
         </form>
     </div>
 </template>
+
+<script lang="ts">
+
+</script>
 
 <style scoped lang="scss">
 
@@ -76,6 +80,14 @@ input[type=submit]{
     &:focus{
         outline: none;
     }
+}
+#pw{
+    width: 30%;
+    padding: 0.25em;
+    border: 1px solid #ccc;
+    border-radius:3px;
+    resize: vertical;
+
 }
 
 </style>
