@@ -34,8 +34,8 @@ const state = reactive({
         return response.json();
       })
       .then((jsondata: Array<Product>)=>{
-        console.log("yiiiha");
-        console.log(jsondata);
+        // console.log("yiiiha");
+        // console.log(jsondata);
         for(let i = 0; i < jsondata.length; i++){
           productlist.push(jsondata[i]);
         }

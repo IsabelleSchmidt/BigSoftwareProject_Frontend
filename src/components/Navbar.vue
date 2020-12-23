@@ -5,31 +5,31 @@
             <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo"/>
         </router-link>
         <ul>
-            <li><router-link to="/product">Produkte</router-link>
+            <li><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'alle' }}">Produkte</router-link>
                 <ul>
-                    <li><a href="#">Pflanzen</a></li>
-                    <li><a href="#">Tische</a></li>
-                    <li><a href="#">Stühle</a></li>
-                    <li><a href="#">Bett</a></li>
-                    <li><a href="#">Deko</a></li>
-                    <li><a href="#">Sofa/Couch</a></li>
-                    <li><a href="#">Schränke/Kommoden</a></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Pflanze'  }}">Pflanzen</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Tisch'  }}">Tische</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Stuhl'  }}">Stühle</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Bett'  }}">Betten</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Dekoration'  }}">Deko</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Sofa/Couch'  }}">Sofa/Couch</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'alle', producttype: 'Schrank/Kommode'  }}">Schränke/Kommoden</router-link></li>
                 </ul>
             </li>
             <li><router-link to="/rooms">Räume</router-link>
                 <ul>
-                    <li><a href="#">Bad</a></li>
-                    <li><a href="#">Schlafzimmer</a></li>
-                    <li><a href="#">Küche</a></li>
-                    <li><a href="#">Wohnzimmer</a></li>
-                    <li><a href="#">Esszimmer</a></li>
-                    <li><a href="#">Arbeitszimmer</a></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Bad', producttype: 'alle'  }}">Bad</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', producttype: 'alle'  }}">Schlafzimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Kueche', producttype: 'alle'  }}">Küche</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', producttype: 'alle'  }}">Wohnzimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Esszimmer', producttype: 'alle'  }}">Esszimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', producttype: 'alle'  }}">Arbeitszimmer</router-link></li>
                 </ul>
             </li>
             <div class="navright">
                 <li>
                     <div class="search-box">
-                        <input class="search-txt" v-model="search" placeholder="Suchen">
+                        <input class="search-txt" placeholder="Suchen">
                         <a class="search-btn" href="#">
                             <img src="../assets/magnifyingglass.png" alt="" >
 
@@ -89,7 +89,8 @@ nav{
     top:0;
     right:0;
     left:0;
-    transition: transform .25s .1s ease-in-out;
+    position: relative;
+    z-index: 1!important;
 }
 
 .down nav {
@@ -146,7 +147,7 @@ nav ul li ul li {
     text-align: left;
 }
 
-nav ul li ul li a {
+nav ul li ul li #link {
     padding: 8px 14px;
 }
 
@@ -164,7 +165,7 @@ nav ul li input {
 }
 
 .search-box {  
-    height: 30px;
+    height: 26px;
     width: 250px;
     background: #f3f3f3;
     border-radius: 40px;

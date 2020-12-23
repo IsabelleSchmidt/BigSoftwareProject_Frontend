@@ -12,10 +12,12 @@ interface Product {
     productType: string;
     roomType: string;
     price: number;
-    picture: string;
+    allPictures: Array<string>;
     height: number;
     width: number;
     depth: number;
     // allTags: Tag;
-    nrAvailableItems: number;
+    available: number;
+    description: string;
+    information: string;
 }

@@ -1,21 +1,20 @@
 <template>
-    <div class="product">
+    <div class="compSingle">
         <div class="top">
-            <router-link class="back" to="/products"> &laquo; zurück zur Übersicht</router-link>
+            <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a>
         </div>
         <div class="top2">
         <div class="left"> 
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
-            <img class="pic" src="../assets/sleepingroom.png"  alt="Picture"/>
+            <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
+            <div v-for="i in tst.allPictures" :key="i">
+                <img class="pic" v-bind:src="i.path"  alt="Picture"/>
+            </div>    
         </div>
         <div class="right"> 
             <ul>
-                <li><h3 class="name">ProduktName</h3></li>
-                <li><p class="description">Beschreibung bli bla blub</p></li>
-                <li><p class="size">Größe</p></li>
-                <li><p class="price">Preis</p></li>
+                <li><h3 class="name">{{tst.name}}</h3></li>
+                <li><p class="description">{{tst.description}}</p></li>
+                <li><p class="price">{{tst.price}} €</p></li>
                 <li class="buttons">
                     <button class="buttoncart">In den Warenkorb</button>
                     <button class="buttonfav">
@@ -34,28 +33,75 @@
             <hr>
             <details>
                 <summary>Produktinformationen</summary>
-                <p class="p1">  Test Test Hier kommen alle infos aus der Datenbank hfehuhferfeh
-                    fhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-                    hhhhhhhhhhhhhhhhhhhhhhhh
-                    hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh   
-                    hhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhh</p>
+                <p class="p1">  {{tst.information}}</p>
             </details>
             <hr>
             <details>
                 <summary>Produktgröße</summary>
-                <p class="p1"> Höhe</p>
-                <p> Breite </p>
-                <p> Tiefe </p>
+                <p class="p1">{{tst.width}} (Breite) x {{tst.depth}} (Länge) x {{tst.height}} (Höhe) </p>
             </details> 
             <hr>
         </div>
     </div>
 </template>
 
-<style scoped lang="scss">
+<script lang = "ts">
+import { defineComponent, computed} from 'vue';
+
+import '@/service/Product'
+
+export default defineComponent({
+    name: "CompProducts",
+    components:{
+    }, props: {
+        tst: {
+            type: Object,
+            default: () => ({}),
+        }
+    }, setup(props, context) {
+        const FARBEN = [
+            "red",
+            "#FFBF00",
+            "green",
+        ];
+
+        function openproductlist(): void {
+            context.emit("open-all");
+        }
+
+        return {
+            openproductlist,
+            farbe: computed(() => {
+                if (props.tst.nrAvailableItems <= 0) {
+                    return FARBEN[0];
+                } else if (props.tst.nrAvailableItems < 20) {
+                    return FARBEN[1];
+                } else {
+                    return FARBEN[2];
+                }
+            }),
+        };
+    }
+});
+ </script>
+
+<style scoped>
+
+.availablepoint {
+    float:left;
+    font-size: 2.5em;
+    margin: 6px 10px;
+    width: 5%;
+    color: v-bind('farbe');
+}
+
 .pic {
-    width: 280px;
+    width: 250px;
+    height: 300px;
+    object-fit:cover;
+    object-position: bottom center;
     margin: 0.5em;
+    float: left;
 }
 
 .top {
@@ -84,7 +130,6 @@
     width: 95%;
     position: relative;
     height: 350px;
-    // margin: 0 auto;
     margin-top: 350px;
     margin-left: 3.5em;
     
@@ -101,7 +146,6 @@ hr {
 
 summary {
     list-style: none;
-    //height: 4.5em;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 1.3em;
@@ -136,9 +180,10 @@ details[open] summary::after{
 .back{
     text-decoration: none;
     color: black;
-    &:hover {
-        color: #3BA07C;
-    }
+}
+
+.back:hover{
+    color: #3BA07C;
 }
 
 ul {
@@ -151,18 +196,20 @@ ul {
 }
 
 .buttoncart {
-    margin: 5% 0%;
+    margin: 60px 0px 0px 0px;
     padding: 3% 9%;
     background-color: #3BA07C;
     border-style: none;
     color: white;
-    &:hover {
-        background-color: #87E1A6;
-    }
-    &:focus {
-        outline: none;
-    }
     border-radius: 40px;
+}
+
+.buttoncart:hover {
+    background-color: #87E1A6;
+}
+
+.buttoncart:focus {
+    outline: none;
 }
 
 .buttonfav {
@@ -176,22 +223,16 @@ ul {
 }
 
 .icontruck {
-    width: 6%;
-    margin: 0% 3%;
+    width: 25px;
+    margin: 10px 10px 15px 10px;
     float: left;
 }
 .availabletxt {
     float:left;
     margin-bottom: 0px;
-    margin-top: 0.8%;
+    margin-top: 18px;
 }
 
-.availablepoint {
-    float:left;
-    font-size: 1.4em;
-    margin: 0% 2%;
-    width: 5%;
-    color: green;
-}
+
 
 </style>
