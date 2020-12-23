@@ -64,9 +64,12 @@ const state = reactive({
       body: JSON.stringify(newProduct)
     }).then(function(response){
      
-      console.log(response)
+      console.log("Antwort",response)
       //Dinge mit der Antwort tun?
-    })
+    }).catch((fehler) => {
+      console.log(fehler);
+  });
+
   }
 
   //Liste an Bildern
