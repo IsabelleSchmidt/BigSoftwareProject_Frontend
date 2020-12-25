@@ -1,7 +1,8 @@
 <template>
     <div class="register">
         <h1 align="center">Registrieren</h1>
-        <form action="">
+        <p id="error" align="center">{{message}}</p>
+        <form @submit.prevent="newUser()">
             <div class="row">
                 <div class="col1"><label for="firstname" class="left">Vorname</label></div>
                 <div class="col2"><input v-model="firstname" type="text" name="firstname" size="30" maxlenght="50" class="right"></div>
@@ -16,16 +17,61 @@
             </div>
             <div class="row">
                 <div class="col1"><label for="password" class="left">Passwort</label></div>
-                <div class="col2"><input id="pw" v-model="password" type="password" name="password" size="30" maxlenght="50" class="right"></div>
+                <div class="col2"><input id="pw1" v-model="password1" type="password" name="password" size="30" maxlenght="50" class="right"></div>
             </div>
             <div class="row">
                 <div class="col1"><label for="password" class="left">Passwort wiederholen</label></div>
-                <div class="col2"><input id="pw" v-model="password" type="password" name="password" size="30" maxlenght="50" class="right"></div>
+                <div class="col2"><input id="pw2" v-model="password2" type="password" name="password" size="30" maxlenght="50" class="right"></div>
             </div>
             <input type="submit" name="registerUser" value="Registrieren">
         </form>
     </div>
 </template>
+
+<script lang="ts">
+    import{ref, defineComponent} from 'vue'
+    import {postUser} from '../service/UserStore';
+
+    export default defineComponent({
+        name: "register",
+
+        setup() {
+            const {sendUser} = postUser();
+            const firstname = ref("");
+            const lastname = ref("");
+            const email = ref("");
+            const password1 = ref("");
+            const password2 = ref("");
+            const message = ref("");
+            
+
+            async function newUser(): Promise<void>{
+                console.log("FIRST NAME " + firstname.value + " LASTNAME " + lastname.value + " EMAIL " + email.value + " PW1 " + password1.value + " PW2 " + password2.value);
+                
+                //passwords the same
+                if (password1.value === password2.value) {
+                    const user: User = {'firstname': firstname.value,'lastname': lastname.value, 'email': email.value, 'password': password1.value};
+                    sendUser(user);
+
+                } else {  //different passwords
+                    message.value = "Die Passwörter stimmen nicht überein.";
+                    password1.value = "";
+                    password2.value = "";
+                }
+            }
+
+            return {
+                newUser,
+                firstname,
+                lastname,
+                email,
+                password1,
+                password2,
+                message
+            };
+        }
+    });
+</script>
 
 <style scoped lang="scss">
 
@@ -77,13 +123,27 @@ input[type=submit]{
         outline: none;
     }
 }
-#pw{
+#pw1{
     width: 30%;
     padding: 0.25em;
     border: 1px solid #ccc;
     border-radius:3px;
     resize: vertical;
 
+}
+
+#pw2{
+    width: 30%;
+    padding: 0.25em;
+    border: 1px solid #ccc;
+    border-radius:3px;
+    resize: vertical;
+
+}
+
+#error {
+    color: red;
+    margin: 40px 0px 0px 0px;
 }
 
 </style>

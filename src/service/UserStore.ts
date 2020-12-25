@@ -1,8 +1,4 @@
-import Vue from 'vue'
-import { reactive } from 'vue'
-//////////////////////////////////////////////////////////////////////////////
 
-import { computed } from 'vue'
 import '../service/User'
 
 async function sendLogin(loginUser: User){
@@ -20,8 +16,26 @@ async function sendLogin(loginUser: User){
     });
 }
 
+async function sendUser(newUser: User) {
+    console.log("FETCH - sende user ans backend");
+    fetch(`http://localhost:9090/api/user/new`,{
+      method: 'POST',
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(newUser)
+    }).then((response) =>{
+        console.log(response.json);
+
+    }).catch((exception) => {
+        console.log(exception);
+    });
+}
+
 export function postLoginUser(){
     return{
         sendLogin
     }
+}
+
+export function postUser() {
+    return{sendUser};
 }
