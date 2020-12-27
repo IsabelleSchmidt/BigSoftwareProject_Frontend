@@ -1,14 +1,14 @@
 <template>
     <div class= "cartlist">
         <ul>
-            <CartListObject :product="pr" v-for="pr in productList" :key="pr.articlenr" @delete-product="trashRow($event)" />
+            <CartListObject :product="pr" v-for="pr in productList" :key="pr.name" @delete-product="trashRow($event)" />
         </ul>
 
     </div>
 </template>
 <script lang ="ts">
 import CartListObject from "../components/CartListObject.vue"
-import {computed, onMounted, reactive, ref} from 'vue'; 
+import {computed, reactive, ref} from 'vue'; 
 
 export default {
     components:{
@@ -17,12 +17,13 @@ export default {
     setup(){
            let pList = reactive(Array<Product>());
            const leng = ref(0);
- 
+
            const productList = computed(() =>{
-               console.log("Länge: " + leng.value);
+
                 const list = localStorage.getItem('cartItems');
+
                         if(list){
-                            pList = JSON.parse(list); 
+                            pList = JSON.parse(list);  
                             leng.value = pList.length;
                         } 
  
@@ -31,14 +32,20 @@ export default {
 
             
         function trashRow(p: Product): void {
-
+            const aList = localStorage.getItem('amount');
+             if(aList){
+                const list = JSON.parse(aList); 
+              
             for(let i = 0; i<= pList.length; i++){
                 if(pList[i].name == p.name){
                    pList.splice(i, 1);
+                   list.splice(i, 1);
                    break;
                 } 
 
+              } localStorage.setItem('amount', JSON.stringify(list));
             }
+              
             leng.value = pList.length;
             localStorage.setItem('cartItems', JSON.stringify(pList)); 
 

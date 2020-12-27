@@ -16,19 +16,7 @@
                     <span>Gesamtpreis:</span>
                     <span> 25,99€</span>
                 </li> 
-
-                <select name="amount" id="amount">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
+                <input :value="amount" @change="amChange($event.target.value)" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -42,7 +30,7 @@
 </template>
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, ref} from 'vue'
 
 export default defineComponent({
     name: "CartListObject",
@@ -50,15 +38,54 @@ export default defineComponent({
         product:{
             type: Object,
             default: ()=> ({}),
-        } ,
-    },
-   setup(props, context) {
+        }
+        
+    }, 
+     
+    setup(props, context) {
+        const amount = ref(1);
+        
+         onMounted(async () => {
 
+             const aList = localStorage.getItem('amount');
+             if(aList){
+                const list = JSON.parse(aList);  
+
+                for(let i = 0; i< aList.length; i++){
+                    if(list[i].name == props.product.name ){
+                        amount.value =  list[i].menge ; 
+                        break;
+                    } 
+                } 
+             }  
+                   
+        });
+        function amChange(am: number): void{
+
+            const aList = localStorage.getItem('amount');
+             if(aList){
+                const list = JSON.parse(aList); 
+
+                for(let i = 0; i< aList.length; i++){
+                    if(list[i].name == props.product.name ){
+                        amount.value = am; 
+                        list[i].menge = amount.value;
+                        break; 
+                    } 
+                }
+                localStorage.setItem('amount', JSON.stringify(list));
+            }                
+
+
+
+
+        } 
        function trash(): void {
-           //console.log("da" + props.product.artikelnr);
            context.emit("delete-product", props.product);
        } 
        return {
+           amount,
+           amChange,
            trash
        };
     },
