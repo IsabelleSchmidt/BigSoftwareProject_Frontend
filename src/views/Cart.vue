@@ -3,7 +3,7 @@
         <div id="carthead">
             <h3>Ihre Produkte</h3>
         </div>
-        <div id="cartlist">
+        <div>
             <CartList/>
         </div>
         <div id="order">
@@ -23,35 +23,30 @@ export default {
     .cart{
         display: flex;
         flex-direction: column;
-        //float: left;
     } 
-
-   #cartlist{
-      /* max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;
-       */
-
-       
-   }  
+  
    #carthead{
-       /*max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;*/
+       display: flex;
+       justify-content: center;
    } 
   #carthead h3{
        margin-top: 5%;
+       text-align: center;
+       
    
   } 
    #order{
-       text-align: center;
+       display:flex;
+       justify-content: center;
    } 
    #orderB{
        margin: 5%;
-       padding: 1.5% 10%; 
+       padding: 1.5% 10%;
+       //width: 100%; 
        background-color: black;
        border-style: none;
        color: #fff;
+       text-align: center;
       &:hover{
           background-color: #3BA07C;
           
