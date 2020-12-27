@@ -59,7 +59,7 @@ export default defineComponent({
             default: () => ({}),
         }
     }, setup(props, context) {
-        const FARBEN = [
+        const COLORS = [
             "red",
             "#FFBF00",
             "green",
@@ -71,13 +71,13 @@ export default defineComponent({
 
         return {
             openproductlist,
-            farbe: computed(() => {
+            color: computed(() => {
                 if (props.tst.nrAvailableItems <= 0) {
-                    return FARBEN[0];
+                    return COLORS[0];
                 } else if (props.tst.nrAvailableItems < 20) {
-                    return FARBEN[1];
+                    return COLORS[1];
                 } else {
-                    return FARBEN[2];
+                    return COLORS[2];
                 }
             }),
         };
@@ -92,7 +92,7 @@ export default defineComponent({
     font-size: 2.5em;
     margin: 6px 10px;
     width: 5%;
-    color: v-bind('farbe');
+    color: v-bind('color');
 }
 
 .pic {

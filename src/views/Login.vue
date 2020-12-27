@@ -1,11 +1,11 @@
 <template>
     <div class="login">
         <h1 align="center">Login</h1>
-        <p id="error" align="center">{{errormessage}}</p>
+        <p id="error" align="center">{{message}}</p>
         <form @submit.prevent="loginUser()">
             <div class="row">
                 <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
-                <div class="col2"><input v-model="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
+                <div class="col2"><input v-model="email" id="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
             </div>  
             <div class="row">
                 <div class="col1"><label for="password" class="left">Passwort</label></div>
@@ -24,7 +24,7 @@
 <script lang="ts">
 
     import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent} from 'vue'
+    import{ref, defineComponent, computed} from 'vue'
 
     export default defineComponent({
         name:"Login",
@@ -32,18 +32,59 @@
         setup(){
             const email = ref("");
             const password = ref("");
-            const user: User = {'firstname':"",'lastname':"", 'email': email.value, 'password':password.value};
+            const user: User = {'firstName':"",'lastName':"", 'email': email.value, 'birthdate': new Date(), 'password':password.value};
             const {sendLogin, errormessage} = postLoginUser();
+            
+
+            const COLORS = [
+                "red",
+                "#ccc"
+            ]
 
             async function loginUser(): Promise<void>{
                 console.log("Emaaail", email.value);
                 user.email = email.value;
                 user.password = password.value;
                 console.log('UuuuseR:', user);
+                
                 sendLogin(user);
+                console.log("Errormessage: " + errormessage.value.toString);
             } 
 
-            return {loginUser, user, email, password, errormessage};
+            return {
+                loginUser, 
+                user, 
+                email, 
+                password, 
+                errormessage,
+                message : computed(() => {
+                    if(errormessage.value === "WRONG"){
+                        return "Passwort ist ungültig.";
+                    }else if(errormessage.value ==="NOTVALID"){
+                        return "Email-Adresse ist ungültig.";
+                    }else{
+                        return "";
+                    }   
+                }),
+                colorEmail: computed(() => {
+                    if(errormessage.value === "NOTVALID"){
+                        return COLORS[0];
+                    }else{
+                        return COLORS[1];
+                    }
+                    
+                }),
+                colorPW: computed(() => {
+                    if(errormessage.value === "WRONG"){
+                        return COLORS[0];
+                    }else{
+                        return COLORS[1];
+                    }
+                    
+                })
+
+                
+            };
         }
 
     });
@@ -109,7 +150,15 @@ input[type=submit]{
 #pw {
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid v-bind('colorPW');
+    border-radius:3px;
+    resize: vertical;
+}
+
+#email {
+    width: 30%;
+    padding: 0.25em;
+    border: 1px solid v-bind('colorEmail');
     border-radius:3px;
     resize: vertical;
 }
