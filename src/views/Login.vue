@@ -1,6 +1,7 @@
 <template>
     <div class="login">
         <h1 align="center">Login</h1>
+        <p id="error" align="center">{{errormessage}}</p>
         <form @submit.prevent="loginUser()">
             <div class="row">
                 <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
@@ -32,7 +33,7 @@
             const email = ref("");
             const password = ref("");
             const user: User = {'firstname':"",'lastname':"", 'email': email.value, 'password':password.value};
-            const {sendLogin} = postLoginUser();
+            const {sendLogin, errormessage} = postLoginUser();
 
             async function loginUser(): Promise<void>{
                 console.log("Emaaail", email.value);
@@ -42,7 +43,7 @@
                 sendLogin(user);
             } 
 
-            return {loginUser, user, email, password};
+            return {loginUser, user, email, password, errormessage};
         }
 
     });

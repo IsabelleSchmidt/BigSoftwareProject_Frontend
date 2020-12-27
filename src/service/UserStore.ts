@@ -1,5 +1,10 @@
 
+import { computed, reactive } from 'vue'
 import '../service/User'
+
+const state = reactive({
+    errormessage: ""
+})
 
 async function sendLogin(loginUser: User){
     console.log("Sende User mit Namen: " + loginUser.email + "und Passwort: " + loginUser.password + "an backend.");
@@ -9,10 +14,16 @@ async function sendLogin(loginUser: User){
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(loginUser)
     }).then((response) =>{
+        if(!response.ok){
+            console.log("RESPONSE: " + response.body?.pipeThrough.toString);
+            console.log("ERROOOOOOOR: " + state.errormessage);
+            throw new Error(state.errormessage);
+        }
         console.log(response);
 
     }).catch((exception) => {
-        console.log(exception);
+        state.errormessage = exception;
+        console.log("ERROOOOOOOR: " + state.errormessage);
     });
 }
 
@@ -32,6 +43,7 @@ async function sendUser(newUser: User) {
 
 export function postLoginUser(){
     return{
+        errormessage: computed(() => state.errormessage),
         sendLogin
     }
 }
