@@ -4,3 +4,8 @@ interface User{
     email: string;
     password: string;
 }
+
+interface UserMessage{
+    email: string;
+    message: string;
+  }

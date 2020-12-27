@@ -15,15 +15,16 @@ async function sendLogin(loginUser: User){
       body: JSON.stringify(loginUser)
     }).then((response) =>{
         if(!response.ok){
-            console.log("RESPONSE: " + response.body?.pipeThrough.toString);
-            console.log("ERROOOOOOOR: " + state.errormessage);
+            console.log("response not okay");
             throw new Error(state.errormessage);
         }
-        console.log(response);
-
+        console.log("response okay");
+        return response.json();
+    }).then((jsondata: UserMessage) => {
+        state.errormessage = jsondata.message;
     }).catch((exception) => {
         state.errormessage = exception;
-        console.log("ERROOOOOOOR: " + state.errormessage);
+        console.log("catch Error: " + state.errormessage);
     });
 }
 
