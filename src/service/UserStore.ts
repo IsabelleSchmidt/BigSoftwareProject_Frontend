@@ -1,6 +1,6 @@
 
 import { computed, reactive } from 'vue'
-import '../service/LoginRequest'
+import '../service/Requests'
 import '../service/Response'
 
 const state = reactive({
@@ -40,11 +40,15 @@ async function sendUser(signUpRequest: SignUpRequest) {
         if(!response.ok){
             throw new Error(state.errormessage);
         }
+        console.log("REGISTRIERUNG GUT");
         return response.json();
 
     }).catch((exception) => {
         console.log(exception)
     });
+
+    //Ziel -> response in Array<ResponseMessage> umwandeln -> Array von errors in errormessages speichern
+    
 }
 
 export function postLoginUser(){
@@ -56,7 +60,7 @@ export function postLoginUser(){
 
 export function postUser() {
     return{
-        errormessage: computed(() => state.errormessage),
+        errormessages: computed(() => state.errormessages),
         sendUser
     };
 }

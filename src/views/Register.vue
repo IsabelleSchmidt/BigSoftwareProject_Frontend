@@ -1,7 +1,7 @@
 <template>
     <div class="register">
         <h1 align="center">Registrieren</h1>
-        <p id="error" align="center">{{errormessage}}</p>
+        <p id="error" align="center">{{errormessages}}</p>
         <p id="error" align="center">{{message}}</p>
         <form @submit.prevent="newUser()">
             <div class="row">
@@ -58,18 +58,28 @@
             const password1 = ref("");
             const password2 = ref("");
             const message = ref("");
-            const {sendUser, errormessage} = postUser();
+            const {sendUser, errormessages} = postUser();
 
             async function newUser(): Promise<void>{
                 console.log("FIRST NAME " + firstname.value + " LASTNAME " + lastname.value + " EMAIL " + email.value + " PW1 " + password1.value + " PW2 " + password2.value);
                 
-                //passwords the same
                 if (password1.value === password2.value) {
                     const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
                     message.value="";
                     sendUser(signUpRequest);
 
-                } else {  //different passwords
+                    if(errormessages.value.length == 0){
+                        const hallo="";
+                        message.value=hallo;
+                    }else{
+
+                        const hallo = "";
+                        message.value = hallo;
+                        //errors rausholen und neben den Feldern ausgeben
+                        //wenn ein field zwei mal vorkommt -> nur "Feld darf nicht leer sein" printen
+                    }
+
+                } else { 
                     message.value = "Die Passwörter stimmen nicht überein.";
                     password1.value = "";
                     password2.value = "";
@@ -86,7 +96,7 @@
                 password1,
                 password2,
                 message,
-                errormessage
+                errormessages
             };
         }
     });
