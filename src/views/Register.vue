@@ -44,7 +44,7 @@
 
 <script lang="ts">
     import{ref, defineComponent} from 'vue'
-    //import {postUser} from '../service/UserStore';
+    import {postUser} from '../service/UserStore';
 
     export default defineComponent({
         name: "register",
@@ -58,16 +58,16 @@
             const password1 = ref("");
             const password2 = ref("");
             const message = ref("");
-            //const {sendUser, errormessage} = postUser();
+            const {sendUser, errormessage} = postUser();
 
             async function newUser(): Promise<void>{
                 console.log("FIRST NAME " + firstname.value + " LASTNAME " + lastname.value + " EMAIL " + email.value + " PW1 " + password1.value + " PW2 " + password2.value);
                 
                 //passwords the same
                 if (password1.value === password2.value) {
-                    const user: User = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
+                    const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
                     message.value="";
-                    //sendUser(user);
+                    sendUser(signUpRequest);
 
                 } else {  //different passwords
                     message.value = "Die Passwörter stimmen nicht überein.";
@@ -86,7 +86,7 @@
                 password1,
                 password2,
                 message,
-                //errormessage
+                errormessage
             };
         }
     });

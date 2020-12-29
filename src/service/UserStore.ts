@@ -1,11 +1,12 @@
 
 import { computed, reactive } from 'vue'
 import '../service/LoginRequest'
-import '../service/JwtToken'
+import '../service/Response'
 
 const state = reactive({
     errormessage: "",
-    jwttokens: Array<JwtToken>()
+    jwttokens: Array<JwtToken>(),
+    errormessages: Array<MessageResponse>()
 })
 
 
@@ -29,30 +30,22 @@ async function sendLogin(loginRequest: LoginRequest){
       })
 }
 
-// async function sendUser(newUser: User) {
-//     console.log("Sende: " + 'User ' +JSON.stringify(newUser));
-//     fetch(`http://localhost:9090/api/user/new`,{
-//       method: 'POST',
-//       headers: {"Content-Type":"application/json"},
-//       body: JSON.stringify(newUser)
-//     }).then((response) =>{
-//         if(!response.ok){
-//             console.log("response not okay");
-//             throw new Error(state.errormessage);
-//         }
-//         console.log("response okay");
-//         return response.json();
+async function sendUser(signUpRequest: SignUpRequest) {
+    console.log("Sende: " + 'User ' +JSON.stringify(signUpRequest));
+    fetch(`http://localhost:9090/api/auth/register`,{
+      method: 'POST',
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(signUpRequest)
+    }).then((response) =>{
+        if(!response.ok){
+            throw new Error(state.errormessage);
+        }
+        return response.json();
 
-//     }).then((jsondata: Array<UserMessage>) => {
-//         for (let i = 0; i < jsondata.length; i++) {
-//             state.errormessage+=jsondata[i].type + ": " + jsondata[i].message + "; ";  
-//           }
-//           console.log("ERROOOOOOOOOOOOOOR: " + state.errormessage);
-//     }).catch((exception) => {
-//         state.errormessage = exception;
-//         console.log("catch Error: " + state.errormessage);
-//     });
-// }
+    }).catch((exception) => {
+        console.log(exception)
+    });
+}
 
 export function postLoginUser(){
     return{
@@ -61,9 +54,9 @@ export function postLoginUser(){
     }
 }
 
-// export function postUser() {
-//     return{
-//         errormessage: computed(() => state.errormessage),
-//         sendUser
-//     };
-// }
+export function postUser() {
+    return{
+        errormessage: computed(() => state.errormessage),
+        sendUser
+    };
+}
