@@ -6,6 +6,8 @@ import { reactive } from 'vue'
 import { computed } from 'vue'
 import '@/service/Product'
 import '@/service/Picture'
+import '@/service/ProductResponse'
+import '@/service/Validationerror'
 
 /**************************************************/
 
@@ -17,13 +19,10 @@ import '@/service/Picture'
 const state = reactive({
     list: Array<Product>(),
     img: String,
-    //errormessage: ""
+    validationerrors : Array<Validationerror>()
   })
 
-  const productResponse = reactive({
-    product: Array<Product>(),
-    message: String
-  })
+
 
   async function update(): Promise<void> {
     const productlist = new Array<Product>();
@@ -63,12 +62,34 @@ const state = reactive({
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(newProduct)
     }).then(function(response){
-     
-      console.log("Antwort",response)
-      //Dinge mit der Antwort tun?
-    }).catch((fehler) => {
-      console.log(fehler);
-    });
+      //hier checken ob alles ok gelaufen ist -> falls nein errormessages holen?
+      if(response.status == 406){
+        //errormessages holen
+        const productResponse = JSON.parse(JSON.stringify(response.body)) as ProductResponse;
+        state.validationerrors = productResponse.allErrors;
+        console.log("FEHLER: " +state.validationerrors)
+      }
+      return response.json();
+    }).then((jsondata: ProductResponse)=>{
+      
+    
+      console.log("Response json: "+jsondata);
+      //wenn alles richtig war, neues Produkt hinzufuegen
+      if(jsondata.allErrors.length == 0){
+        state.list.push(newProduct);
+        console.log("neues produkt!");
+      }
+      else{
+        state.validationerrors = jsondata.allErrors;
+        console.log("Fehlerliste: "+jsondata.allErrors);
+      }
+    }).catch((error) => {
+      console.log(error);
+  });
+    
+      
+      //Validationerrors werden nach außen angeboten und automatisch geände
+   
 
   }
 
@@ -99,7 +120,8 @@ const state = reactive({
     //macht die sendProduct Funktion von außen zugänglich
     export function postProduct(){
       return {
-        sendProduct
+        sendProduct,
+        validationerrors : computed(() => state.validationerrors)
       }
     }
 

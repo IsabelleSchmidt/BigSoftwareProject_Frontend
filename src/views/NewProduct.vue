@@ -1,46 +1,54 @@
 <template>
     <div class="newProduct">
+        
+        <div id="inputerror" v-if="validationerrors.length > 0">
+            <li>
+
+                <ul id="inputerror" v-for="validationerror in validationerrors" v-bind:key="validationerror" >{{validationerror.message}} </ul>
+            </li>
+         </div>
+     
         <h1>Neues Produkt anlegen</h1>
 
         <form  @submit.prevent="sendeProd()">
             <div class="row">
                 <div class="col1"><label for="name">Produktname</label></div>
-                <div class="col2"><input type="text" v-model="name" placeholder="Produktname" name="name" size="30" maxlength="50" ></div>
+                <div class="col2"><input type="text" id="name" v-model="name" placeholder="Produktname" name="name" size="30" maxlength="50" ></div>
             </div>
                   
             <div class="row">
                 <div class="col1"><label for="productType">Produktart</label></div>
-                <div class="col2"><input type ="text" v-model="productType" placeholder="Produktart" name="productType" size="30" maxlength="50"></div>
+                <div class="col2"><input type ="text" v-model="productType" id="productType" placeholder="Produktart" name="productType" size="30" maxlength="50"></div>
             </div>
             
             <div class="row">
-                <div class="col1"><label for="roomType">Raumart</label></div>
-                <div class="col2"><input type="text" v-model="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"></div>
+                <div class="col1"><label for="roomType" >Raumart</label></div>
+                <div class="col2"><input type="text" v-model="roomType" id="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"></div>
             </div>
 
             <div class="row">
                 <div class="col1"><label for="information" >Information</label></div>
-                <div class="col2"><input type="text" v-model="information" placeholder="Information" name="information" size="30" maxlength="50"></div>
+                <div class="col2"><input type="text" v-model="information" id="information" placeholder="Information" name="information" size="30" maxlength="50"></div>
             </div>
 
             <div class="row">
                 <div class="col1"><label for="description" >Beschreibung</label></div>
-                <div class="col2"><input type="text" v-model="description" placeholder="Beschreibung" name="description" size="30" maxlength="50"></div>
+                <div class="col2"><input type="text" v-model="description" id="description" placeholder="Beschreibung" name="description" size="30" maxlength="50"></div>
             </div>
-
+            <div v-if="priceerror.length>0"> {{priceerror}} </div>
             <div class="row">
                 <div class="col1"><label for="price" >Preis</label></div>
-                <div class="col2"><input type="number" v-model="price" placeholder="Preis" name="price" min="0.00" step="0.01"></div>
+                <div class="col2"><input type="number" v-model="price" id="price" placeholder="Preis" name="price" min="0.00" step="0.01"></div>
             </div>
 
             <div class="row">
                 <div class="col1"><label for="dimensions">Maße in cm</label><label id="klein">Breite x Höhe x Tiefe</label></div>
-                <div class="col2"><input type="number" v-model="width" name="width" min="0.00" step="0.01"> x <input v-model="height" type="number" name="height" min="0.00" step="0.01"> x <input v-model="depth" type="number" name="depth" min="0.00" step="0.01"></div>
+                <div class="col2"><input type="number" v-model="width" id = "width" name="width" min="0.00" step="0.01"> x <input v-model="height" id="height" type="number" name="height" min="0.00" step="0.01"> x <input v-model="depth" id="depth" type="number" name="depth" min="0.00" step="0.01"></div>
             </div>
 
             <div class="row">
                 <div class="col1"><label for="nrAvailableItems" >Stückzahl</label></div>
-                <div class="col2"><input type="number" v-model="nrAvailableItems" name="nrAvailableItems" min="0" step="1" ></div>
+                <div class="col2"><input type="number" id="available" v-model="nrAvailableItems" name="nrAvailableItems" min="0" step="1" ></div>
             </div>
 
             <div class="row">
@@ -63,6 +71,7 @@
   import {postProduct,postPictures} from '../service/ProductStore'
   import '../service/Picture'
   import {ref,defineComponent} from 'vue'
+  import '../service/Validationerror'
   export default defineComponent ({
         name:"newProduct",
    
@@ -83,7 +92,8 @@
         const depth = ref(0);
         const price = ref(0);
         const picturename = ref("");
-        const {sendProduct} = postProduct();
+        const {sendProduct, validationerrors} = postProduct();
+        const priceerror = ref("");
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':nrAvailableItems.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
 
@@ -138,13 +148,30 @@
 
             sendPicture(formData);
         }
+
+        if(validationerrors.value.length > 0){
+            for(const error of validationerrors.value){
+                if(error.field == "price"){
+                    priceerror.value = error.message;
+                }
+            }
+        }
         
-        return {sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        return {priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
 
 <style scoped lang="scss">
+
+#inputerror{
+
+    border-color: red;
+    border-width: 2px;
+   
+
+}
+
 h1{
     text-align: center;
 }
@@ -174,30 +201,31 @@ label {
     display: table;
     clear: both;
 }
-
+input{
+     border: 1px solid black;//var(--border-color);
+    resize: vertical; 
+    padding: 0.25em;
+    border-radius: 3px;
+}
 input:focus{
     outline-color: #3BA07C;
 }
 input[type=text]{
   width: 30%;
-  padding: 0.25em;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  resize: vertical;
+ 
+
+ 
 }
 input[type=number]{
   width: 8%;
-  padding: 0.25em;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  resize: vertical;
+ 
+  
 }
 input[type=image]{
     width: 20%;
-    padding: 0.25em;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    resize: vertical;
+   
+    
+  
 }
 input[type=submit]{
     margin: 5% 0% 0% 0%;
