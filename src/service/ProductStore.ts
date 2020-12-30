@@ -68,20 +68,22 @@ const state = reactive({
       //Dinge mit der Antwort tun?
     }).catch((fehler) => {
       console.log(fehler);
-  });
+    });
 
   }
 
   //Liste an Bildern
-  async function sendPicture(newPicture: Array<Picture>, id: number){
-    fetch(`http://localhost:9090/api/product/${id}/newpicture`,{
+  async function sendPicture(formData: FormData){
+    fetch(`http://localhost:9090/api/product/newpicture`,{
       method: 'POST',
-      headers: {"Content-Type":"application/json"},
-      body: JSON.parse(JSON.stringify(newPicture))
+      headers: {'Content-Type': 'multipart/form-data'},
+      body: formData
     }).then(function(response){
       console.log(response)
       //Dinge mit der Antwort tun?
-    })
+    }).catch((fehler) => {
+      console.log(fehler);
+    });
     //Bilderliste abschicken
   }
 

@@ -14,7 +14,7 @@
             </div>
             
             <div class="row">
-                <div class="col1"><label for="roomType" >Raumart</label></div>
+                <div class="col1"><label for="roomType">Raumart</label></div>
                 <div class="col2"><input type="text" v-model="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"></div>
             </div>
 
@@ -45,7 +45,8 @@
 
             <div class="row">
                 <div class="col1"><label for="picture">Bild und Name</label></div>
-                <div class="col2"><input  type="file" name="picture" multiple accept="image/*"></div>
+                <div class="col2"><input ref="fileInput" class="file-input" type="file" name="picture" multiple accept="image/*" @change="onFileChange($event.target.files)"></div>
+                <div class="col2"><p v-for="file in filesref" :key="file.name">{{file.name}}</p></div>
             </div>
 
             <input type="submit" name="safeProduct" value="Produkt speichern">
@@ -60,42 +61,86 @@
 //Bild (erstmal eins nach dem anderen) nach antwort(wir brauchen die neue produkt id) an POST api/product/{articleNr}/newpicture senden und picturename: String
 //mitgeben: speicherort und dateiname zB. /chairs/chair9.jpg
   import {postProduct,postPictures} from '../service/ProductStore'
+  import '../service/Picture'
   import {ref,defineComponent} from 'vue'
   export default defineComponent ({
         name:"newProduct",
    
     setup(){
-        //TODO: werte werden noch nicht richtig gespeichert 
-    const name = ref("");
-    const roomType = ref("");
-    const productType = ref("");
-    const information = ref("");
-    const description = ref("");
-    const nrAvailableItems = ref(0);
-    const width = ref(0);
-    const height = ref(0);
-    const depth = ref(0);
-    const price = ref(0);
-    const picturename = ref("");
-    const {sendProduct} = postProduct();
-    const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':nrAvailableItems.value, 
-    'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
+        const files = Array<File>();
+        const filesref= ref(files);
+        const {sendPicture} = postPictures();
+        const formData = new FormData;
 
-    async function sendeProd(): Promise<void>{
-        console.log("Naaame",name.value);
-        product.name = name.value;
-        product.productType = productType.value;
-        product.roomType = roomType.value;
-        product.price = price.value;
-        product.information = information.value;
-        product.description = description.value;
-        console.log('ProduuuukT:',product);
-        console.log("Methodenaufruf yay ")
-        sendProduct(product)
-    }
-    
-    return {sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename};
-    }
+        const name = ref("");
+        const roomType = ref("");
+        const productType = ref("");
+        const information = ref("");
+        const description = ref("");
+        const nrAvailableItems = ref(0);
+        const width = ref(0);
+        const height = ref(0);
+        const depth = ref(0);
+        const price = ref(0);
+        const picturename = ref("");
+        const {sendProduct} = postProduct();
+        const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':nrAvailableItems.value, 
+        'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
+
+        async function sendeProd(): Promise<void>{
+            console.log("Naaame",name.value);
+            product.name = name.value;
+            product.productType = productType.value;
+            product.roomType = roomType.value;
+            product.price = price.value;
+            product.information = information.value;
+            product.description = description.value;
+            console.log('ProduuuukT:',product);
+            console.log("Methodenaufruf yay ")
+            sendProduct(product)
+        }
+
+        function onFileChange(files: File[]): void{
+            // filesref.value = files;
+            if(filesref.value.length == 0){
+                console.log("IFFF",filesref.value.length)
+                filesref.value = files;
+            }else{
+                console.log("ELSEE",filesref.value.length)
+                for(let j = filesref.value.length; j < filesref.value.length + files.length; j++){
+                    console.log("JJJ",j);
+                    for(let k = 0; k < files.length; k++){
+                        console.log("KKK",k);
+                        filesref.value[j] = files[0];
+                    }
+                }
+            }
+            console.log("Bild",filesref.value);
+
+            // for(let i = 0; i < files.length; i++){
+            //     const filename = files[i].name;
+            //     console.log(filename);
+            //     formData.append(filename, files[i], files[i].name);
+            // }
+
+            // for (var value of formData.values) {
+            //     console.log(value);
+            // }
+                
+
+            //muss eigentlich in send prod (wird erst bei submit abgeschickt)
+            for(let i = 0; i < filesref.value.length; i++){
+                const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
+                console.log(filename);
+                formData.append(filename,filesref.value[i],filesref.value[i].name);
+                // console.log("File",formData.get('string'))
+            }
+
+            sendPicture(formData);
+        }
+        
+        return {sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        }
    });
 </script>
 
