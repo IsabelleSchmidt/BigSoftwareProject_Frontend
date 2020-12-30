@@ -1,44 +1,38 @@
 <template>
     <div class="newProduct">
-        
-        <div id="inputerror" v-if="validationerrors.length > 0">
-            <li>
-
-                <ul id="inputerror" v-for="validationerror in validationerrors" v-bind:key="validationerror" >{{validationerror.message}} </ul>
-            </li>
-         </div>
      
         <h1>Neues Produkt anlegen</h1>
 
         <form  @submit.prevent="sendeProd()">
             <div class="row">
                 <div class="col1"><label for="name">Produktname</label></div>
-                <div class="col2"><input type="text" id="name" v-model="name" placeholder="Produktname" name="name" size="30" maxlength="50" ></div>
+                <div class="col2"><input type="text" id="name" v-model="name" placeholder="Produktname" name="name" size="30" maxlength="50"><div class="error" v-if="nameerror.length>0"> {{nameerror}} </div></div>
             </div>
                   
             <div class="row">
                 <div class="col1"><label for="productType">Produktart</label></div>
-                <div class="col2"><input type ="text" v-model="productType" id="productType" placeholder="Produktart" name="productType" size="30" maxlength="50"></div>
+                <div class="col2"><input type ="text" v-model="productType" id="productType" placeholder="Produktart" name="productType" size="30" maxlength="50"><div class="error" v-if="producterror.length>0"> {{producterror}} </div></div>
             </div>
             
             <div class="row">
                 <div class="col1"><label for="roomType" >Raumart</label></div>
-                <div class="col2"><input type="text" v-model="roomType" id="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"></div>
+                <div class="col2"><input type="text" v-model="roomType" id="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"><div class="error" v-if="roomerror.length>0"> {{roomerror}} </div></div>
             </div>
 
             <div class="row">
                 <div class="col1"><label for="information" >Information</label></div>
-                <div class="col2"><input type="text" v-model="information" id="information" placeholder="Information" name="information" size="30" maxlength="50"></div>
+                <div class="col2"><input type="text" v-model="information" id="information" placeholder="Information" name="information" size="30" maxlength="50"><div class="error" v-if="infoerror.length>0"> {{infoerror}} </div></div>
             </div>
-
+            
             <div class="row">
                 <div class="col1"><label for="description" >Beschreibung</label></div>
-                <div class="col2"><input type="text" v-model="description" id="description" placeholder="Beschreibung" name="description" size="30" maxlength="50"></div>
+                <div class="col2"><input type="text" v-model="description" id="description" placeholder="Beschreibung" name="description" size="30" maxlength="50"><div class="error" v-if="descriptionerror.length>0"> {{descriptionerror}} </div></div>
             </div>
-            <div v-if="priceerror.length>0"> {{priceerror}} </div>
+
+        
             <div class="row">
-                <div class="col1"><label for="price" >Preis</label></div>
-                <div class="col2"><input type="number" v-model="price" id="price" placeholder="Preis" name="price" min="0.00" step="0.01"></div>
+                <div class="col1"><label for="price">Preis</label></div>
+                <div class="col2"><input type="number" v-model="price" id="price" placeholder="Preis" name="price" min="0.00" step="0.01"><div class="error" v-if="priceerror.length>0"> {{priceerror}} </div></div>
             </div>
 
             <div class="row">
@@ -80,6 +74,7 @@
         const filesref= ref(files);
         const {sendPicture} = postPictures();
         const formData = new FormData;
+        let lang = 0;
 
         const name = ref("");
         const roomType = ref("");
@@ -93,7 +88,14 @@
         const price = ref(0);
         const picturename = ref("");
         const {sendProduct, validationerrors} = postProduct();
+        
+        const nameerror = ref("");
+        const producterror = ref("");
+        const roomerror = ref("");
+        const infoerror = ref("");
+        const descriptionerror = ref("");
         const priceerror = ref("");
+        
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':nrAvailableItems.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
 
@@ -111,33 +113,21 @@
         }
 
         function onFileChange(files: File[]): void{
-            // filesref.value = files;
             if(filesref.value.length == 0){
-                console.log("IFFF",filesref.value.length)
-                filesref.value = files;
-            }else{
-                console.log("ELSEE",filesref.value.length)
-                for(let j = filesref.value.length; j < filesref.value.length + files.length; j++){
-                    console.log("JJJ",j);
-                    for(let k = 0; k < files.length; k++){
-                        console.log("KKK",k);
-                        filesref.value[j] = files[0];
-                    }
+                for(let i = 0; i <files.length; i++){
+                    filesref.value[i] = files[i];
                 }
-            }
+                lang = filesref.value.length;
+            }else{
+                let k = 0
+                for(let j = lang; j < lang+files.length; j++){
+                    filesref.value[j] = files[k];
+                    k++;
+                }
+                lang = filesref.value.length;
+            }  
             console.log("Bild",filesref.value);
-
-            // for(let i = 0; i < files.length; i++){
-            //     const filename = files[i].name;
-            //     console.log(filename);
-            //     formData.append(filename, files[i], files[i].name);
-            // }
-
-            // for (var value of formData.values) {
-            //     console.log(value);
-            // }
                 
-
             //muss eigentlich in send prod (wird erst bei submit abgeschickt)
             for(let i = 0; i < filesref.value.length; i++){
                 const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
@@ -154,15 +144,35 @@
                 if(error.field == "price"){
                     priceerror.value = error.message;
                 }
+                if(error.field == "roomType"){
+                    roomerror.value = error.message;
+                }
+                if(error.field == "productType"){
+                    producterror.value = error.message;
+                }
+                if(error.field == "name"){
+                    nameerror.value = error.message;
+                }
+                if(error.field == "information"){
+                    infoerror.value = error.message;
+                }
+                if(error.field == "description"){
+                    descriptionerror.value = error.message;
+                }
+                
             }
         }
         
-        return {priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        return {nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
 
 <style scoped lang="scss">
+.error{
+    font-size: 10px;
+    color: red;
+}
 
 #inputerror{
 

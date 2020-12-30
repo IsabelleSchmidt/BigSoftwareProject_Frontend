@@ -1,6 +1,6 @@
 <template>
     <div class="PictureUploadListItem">
-        <div>{{filename}}</div>
+        <div>hgvhv{{file.fileName}}</div>
         <img src="@/assets/trash.png" alt="trash" id="trash">
     </div>
 </template>
@@ -10,16 +10,19 @@ import { defineComponent, ref } from "vue";
 
 export default defineComponent({
     name:"PictureUploadListItem",
-    setup(){
-        const filename = ref("")
-        
-        return{filename}
-    } 
+    props:{
+        file: File,
+    },
+    setup(props){
+
+        return{props}
+    }
+    
 })
 </script>
 
 <style lang="scss" scoped>
 #trash{
-    height: 50px;
+    height: 20px;
 }
 </style>
