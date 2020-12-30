@@ -1,7 +1,7 @@
 <template>
     <div class= "cartlist">
         <ul>
-            <CartListObject :product="pr" v-for="pr in productList" :key="pr.name" @delete-product="trashRow($event)" />
+            <CartListObject :product="pr" v-for="pr in productList" :key="pr.articlenr" @delete-product="trashRow($event)" />
         </ul>
     </div>
 </template>
@@ -15,7 +15,7 @@ export default {
     },
     setup(){
            let pList = reactive(Array<Product>());
-           const leng = ref(0);
+           const leng = ref();
 
            const productList = computed(() =>{
 
@@ -24,6 +24,7 @@ export default {
                         if(list){
                             pList = JSON.parse(list);  
                             leng.value = pList.length;
+                            console.log("länge" + leng.value);
                         } 
  
                 return pList;
@@ -33,16 +34,16 @@ export default {
         function trashRow(p: Product): void {
             const aList = localStorage.getItem('amount');
              if(aList){
-                const list = JSON.parse(aList); 
+                const liste = JSON.parse(aList); 
               
             for(let i = 0; i<= pList.length; i++){
                 if(pList[i].name == p.name){
                    pList.splice(i, 1);
-                   list.splice(i, 1);
+                   liste.splice(i, 1);
                    break;
                 } 
 
-              } localStorage.setItem('amount', JSON.stringify(list));
+              } localStorage.setItem('amount', JSON.stringify(liste));
             }
               
             leng.value = pList.length;
