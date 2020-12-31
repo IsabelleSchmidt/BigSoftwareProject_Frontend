@@ -65,6 +65,8 @@
   import {postProduct,postPictures} from '../service/ProductStore'
   import '../service/Picture'
   import {ref,defineComponent} from 'vue'
+  import Swal from 'sweetalert2'
+  import router from "../router"
   import '../service/Validationerror'
   export default defineComponent ({
         name:"newProduct",
@@ -108,8 +110,46 @@
             product.information = information.value;
             product.description = description.value;
             console.log('ProduuuukT:',product);
-            console.log("Methodenaufruf yay ")
-            sendProduct(product)
+
+            // Validation Messages
+            if(validationerrors.value.length > 0){
+                for(const error of validationerrors.value){
+                    if(error.field == "price"){
+                        priceerror.value = error.message;
+                    }
+                    if(error.field == "roomType"){
+                        roomerror.value = error.message;
+                    }
+                    if(error.field == "productType"){
+                        producterror.value = error.message;
+                    }
+                    if(error.field == "name"){
+                        nameerror.value = error.message;
+                    }
+                    if(error.field == "information"){
+                        infoerror.value = error.message;
+                    }
+                    if(error.field == "description"){
+                        descriptionerror.value = error.message;
+                    }
+                
+                }
+            }else{
+                sendProduct(product);
+                //Pop UP
+                Swal.fire({
+                title: 'neues Produkt angelegt!',
+                text: 'weiteres Produkt anlegen...',
+                icon: 'success',
+                confirmButtonText: 'weiter',
+                confirmButtonColor: '#3BA07C',
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        // router.push("/newProducts")
+                        location.reload();
+                    }
+                })
+            }
         }
 
         function onFileChange(files: File[]): void{
@@ -139,29 +179,7 @@
             sendPicture(formData);
         }
 
-        if(validationerrors.value.length > 0){
-            for(const error of validationerrors.value){
-                if(error.field == "price"){
-                    priceerror.value = error.message;
-                }
-                if(error.field == "roomType"){
-                    roomerror.value = error.message;
-                }
-                if(error.field == "productType"){
-                    producterror.value = error.message;
-                }
-                if(error.field == "name"){
-                    nameerror.value = error.message;
-                }
-                if(error.field == "information"){
-                    infoerror.value = error.message;
-                }
-                if(error.field == "description"){
-                    descriptionerror.value = error.message;
-                }
-                
-            }
-        }
+
         
         return {nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
@@ -212,7 +230,7 @@ label {
     clear: both;
 }
 input{
-     border: 1px solid black;//var(--border-color);
+    border: 1px solid #ccc;
     resize: vertical; 
     padding: 0.25em;
     border-radius: 3px;
