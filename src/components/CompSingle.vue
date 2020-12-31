@@ -65,16 +65,17 @@ export default defineComponent({
 
         //Callback
         function openproductlist(): void { 
-            context.emit("open-all");
+            // context.emit("open-all");
+            router.go(-1);
         }
 
         onMounted(async () => {
-            console.log(props.tst.roomType);
             router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
 
             //when back button in browser is pressed
             window.onpopstate = function(event: any) {
-                openproductlist();
+                context.emit("open-all");
+                // openproductlist();
                 // router.go(-1);
             };
         });
