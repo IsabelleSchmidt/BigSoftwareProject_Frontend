@@ -12,9 +12,6 @@ export default defineComponent({
   props:{
       name: String,
       link: String
-    //   name: String,
-    //   picture: String,
-    //   link: String
   },
 
 });
