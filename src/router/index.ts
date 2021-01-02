@@ -47,6 +47,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Product',
     component: () => import('../views/Product.vue'),
     props: true
+  },
+  {
+    path: '/orderForm',
+    name: 'OrderForm',
+    component: () => import('../views/OrderForm.vue'),
   }
 ]
 
