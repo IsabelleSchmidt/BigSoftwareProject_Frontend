@@ -21,6 +21,8 @@
                         <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
                     </button>
                 </li>
+                <li class="alert"><v-alert type="success" v-if="alert" >Artikel wurde zum Warenkorb hinzugefügt
+                </v-alert></li>
                 <li class="available">
                     <img class="icontruck" src="../assets/truckicon.png"  alt="Picture"/>
                     <p class="availabletxt">verfügbar</p>
@@ -46,7 +48,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed} from 'vue';
+import { defineComponent, computed, ref} from 'vue';
 
 import '@/service/Product'
 
@@ -65,6 +67,8 @@ export default defineComponent({
             "green",
         ];
 
+         
+        const alert = ref(false); 
 
         console.log("TETS--- " + props.tst.name);
 
@@ -72,6 +76,7 @@ export default defineComponent({
             context.emit("open-all");
         }
         return {
+            alert,
             openproductlist,
             farbe: computed(() => {
                 if (props.tst.available <= 0) {
@@ -96,6 +101,12 @@ export default defineComponent({
             
             const st = localStorage.getItem('cartItems'); 
             const am = localStorage.getItem('amount');
+
+           this.alert = true;
+            setTimeout(()=>{
+                this.alert=false
+
+            },3000)
 
             if(!st){
                 productList = []; 
@@ -130,9 +141,9 @@ export default defineComponent({
 
                 }  
                 localStorage.setItem('amount', JSON.stringify(amountList));
-                localStorage.setItem('cartItems', JSON.stringify(productList));        
+                localStorage.setItem('cartItems', JSON.stringify(productList));    
+                //alert("Hinzugefügt");    
             } 
-    
         } 
     } 
 });  
@@ -247,7 +258,10 @@ ul {
     float: right;
     font-size: 1.5em;
 }
-
+.alert {
+    color:#3BA07C;
+    margin-bottom: 3%;
+}
 .buttoncart {
     margin: 5% 0%;
     padding: 3% 9%;
