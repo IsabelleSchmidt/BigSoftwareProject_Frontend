@@ -65,7 +65,7 @@
   import {postProduct,postPictures} from '../service/ProductStore'
   import '../service/Picture'
   import {ref,defineComponent} from 'vue'
-  import Swal from 'sweetalert2'
+  import Swal from "sweetalert2"
   import router from "../router"
   import '../service/Validationerror'
   export default defineComponent ({
@@ -111,6 +111,7 @@
             product.description = description.value;
             console.log('ProduuuukT:',product);
 
+            await sendProduct(product); 
             // Validation Messages
             if(validationerrors.value.length > 0){
                 for(const error of validationerrors.value){
@@ -135,8 +136,17 @@
                 
                 }
             }else{
-                sendProduct(product);
-                //Pop UP
+                
+                //muss eigentlich in send prod (wird erst bei submit abgeschickt)
+             for(let i = 0; i < filesref.value.length; i++){
+                const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
+                console.log(filename);
+                formData.append(filename,filesref.value[i],filesref.value[i].name);
+                // console.log("File",formData.get('string'))
+             }
+
+                if(sendPicture(formData)){
+                      //Pop UP
                 Swal.fire({
                 title: 'neues Produkt angelegt!',
                 text: 'weiteres Produkt anlegen...',
@@ -149,6 +159,8 @@
                         location.reload();
                     }
                 })
+                }
+              
             }
         }
 
@@ -168,15 +180,7 @@
             }  
             console.log("Bild",filesref.value);
                 
-            //muss eigentlich in send prod (wird erst bei submit abgeschickt)
-            for(let i = 0; i < filesref.value.length; i++){
-                const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
-                console.log(filename);
-                formData.append(filename,filesref.value[i],filesref.value[i].name);
-                // console.log("File",formData.get('string'))
-            }
-
-            sendPicture(formData);
+          
         }
 
 

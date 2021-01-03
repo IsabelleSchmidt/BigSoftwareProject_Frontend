@@ -3,7 +3,7 @@ import Vue from 'vue'
 import { reactive } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
-import { computed } from 'vue'
+import { computed} from 'vue'
 import '@/service/Product'
 import '@/service/Picture'
 import '@/service/ProductResponse'
@@ -19,9 +19,11 @@ import '@/service/Validationerror'
 const state = reactive({
     list: Array<Product>(),
     img: String,
-    validationerrors : Array<Validationerror>()
+    validationerrors : Array<Validationerror>(),
+   
   })
 
+let articlenr: number;
 
 
   async function update(): Promise<void> {
@@ -55,6 +57,7 @@ const state = reactive({
   } 
     
   async function sendProduct(newProduct: Product){
+    articlenr = -1;
     console.log(" Sende Produkt mit Namen: "+newProduct.name+" an backend.")
     console.log("Sende: "+'Product '+JSON.stringify(newProduct))
     fetch(`http://localhost:9090/api/product/new`,{
@@ -76,10 +79,12 @@ const state = reactive({
       console.log("Response json: "+jsondata);
       //wenn alles richtig war, neues Produkt hinzufuegen
       if(jsondata.allErrors.length == 0){
-        state.list.push(newProduct);
+        state.list.push(jsondata.product);
         console.log("neues produkt!");
+        articlenr = jsondata.product.articlenr;
       }
       else{
+
         state.validationerrors = jsondata.allErrors;
         console.log("Fehlerliste: "+jsondata.allErrors);
       }
@@ -94,18 +99,26 @@ const state = reactive({
   }
 
   //Liste an Bildern
-  async function sendPicture(formData: FormData){
-    fetch(`http://localhost:9090/api/product/newpicture`,{
+  async function sendPicture(formData: FormData): Promise<boolean>{
+    console.log("Sende Bild an Backend");
+    let wassuccessful = false;
+    if(articlenr != -1){
+       fetch(`http://localhost:9090/api/product/${articlenr}/newpicture`,{
       method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data'},
+      headers: {access:'Access-Control-Allow-Origin' },
       body: formData
     }).then(function(response){
-      console.log(response)
-      //Dinge mit der Antwort tun?
-    }).catch((fehler) => {
+      return response.json();
+    }).then((jsondata: boolean)=>{
+      console.log("Erfolgreiche Bildübertragung? "+jsondata);
+      wassuccessful = jsondata;
+    })
+    .catch((fehler) => {
       console.log(fehler);
     });
     //Bilderliste abschicken
+    }
+   return wassuccessful;
   }
 
     export function useProduct() {
