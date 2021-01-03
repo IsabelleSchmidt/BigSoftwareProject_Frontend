@@ -1,8 +1,8 @@
 <template>
-    <div class="PictureUploadListItem">
-        <div>hgvhv{{file.fileName}}</div>
-        <img src="@/assets/trash.png" alt="trash" id="trash">
-    </div>
+    <tr class="PictureUploadListItem">
+        <td>hgvhv{{file.fileName}}</td>
+        <td><img src="@/assets/trash.png" alt="trash" id="trash"></td>
+    </tr>
 </template>
 
 <script lang="ts">

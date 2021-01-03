@@ -48,7 +48,7 @@
             <div class="row">
                 <div class="col1"><label for="picture">Bild und Name</label></div>
                 <div class="col2"><input ref="fileInput" class="file-input" type="file" name="picture" multiple accept="image/*" @change="onFileChange($event.target.files)"></div>
-                <div class="col2"><p v-for="file in filesref" :key="file.name">{{file.name}}</p></div>
+                <div class="col2"><p v-for="(file,i) in filesref" :key="file.name">{{file.name}} <img src="@/assets/trash.png" id="trash" alt="trash" @click="deleteFile(i)"></p></div>
             </div>
 
             <input type="submit" name="safeProduct" value="Produkt speichern">
@@ -179,13 +179,14 @@
                 lang = filesref.value.length;
             }  
             console.log("Bild",filesref.value);
-                
-          
         }
 
+        function deleteFile(index: number): void{
+            filesref.value.splice(index,1);
+            console.log(filesref.value);
+        }
 
-        
-        return {nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        return {deleteFile,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
@@ -244,20 +245,15 @@ input:focus{
 }
 input[type=text]{
   width: 30%;
- 
-
- 
 }
 input[type=number]{
-  width: 8%;
- 
-  
+  width: 8%; 
 }
-input[type=image]{
-    width: 20%;
-   
-    
-  
+input[type=file]{
+    width: 30%;
+    cursor: pointer;
+    border: none;
+    color: transparent;
 }
 input[type=submit]{
     margin: 5% 0% 0% 0%;
@@ -272,4 +268,10 @@ input[type=submit]{
         outline: none;
     } 
 } 
+#trash{
+    height: 13px;
+}
+p{
+    font-size: 12px;
+}
 </style>
