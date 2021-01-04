@@ -46,7 +46,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, onMounted, ref, watch, reactive} from 'vue';
+import { defineComponent, computed, onMounted, ref} from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 
 import '@/service/Product'
@@ -64,40 +64,41 @@ export default defineComponent({
         const router = useRouter();
 
 
-        // const route = useRoute();
-        // const ro = ref(route.query.room);
-        // const pr = ref(route.query.producttype);
+        const route = useRoute();
+        const ro = ref(route.query.room);
+        const pr = ref(route.query.productType);
         // const n = ref(route.query.name);
-        // const q = {room: ro, producttype: pr, name: n};
+        // const q = {room: ro, productType: pr, name: n};
         // const filter = reactive(q);
 
         //Callback
         function openproductlist(): void { 
-            // context.emit("open-all");
-            router.go(-1);
+            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: "none" }});
+            context.emit("open-all");
+            // router.go(-1);
         }
 
 
         onMounted(async () => {
 
-            router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
+            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: props.tst.name }});
             // router.afterEach((to, from, failure) => {
             //     console.log("--------" + to.query.name);
             // })
 
             // q.room.value = route.query.room;
             // console.log(q.room.value);
-            // q.producttype.value = route.query.productType;
-            // console.log(q.producttype.value);
+            // q.productType.value = route.query.productType;
+            // console.log(q.productType.value);
             // q.name.value = route.query.name;
             // console.log(q.name.value);
 
-            // console.log(filter.room + " " + filter.producttype + " " + filter.name);
+            // console.log(filter.room + " " + filter.productType + " " + filter.name);
 
             //when back button in browser is pressed
             window.onpopstate = function(event: any) {
-                context.emit("open-all");
-                // openproductlist();
+                // context.emit("open-all");
+                openproductlist();
                 // router.go(-1);
             };
         });

@@ -3,12 +3,12 @@
         <!--BSP:  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
         <router-link :to="{ path: 'register', query: { plan: 'private' }}">Register</router-link>
         -->
-        <router-link :to="{ path: '/product', query: { room: 'Bad', producttype: 'all', name: 'none' }}"><Room class="listOrder" name="Bad" link="bathroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', producttype: 'all', name: 'none' }}"><Room class="listOrder" name="Schlafzimmer" link="sleepingroom.png"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Kueche', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Küche" link="cookingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Wohnzimmer" link="livingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Esszimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Esszimmer" link="eatingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Arbeitszimmer" link="workingroom.jpg"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Bad', productType: 'all', name: 'none' }}"><Room class="listOrder" name="Bad" link="bathroom.jpg"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', productType: 'all', name: 'none' }}"><Room class="listOrder" name="Schlafzimmer" link="sleepingroom.png"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Kueche', productType: 'all', name: 'none'  }}"><Room class="listOrder" name="Küche" link="cookingroom.jpg"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', productType: 'all', name: 'none'  }}"><Room class="listOrder" name="Wohnzimmer" link="livingroom.jpg"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Esszimmer', productType: 'all', name: 'none'  }}"><Room class="listOrder" name="Esszimmer" link="eatingroom.jpg"/></router-link>
+        <router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', productType: 'all', name: 'none'  }}"><Room class="listOrder" name="Arbeitszimmer" link="workingroom.jpg"/></router-link>
 
 
         <!--

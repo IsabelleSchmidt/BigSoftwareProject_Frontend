@@ -2,25 +2,25 @@
     <div class="sidebar">
         <h4 >Produkte</h4>
         <ul>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Pflanze', name: 'none'  }}">Pflanzen</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Tisch', name: 'none'  }}">Tische</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Stuhl', name: 'none'  }}">Stühle</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Bett', name: 'none'  }}">Betten</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Dekoration', name: 'none'  }}">Deko</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Sofa/Couch', name: 'none'  }}">Sofa/Couch</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', producttype: 'Schrank/Kommode', name: 'none'  }}">Schränke/Kommoden</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Pflanze', name: 'none'  }}">Pflanzen</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Tisch', name: 'none'  }}">Tische</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Stuhl', name: 'none'  }}">Stühle</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Bett', name: 'none'  }}">Betten</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Dekoration', name: 'none'  }}">Deko</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Sofa/Couch', name: 'none'  }}">Sofa/Couch</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'all', productType: 'Schrank/Kommode', name: 'none'  }}">Schränke/Kommoden</router-link></li>
         </ul>
 
         <br>
 
         <h4>Räume</h4>
         <ul>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Bad', producttype: 'all', name: 'none'  }}">Bad</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Schlafzimmer', producttype: 'all', name: 'none'  }}">Schlafzimmer</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Kueche', producttype: 'all', name: 'none'  }}">Küche</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Wohnzimmer', producttype: 'all', name: 'none'  }}">Wohnzimmer</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Esszimmer', producttype: 'all', name: 'none'  }}">Esszimmer</router-link></li>
-            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Arbeitszimmer', producttype: 'all', name: 'none'  }}">Arbeitszimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Bad', productType: 'all', name: 'none'  }}">Bad</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Schlafzimmer', productType: 'all', name: 'none'  }}">Schlafzimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Kueche', productType: 'all', name: 'none'  }}">Küche</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Wohnzimmer', productType: 'all', name: 'none'  }}">Wohnzimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Esszimmer', productType: 'all', name: 'none'  }}">Esszimmer</router-link></li>
+            <li ><router-link id="link" :to="{ path: '/product', query: { room: 'Arbeitszimmer', productType: 'all', name: 'none'  }}">Arbeitszimmer</router-link></li>
         </ul>
     </div>
 </template>

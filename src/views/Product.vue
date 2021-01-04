@@ -9,8 +9,8 @@
 <script lang="ts">
 import CompProduct from "../components/CompProduct.vue"
 import CompSingle from "../components/CompSingle.vue"
-import { defineComponent, ref, watch, computed, reactive, onMounted } from "vue"
-import { useRouter, useRoute } from 'vue-router'
+import { defineComponent, ref, onMounted } from "vue"
+import { useRouter } from 'vue-router'
 import '../service/Product'
 
 export default defineComponent({
@@ -22,8 +22,6 @@ export default defineComponent({
     setup() {
         const router = useRouter();
 
-        //test
-        const route = useRoute();
         const component = "CompProduct";
         const compref = ref(component);
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
@@ -32,16 +30,12 @@ export default defineComponent({
         const prodref = ref(prod);
         const COMPONENTS = ["CompProduct", "CompSingle"];
 
-        //test
-        const ro = ref(route.query.room);
-        const pr = ref(route.query.producttype);
-        const n = ref(route.query.name);
-        const q = {room: ro, producttype: pr, name: n};
-        const filter = reactive(q);
+
+
 
         onMounted(async () => {
 
-            router.afterEach((to, from, failure) => {
+            router.afterEach((to) => {
                 if (to.query.name === "none" && to.query.room === "all") {
                     compref.value = COMPONENTS[0];
                 }
