@@ -42,7 +42,6 @@ export default defineComponent({
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            console.log("ONMOUNTED COMPPPRODUCT");
             q.room.value = route.query.room;
             q.producttype.value = route.query.producttype;
             q.name.value = "none";
@@ -68,11 +67,14 @@ export default defineComponent({
 
         function openProduct(p: Product): void {
             //send to component above (Product)
-            console.log(p);
+            // console.log(p);
             context.emit("open-prod", p);
         }
 
-        return{ productlist, openProduct}; //, errormessage 
+        return{ 
+            productlist,
+            openProduct,
+        }; 
     } 
 });
  </script>

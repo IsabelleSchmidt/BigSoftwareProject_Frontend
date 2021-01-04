@@ -1,7 +1,7 @@
 <template>
     <div class="compSingle">
         <div class="top">
-            <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a>
+            <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a> 
         </div>
         <div class="top2">
         <div class="left"> 
@@ -46,13 +46,13 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, onMounted} from 'vue';
-import { useRouter } from 'vue-router'
+import { defineComponent, computed, onMounted, ref, watch, reactive} from 'vue';
+import { useRouter, useRoute } from 'vue-router'
 
 import '@/service/Product'
 
 export default defineComponent({
-    name: "CompProducts",
+    name: "CompSingle",
     components:{
     }, props: {
         tst: {
@@ -63,14 +63,36 @@ export default defineComponent({
 
         const router = useRouter();
 
+
+        // const route = useRoute();
+        // const ro = ref(route.query.room);
+        // const pr = ref(route.query.producttype);
+        // const n = ref(route.query.name);
+        // const q = {room: ro, producttype: pr, name: n};
+        // const filter = reactive(q);
+
         //Callback
         function openproductlist(): void { 
             // context.emit("open-all");
             router.go(-1);
         }
 
+
         onMounted(async () => {
+
             router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
+            // router.afterEach((to, from, failure) => {
+            //     console.log("--------" + to.query.name);
+            // })
+
+            // q.room.value = route.query.room;
+            // console.log(q.room.value);
+            // q.producttype.value = route.query.productType;
+            // console.log(q.producttype.value);
+            // q.name.value = route.query.name;
+            // console.log(q.name.value);
+
+            // console.log(filter.room + " " + filter.producttype + " " + filter.name);
 
             //when back button in browser is pressed
             window.onpopstate = function(event: any) {
@@ -84,7 +106,7 @@ export default defineComponent({
             "red",
             "#FFBF00",
             "green",
-        ];        
+        ];   
 
         return {
             openproductlist,
