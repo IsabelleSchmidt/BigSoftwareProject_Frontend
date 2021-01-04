@@ -9,14 +9,12 @@
                 <li id="prName">{{product.name}}</li>
                 <li id="prPrice">{{product.price}} €</li> 
                 <li id="prNr">
-                    <span>Pnr:</span>
-                    <span>{{product.artikelnr}} </span>
+                    <span>Pnr: {{product.articlenr}} </span>
                 </li>
                 <li id="inTotal"> 
-                    <span>Gesamtpreis:</span>
-                    <span> 25,99€</span>
+                    <span>Gesamtpreis: {{p}} €</span>
                 </li> 
-                <input :value="amount" @change="amChange($event.target.value)" type="number" id="amount">
+                <input :value="amount" @change="amChange($event.target.value)" min="1" max="20" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -30,7 +28,7 @@
 </template>
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent, onMounted, ref} from 'vue'
+import { defineComponent, onMounted, ref, computed} from 'vue'
 
 export default defineComponent({
     name: "CartListObject",
@@ -44,6 +42,13 @@ export default defineComponent({
      
     setup(props, context) {
         const amount = ref(1);
+        const Pprice = ref(props.product.price);
+        const umrechnungsfaktor = Math.pow(10,2);
+
+
+        const p = computed(() => {
+            return Pprice.value;
+        }); 
         
          onMounted(async () => {
 
@@ -57,7 +62,9 @@ export default defineComponent({
                         break;
                     } 
                 } 
-             }  
+                Pprice.value = Math.round((amount.value * props.product.price)*umrechnungsfaktor)/umrechnungsfaktor; 
+                console.log("Gesamt: " + Pprice.value);
+             }
                    
         });
         function amChange(am: number): void{
@@ -73,18 +80,20 @@ export default defineComponent({
                         break; 
                     } 
                 }
+
+                Pprice.value=Math.round((amount.value * props.product.price)*umrechnungsfaktor)/umrechnungsfaktor; 
                 localStorage.setItem('amount', JSON.stringify(list));
-            }                
 
-
-
-
+            }    
+            context.emit("amount-change", am);
         } 
+
        function trash(): void {
            context.emit("delete-product", props.product);
        } 
        return {
            amount,
+           p,
            amChange,
            trash
        };
