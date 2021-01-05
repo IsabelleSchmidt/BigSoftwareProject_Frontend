@@ -3,7 +3,7 @@
         <h1>Bestellübersicht</h1>
 
         <form>
-            <div>
+            <div class="adress">
                 <h2>Versandadresse</h2>
                 <div class="row">
                     <label for="firstName" class="col5">Vorname</label>
@@ -32,7 +32,7 @@
                     <input id="city" type="text" class="col6" required>
                 </div>
             </div>
-            <br>
+           
             <h2>Zahlungsart</h2>
             <div class="payment">
 
@@ -54,20 +54,20 @@
                             <option>9</option>
                             <option>10</option>
                             <option>11</option>
+                            <option>12</option>
                         </select>
                         <select id="expires">
-                            <option>Januar</option>
-                            <option>Februar</option>
-                            <option>März</option>
-                            <option>April</option>
-                            <option>Mai</option>
-                            <option>Juni</option>
-                            <option>Juli</option>
-                            <option>August</option>
-                            <option>September</option>
-                            <option>Oktober</option>
-                            <option>November</option>
-                            <option>Dezember</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                            <option>2029</option>
+                            <option>2030</option>
+                            <option>2031</option>
                         </select>
                     </div>
                 </div>
@@ -118,23 +118,19 @@
 <script lang="ts">
 import Vue from 'vue'
 export default{
-    name: 'OrderForm',
-    /*setup(){
-        const months =["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", 
-            "August", "September", "Oktober", "November", "Dezember"];
-        const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ,18, 
-            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
- 
-    } */
+    name: 'OrderForm'
 } 
 </script>
 
 <style scoped lang="scss">
     .orderForm{
-        margin: 1em 0em 2em 1em;
+        margin: 1em 2em 2em 2em;
     } 
+    .adress{
+        margin-bottom: 6em;
+    }
     .payment{
-        margin: 1em 0em 0em 2em;
+        margin: 1em 0em 2em 2em;
     } 
     .creditC, .bankC{
         margin-left: 5em;
