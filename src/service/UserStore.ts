@@ -5,22 +5,31 @@ import '../service/Response'
 
 const state = reactive({
     errormessage: "",
+    check: false,
     jwttokens: Array<JwtToken>(),
-    errormessages: Array<MessageResponse>()
+    errormessages: Array<MessageResponse>(),
+    isfetching: false
 })
+
 
 
 async function sendLogin(loginRequest: LoginRequest){
     console.log("Es wird eingeloggt.")
-    fetch(`http://localhost:9090/api/auth/login`,{
+    state.isfetching = true;
+    fetch(`http://localhost:9090/api/user/login`,{
         method: 'POST',
         headers: {"Content-Type":'application/json'},
         body: JSON.stringify(loginRequest),
       }).then((response) => {
             if(!response.ok){
-                console.log("HIER: " + response.status);
+                state.check = false;
+                console.log("false", state.check);
+                state.isfetching = false;
                 throw new Error(state.errormessage);
             }
+            state.check = true;
+            console.log("true", state.check);
+            state.isfetching = false;
             return response.json();
       }).then((jsondata: JwtToken) => {
           state.jwttokens.push(jsondata);
@@ -42,6 +51,10 @@ async function sendUser(signUpRequest: SignUpRequest) {
         }
         console.log("REGISTRIERUNG GUT");
         return response.json();
+    }).then((jsondata: Array<MessageResponse>) =>{
+        
+        state.errormessages = jsondata;
+        console.log(" TEST 0: Userstore",state.errormessages.length);
 
     }).catch((exception) => {
         console.log(exception)
@@ -54,6 +67,8 @@ async function sendUser(signUpRequest: SignUpRequest) {
 export function postLoginUser(){
     return{
         errormessage: computed(() => state.errormessage),
+        check: computed(() => state.check),
+        isfetching: computed(()=> state.isfetching),
         sendLogin
     }
 }

@@ -13,7 +13,9 @@
             </div>
             <div class="row">    
             <input type="submit" name="loginUser" value="Login">
-            </div>
+            <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
+            <!-- button machen lloginuser aufrufen ..use.router -->
+                        </div>
             <div class="row">    
                 <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
             </div>
@@ -24,7 +26,9 @@
 <script lang="ts">
 
     import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent, computed} from 'vue'
+    import{ref, defineComponent, computed, reactive} from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
+
 
     export default defineComponent({
         name:"Login",
@@ -33,13 +37,21 @@
             const email = ref("");
             const password = ref("");
             const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
-            const {sendLogin, errormessage} = postLoginUser();
-            
+            const {sendLogin, errormessage, check, isfetching} = postLoginUser();
+            const router = useRouter();
+            const c = reactive(check);
 
             const COLORS = [
                 "red",
                 "#ccc"
             ]
+
+            const link = computed(()=> {
+                const l = c.value ? "/login" : "/orderform"; 
+                router.push(l);
+                console.log("change");
+                return l;
+            })
 
             async function loginUser(): Promise<void>{
                 console.log("Emaaail", email.value);
@@ -48,6 +60,16 @@
                 console.log('UuuuseR:', loginRequest);
                 
                 sendLogin(loginRequest);
+                
+
+                // // while(isfetching){
+                // //     console.log("--");
+                // // }
+                //     const test = check ? "/login" : "/orderform";
+                //     console.log("test", test);
+                //     router.push(test);
+                //     console.log("Check ausgabe",check.value);
+
             } 
 
             return {
