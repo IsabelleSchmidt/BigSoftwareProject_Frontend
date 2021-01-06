@@ -62,7 +62,7 @@
 //auf antwort warten
 //Bild (erstmal eins nach dem anderen) nach antwort(wir brauchen die neue produkt id) an POST api/product/{articleNr}/newpicture senden und picturename: String
 //mitgeben: speicherort und dateiname zB. /chairs/chair9.jpg
-  import {postProduct,postPictures} from '../service/ProductStore'
+  import {postProduct,postPictures,articlenr} from '../service/ProductStore'
   import '../service/Picture'
   import {ref,defineComponent} from 'vue'
   import Swal from "sweetalert2"
@@ -111,57 +111,64 @@
             product.description = description.value;
             console.log('ProduuuukT:',product);
 
-            await sendProduct(product); 
-            // Validation Messages
-            if(validationerrors.value.length > 0){
-                for(const error of validationerrors.value){
-                    if(error.field == "price"){
-                        priceerror.value = error.message;
-                    }
-                    if(error.field == "roomType"){
-                        roomerror.value = error.message;
-                    }
-                    if(error.field == "productType"){
-                        producterror.value = error.message;
-                    }
-                    if(error.field == "name"){
-                        nameerror.value = error.message;
-                    }
-                    if(error.field == "information"){
-                        infoerror.value = error.message;
-                    }
-                    if(error.field == "description"){
-                        descriptionerror.value = error.message;
-                    }
-                
-                }
-            }else{
-                
-                //muss eigentlich in send prod (wird erst bei submit abgeschickt)
-             for(let i = 0; i < filesref.value.length; i++){
-                const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
-                console.log(filename);
-                formData.append(filename,filesref.value[i],filesref.value[i].name);
-                // console.log("File",formData.get('string'))
-             }
 
-                if(sendPicture(formData)){
-                      //Pop UP
-                Swal.fire({
-                title: 'neues Produkt angelegt!',
-                text: 'weiteres Produkt anlegen...',
-                icon: 'success',
-                confirmButtonText: 'weiter',
-                confirmButtonColor: '#3BA07C',
-                }).then((result)=>{
-                    if(result.isConfirmed){
-                        // router.push("/newProducts")
-                        location.reload();
+
+            sendProduct(product)
+            .then(() =>{
+
+                // Validation Messages
+                if(validationerrors.value.length > 0){
+                    for(const error of validationerrors.value){
+                        if(error.field == "price"){
+                            priceerror.value = error.message;
+                        }
+                        if(error.field == "roomType"){
+                            roomerror.value = error.message;
+                        }
+                        if(error.field == "productType"){
+                            producterror.value = error.message;
+                        }
+                        if(error.field == "name"){
+                            nameerror.value = error.message;
+                        }
+                        if(error.field == "information"){
+                            infoerror.value = error.message;
+                        }
+                        if(error.field == "description"){
+                            descriptionerror.value = error.message;
+                        }
+                    
                     }
-                })
+                }else{
+                    console.log("ohne errors")
+                    //muss eigentlich in send prod (wird erst bei submit abgeschickt)
+                for(let i = 0; i < filesref.value.length; i++){
+                    // const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
+                    // console.log(filename);
+                    formData.append("picture",filesref.value[i],filesref.value[i].name);
+                    console.log("File",formData.get('picture'))
                 }
-              
-            }
+
+                    console.log("articlnr im newProd",articlenr);
+
+                    if(sendPicture(formData,articlenr)){
+                        // Pop UP
+                    Swal.fire({
+                    title: 'neues Produkt angelegt!',
+                    text: 'weiteres Produkt anlegen...',
+                    icon: 'success',
+                    confirmButtonText: 'weiter',
+                    confirmButtonColor: '#3BA07C',
+                    // }).then((result)=>{
+                    //     if(result.isConfirmed){
+                    //         // router.push("/newProducts")
+                    //         location.reload();
+                    //     }
+                    })
+                    }
+                
+                }
+            });       
         }
 
         function onFileChange(files: File[]): void{

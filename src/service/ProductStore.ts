@@ -23,7 +23,7 @@ const state = reactive({
    
   })
 
-let articlenr: number;
+export let articlenr: number;
 
 
   async function update(): Promise<void> {
@@ -56,11 +56,11 @@ let articlenr: number;
 
   } 
     
-  async function sendProduct(newProduct: Product){
+  async function sendProduct(newProduct: Product): Promise<void>{
     articlenr = -1;
     console.log(" Sende Produkt mit Namen: "+newProduct.name+" an backend.")
     console.log("Sende: "+'Product '+JSON.stringify(newProduct))
-    fetch(`http://localhost:9090/api/product/new`,{
+    await fetch(`http://localhost:9090/api/product/new`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(newProduct)
@@ -74,14 +74,14 @@ let articlenr: number;
       }
       return response.json();
     }).then((jsondata: ProductResponse)=>{
-      
     
-      console.log("Response json: "+jsondata);
+      console.log("Response json: "+ JSON.stringify(jsondata));
       //wenn alles richtig war, neues Produkt hinzufuegen
       if(jsondata.allErrors.length == 0){
         state.list.push(jsondata.product);
         console.log("neues produkt!");
         articlenr = jsondata.product.articlenr;
+        console.log("articlenr",jsondata.product.articlenr);
       }
       else{
 
@@ -99,7 +99,7 @@ let articlenr: number;
   }
 
   //Liste an Bildern
-  async function sendPicture(formData: FormData): Promise<boolean>{
+  async function sendPicture(formData: FormData, articlenr: number): Promise<boolean>{
     console.log("Sende Bild an Backend");
     let wassuccessful = false;
     if(articlenr != -1){
@@ -110,7 +110,7 @@ let articlenr: number;
     }).then(function(response){
       return response.json();
     }).then((jsondata: boolean)=>{
-      console.log("Erfolgreiche Bildübertragung? "+jsondata);
+      console.log("Erfolgreiche Bildübertragung? "+JSON.stringify(jsondata));
       wassuccessful = jsondata;
     })
     .catch((fehler) => {
@@ -134,7 +134,7 @@ let articlenr: number;
     export function postProduct(){
       return {
         sendProduct,
-        validationerrors : computed(() => state.validationerrors)
+        validationerrors : computed(() => state.validationerrors),
       }
     }
 
@@ -144,3 +144,7 @@ let articlenr: number;
         sendPicture
       }
     }
+    
+
+
+    
