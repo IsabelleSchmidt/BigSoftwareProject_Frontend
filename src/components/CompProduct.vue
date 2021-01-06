@@ -17,7 +17,7 @@
 import Sidebar from "../components/Sidebar.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted, ref, watch, reactive } from 'vue';
+import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
 
@@ -28,14 +28,14 @@ export default defineComponent({
         Sidebar
     }, props: {
         product: Object,
-        tst: String
     },
     setup(props, context){
 
         const route = useRoute();
         const ro = ref(route.query.room);
-        const pr= ref(route.query.producttype);
-        const q = {room: ro, producttype: pr};
+        const pr = ref(route.query.productType);
+        const n = ref(route.query.name);
+        const q = {room: ro, productType: pr, name: n};
         const filter = reactive(q);
 
         const {list, update}  = useProduct(); //, errormessage
@@ -43,32 +43,38 @@ export default defineComponent({
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
             q.room.value = route.query.room;
-            q.producttype.value = route.query.producttype;
+            q.productType.value = route.query.productType;
+            q.name.value = "none";
             await update();
         });
 
         const productlist = computed(() => {
             q.room.value = route.query.room;
-            q.producttype.value = route.query.producttype;
+            q.productType.value = route.query.productType;
+            q.name.value = route.query.name;
             
-            if (filter.room === "alle" && filter.producttype === "alle") {
+            if (filter.room === "all" && filter.productType === "all") {
                 return list.value;
-            } else if (filter.room !== "alle" && filter.producttype === "alle") {
+            } else if (filter.room !== "all" && filter.productType === "all") {
                 return list.value.filter(p => p.roomType === filter.room?.toString());
-            } else if (filter.room === "alle" && filter.producttype !== "alle") {
-                return list.value.filter(p => p.productType === filter.producttype?.toString());
+            } else if (filter.room === "all" && filter.productType !== "all") {
+                return list.value.filter(p => p.productType === filter.productType?.toString());
             } else {
-                return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
+                return list.value.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
             
         });
 
         function openProduct(p: Product): void {
-            console.log(p);
+            //send to component above (Product)
+            // console.log(p);
             context.emit("open-prod", p);
         }
 
-        return{ productlist, openProduct}; //, errormessage 
+        return{ 
+            productlist,
+            openProduct,
+        }; 
     } 
 });
  </script>
