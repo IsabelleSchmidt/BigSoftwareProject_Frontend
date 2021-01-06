@@ -41,7 +41,7 @@ async function sendLogin(loginRequest: LoginRequest){
 
 async function sendUser(signUpRequest: SignUpRequest) {
     console.log("Sende: " + 'User ' +JSON.stringify(signUpRequest));
-    fetch(`http://localhost:9090/api/auth/register`,{
+    fetch(`http://localhost:9090/api/user/register`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(signUpRequest)
@@ -52,10 +52,8 @@ async function sendUser(signUpRequest: SignUpRequest) {
         console.log("REGISTRIERUNG GUT");
         return response.json();
     }).then((jsondata: Array<MessageResponse>) =>{
-        
         state.errormessages = jsondata;
-        console.log(" TEST 0: Userstore",state.errormessages.length);
-
+        console.log("ERROROROROROROROROROROR : " + state.errormessages.length);
     }).catch((exception) => {
         console.log(exception)
     });
@@ -74,6 +72,7 @@ export function postLoginUser(){
 }
 
 export function postUser() {
+    console.log("ERROR LÄNGE: " + state.errormessage.length);
     return{
         errormessages: computed(() => state.errormessages),
         sendUser
