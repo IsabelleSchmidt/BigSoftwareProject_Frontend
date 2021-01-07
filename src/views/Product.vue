@@ -10,6 +10,7 @@
 import CompProduct from "../components/CompProduct.vue"
 import CompSingle from "../components/CompSingle.vue"
 import { defineComponent, ref } from "vue"
+import { useRouter } from 'vue-router'
 import '../service/Product'
 
 export default defineComponent({
@@ -19,6 +20,7 @@ export default defineComponent({
         CompSingle
     },
     setup() {
+        const router = useRouter();
         const component = "CompProduct";
         const compref = ref(component);
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
@@ -27,7 +29,6 @@ export default defineComponent({
         const prodref = ref(prod);
 
         function toggle(): void {
-
             if (compref.value === "CompProduct") {
                 compref.value = "CompSingle";
             } else {

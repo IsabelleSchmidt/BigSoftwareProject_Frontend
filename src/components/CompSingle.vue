@@ -46,7 +46,8 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed} from 'vue';
+import { defineComponent, computed, onMounted} from 'vue';
+import { useRouter } from 'vue-router'
 
 import '@/service/Product'
 
@@ -59,15 +60,30 @@ export default defineComponent({
             default: () => ({}),
         }
     }, setup(props, context) {
+
+        const router = useRouter();
+
+        //Callback
+        function openproductlist(): void { 
+            context.emit("open-all");
+        }
+
+        onMounted(async () => {
+            console.log(props.tst.roomType);
+            router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
+
+            //when back button in browser is pressed
+            window.onpopstate = function(event: any) {
+                openproductlist();
+                // router.go(-1);
+            };
+        });
+
         const COLORS = [
             "red",
             "#FFBF00",
             "green",
-        ];
-
-        function openproductlist(): void {
-            context.emit("open-all");
-        }
+        ];        
 
         return {
             openproductlist,
