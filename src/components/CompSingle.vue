@@ -113,61 +113,6 @@ export default defineComponent({
             }),
         };
     },
-    
-  /*  methods:{
-        addProduct(): void{
-            let productList;
-            let amountList;
-            const amount = {name: "", menge: 0};
-            let yes = false; 
-            
-            const st = localStorage.getItem('cartItems'); 
-            const am = localStorage.getItem('amount');
-
-           this.alert = true;
-            setTimeout(()=>{
-                this.alert=false
-
-            },3000)
-
-            if(!st){
-                productList = []; 
-                amountList = []; 
-                 
-                amount.name = this.tst.name; 
-                amount.menge = 1; 
-
-                amountList.push(amount);
-                productList.push(this.tst);
-                localStorage.setItem('cartItems', JSON.stringify(productList));
-                localStorage.setItem('amount', JSON.stringify(amountList));
-        
-            } else{
-                //überpruefe ob schon gibt
-                productList = JSON.parse(st);
-                if(am){
-                    amountList = JSON.parse(am);
-                }
-                for(let i = 0; i< amountList.length; i++){
-                    if(amountList[i].name == this.tst.name){
-                        amountList[i].menge++; 
-                        yes = true; 
-                        break; 
-                    } 
-                } 
-                if(!yes){
-                    amount.name = this.tst.name; 
-                    amount.menge = 1; 
-                    amountList.push(amount);
-                    productList.push(this.tst);
-
-                }  
-                localStorage.setItem('amount', JSON.stringify(amountList));
-                localStorage.setItem('cartItems', JSON.stringify(productList));    
-                //alert("Hinzugefügt");    
-            } 
-        } 
-    } */
 });  
  </script>
 
