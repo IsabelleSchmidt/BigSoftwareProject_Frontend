@@ -6,15 +6,6 @@
             <div class="adress">
                 <h2>Versandadresse</h2>
                 <div class="row">
-                    <label for="firstName" class="col5">Vorname</label>
-                    <label for="lastName" class="col5">Nachname</label>
-                </div>
-                <div>
-                    <input id="firstName" type="text" class="col4" required>
-                    <input id="lastName" type="text" class="col4" required>
-                </div>
-              
-                <div class="row">
                     <label for="street" class="col7">Straße</label>
                     <label for="num" class="col1">Hausnummer</label>
                 </div>
