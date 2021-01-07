@@ -2,19 +2,19 @@
 <div id="line">
     <div class ="productobject">
         <div class="picture">
-                <img v-bind:src="product.allPictures[0].path" alt="Picture" id="pic">
+                <img v-bind:src="product[0].allPictures[0].path" alt="Picture" id="pic">
         </div>
         <div class="information">
             <ul>
-                <li id="prName">{{product.name}}</li>
-                <li id="prPrice">{{product.price}} €</li> 
+                <li id="prName">{{product[0].name}}</li>
+                <li id="prPrice">{{product[0].price}} €</li> 
                 <li id="prNr">
-                    <span>Pnr: {{product.articlenr}} </span>
+                    <span>Pnr: {{product[0].articlenr}} </span>
                 </li>
                 <li id="inTotal"> 
-                    <span>Gesamtpreis: {{p}} €</span>
+                    <span>Gesamtpreis: {{Math.round((product[0].price*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
                 </li> 
-                <input :value="amount" @change="amChange($event.target.value)" min="1" max="20" type="number" id="amount">
+                <input :value="product[1]" @change="amChange($event.target.value)" min="1" max="20" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -28,74 +28,37 @@
 </template>
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent, onMounted, ref, computed} from 'vue'
+import { defineComponent} from 'vue'
+import {useCartStore} from '@/service/CartStore'
 
 export default defineComponent({
     name: "CartListObject",
     props: {
-        product:{
-            type: Object,
-            default: ()=> ({}),
-        }
-        
+        product: Object,           
     }, 
      
     setup(props, context) {
-        const amount = ref(1);
-        const Pprice = ref(props.product.price);
-        const umrechnungsfaktor = Math.pow(10,2);
 
+        const {addProduct, changeAmount, deleteProduct} = useCartStore();
 
-        const p = computed(() => {
-            return Pprice.value;
-        }); 
-        
-         onMounted(async () => {
-
-             const aList = localStorage.getItem('amount');
-             if(aList){
-                const list = JSON.parse(aList);  
-
-                for(let i = 0; i< aList.length; i++){
-                    if(list[i].name == props.product.name ){
-                        amount.value =  list[i].menge ; 
-                        break;
-                    } 
-                } 
-                Pprice.value = Math.round((amount.value * props.product.price)*umrechnungsfaktor)/umrechnungsfaktor; 
-                console.log("Gesamt: " + Pprice.value);
-             }
-                   
-        });
         function amChange(am: number): void{
-
-            const aList = localStorage.getItem('amount');
-             if(aList){
-                const list = JSON.parse(aList); 
-
-                for(let i = 0; i< aList.length; i++){
-                    if(list[i].name == props.product.name ){
-                        amount.value = am; 
-                        list[i].menge = amount.value;
-                        break; 
-                    } 
+            if(props.product){
+                if(am <= 20 && am >=1){
+                    changeAmount(props.product[0], am);
+                }else{
+                    console.log("elseFALL")
                 }
+            }
 
-                Pprice.value=Math.round((amount.value * props.product.price)*umrechnungsfaktor)/umrechnungsfaktor; 
-                localStorage.setItem('amount', JSON.stringify(list));
-
-            }    
-            context.emit("amount-change", am);
-        } 
-
-       function trash(): void {
-           context.emit("delete-product", props.product);
-       } 
+        }
+        function trash(): void{
+           if(props.product)
+            deleteProduct(props.product[0]);
+        }
+     
        return {
-           amount,
-           p,
            amChange,
-           trash
+           trash,
        };
     },
 });

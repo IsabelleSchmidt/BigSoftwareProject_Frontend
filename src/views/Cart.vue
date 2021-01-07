@@ -13,6 +13,8 @@
 </template>
 <script>
 import CartList from "@/components/CartList.vue"
+import '@/service/Product'
+
 export default {
     components:{
         CartList

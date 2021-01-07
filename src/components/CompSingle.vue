@@ -16,12 +16,14 @@
                 <li><p class="description">{{tst.description}}</p></li>
                 <li><p class="price">{{tst.price}} €</p></li>
                 <li class="buttons">
-                    <button class="buttoncart" @click="addProduct()">In den Warenkorb</button>
+                    <button class="buttoncart" @click="add()">In den Warenkorb</button>
                     <button class="buttonfav">
                         <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
                     </button>
                 </li>
-                <li class="alert"><v-alert type="success" v-if="alert" >Artikel wurde zum Warenkorb hinzugefügt
+                <li class="success"><v-alert type="success" v-if="success" >Artikel wurde zum Warenkorb hinzugefügt
+                </v-alert></li>
+                <li class="alert"><v-alert type="success" v-if="alert" >Artikel ist nicht mehr verfügbar
                 </v-alert></li>
                 <li class="available">
                     <img class="icontruck" src="../assets/truckicon.png"  alt="Picture"/>
@@ -48,35 +50,54 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref} from 'vue';
+import { defineComponent, computed, ref, PropType} from 'vue';
 
 import '@/service/Product'
+import {useCartStore} from '@/service/CartStore' 
+
+
 
 export default defineComponent({
     name: "CompProducts",
     components:{
     }, props: {
         tst: {
-            type: Object,
-            default: () => ({}),
+             type: Object as PropType<Product>, required: true
         }
     }, setup(props, context) {
+
+        const {list, addProduct, deleteProduct} = useCartStore(); 
+        const alert = ref(false); 
+        const success = ref(false); 
+
         const FARBEN = [
             "red",
             "yellow",
             "green",
         ];
 
-         
-        const alert = ref(false); 
-
-        console.log("TETS--- " + props.tst.name);
-
         function openproductlist(): void {
             context.emit("open-all");
         }
+
+        function add(): void{
+            if(props.tst.available <=0){
+                alert.value = true;
+                setTimeout(()=>{
+                    alert.value=false
+                 },3000)
+            }else{
+                success.value = true;
+                setTimeout(()=>{
+                    success.value=false
+                 },3000)
+                addProduct(props.tst);
+            }
+        }
         return {
             alert,
+            success,
+            add,
             openproductlist,
             farbe: computed(() => {
                 if (props.tst.available <= 0) {
@@ -92,7 +113,8 @@ export default defineComponent({
             }),
         };
     },
-    methods:{
+    
+  /*  methods:{
         addProduct(): void{
             let productList;
             let amountList;
@@ -145,7 +167,7 @@ export default defineComponent({
                 //alert("Hinzugefügt");    
             } 
         } 
-    } 
+    } */
 });  
  </script>
 
@@ -259,6 +281,10 @@ ul {
     font-size: 1.5em;
 }
 .alert {
+    color: red;
+    margin-bottom: 3%;
+}
+.success {
     color:#3BA07C;
     margin-bottom: 3%;
 }

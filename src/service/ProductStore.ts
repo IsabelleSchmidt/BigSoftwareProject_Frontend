@@ -38,6 +38,7 @@ const state = reactive({
         // console.log(jsondata);
         for(let i = 0; i < jsondata.length; i++){
           productlist.push(jsondata[i]);
+          console.log("artnr:111: " + jsondata[i].articlenr);
         }
         state.list = productlist;
   
