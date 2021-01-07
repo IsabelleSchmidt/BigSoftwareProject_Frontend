@@ -1,68 +1,80 @@
 
 import { computed, reactive } from 'vue'
-import '../service/User'
+import '../service/Requests'
+import '../service/Response'
 
 const state = reactive({
-    errormessage: ""
+    errormessage: "",
+    check: false,
+    jwttokens: Array<JwtToken>(),
+    errormessages: Array<MessageResponse>(),
+    isfetching: false
 })
 
-async function sendLogin(loginUser: User){
-    console.log("Sende User mit Namen: " + loginUser.email + "und Passwort: " + loginUser.password + "an backend.");
-    console.log("Sende: " + 'User ' +JSON.stringify(loginUser));
+
+
+async function sendLogin(loginRequest: LoginRequest){
+    console.log("Es wird eingeloggt.")
+    state.isfetching = true;
     fetch(`http://localhost:9090/api/user/login`,{
-      method: 'POST',
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(loginUser)
-    }).then((response) =>{
-        if(!response.ok){
-            console.log("response not okay");
-            throw new Error(state.errormessage);
-        }
-        console.log("response okay");
-        return response.json();
-    }).then((jsondata: UserMessage) => {
-        state.errormessage += jsondata.type;
-    }).catch((exception) => {
-        state.errormessage = exception;
-        console.log("catch Error: " + state.errormessage);
-    });
+        method: 'POST',
+        headers: {"Content-Type":'application/json'},
+        body: JSON.stringify(loginRequest),
+      }).then((response) => {
+            if(!response.ok){
+                state.check = false;
+                console.log("false", state.check);
+                state.isfetching = false;
+                throw new Error(state.errormessage);
+            }
+            state.check = true;
+            console.log("true", state.check);
+            state.isfetching = false;
+            return response.json();
+      }).then((jsondata: JwtToken) => {
+          state.jwttokens.push(jsondata);
+          console.log(state.jwttokens);   
+      }).catch((error) => {
+          state.errormessage = "Email-Adresse oder Passwort falsch."
+      })
 }
 
-async function sendUser(newUser: User) {
-    console.log("Sende: " + 'User ' +JSON.stringify(newUser));
-    fetch(`http://localhost:9090/api/user/new`,{
+async function sendUser(signUpRequest: SignUpRequest) {
+    console.log("Sende: " + 'User ' +JSON.stringify(signUpRequest));
+    fetch(`http://localhost:9090/api/user/register`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(newUser)
+      body: JSON.stringify(signUpRequest)
     }).then((response) =>{
         if(!response.ok){
-            console.log("response not okay");
             throw new Error(state.errormessage);
         }
-        console.log("response okay");
+        console.log("REGISTRIERUNG GUT");
         return response.json();
-
-    }).then((jsondata: Array<UserMessage>) => {
-        for (let i = 0; i < jsondata.length; i++) {
-            state.errormessage+=jsondata[i].type + ": " + jsondata[i].message + "; ";  
-          }
-          console.log("ERROOOOOOOOOOOOOOR: " + state.errormessage);
+    }).then((jsondata: Array<MessageResponse>) =>{
+        state.errormessages = jsondata;
+        console.log("ERROROROROROROROROROROR : " + state.errormessages.length);
     }).catch((exception) => {
-        state.errormessage = exception;
-        console.log("catch Error: " + state.errormessage);
+        console.log(exception)
     });
+
+    //Ziel -> response in Array<ResponseMessage> umwandeln -> Array von errors in errormessages speichern
+    
 }
 
 export function postLoginUser(){
     return{
         errormessage: computed(() => state.errormessage),
+        check: computed(() => state.check),
+        isfetching: computed(()=> state.isfetching),
         sendLogin
     }
 }
 
 export function postUser() {
+    console.log("ERROR LÄNGE: " + state.errormessage.length);
     return{
-        errormessage: computed(() => state.errormessage),
+        errormessages: computed(() => state.errormessages),
         sendUser
     };
 }

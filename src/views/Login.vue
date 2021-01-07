@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <h1 align="center">Login</h1>
-        <p id="error" align="center">{{message}}</p>
+        <p id="error" align="center">{{errormessage}}</p>
         <form @submit.prevent="loginUser()">
             <div class="row">
                 <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
@@ -13,7 +13,9 @@
             </div>
             <div class="row">    
             <input type="submit" name="loginUser" value="Login">
-            </div>
+            <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
+            <!-- button machen lloginuser aufrufen ..use.router -->
+                        </div>
             <div class="row">    
                 <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
             </div>
@@ -24,7 +26,9 @@
 <script lang="ts">
 
     import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent, computed} from 'vue'
+    import{ref, defineComponent, computed, reactive} from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
+
 
     export default defineComponent({
         name:"Login",
@@ -32,58 +36,56 @@
         setup(){
             const email = ref("");
             const password = ref("");
-            const user: User = {'firstName':"",'lastName':"", 'email': email.value, 'birthdate': new Date(), 'password':password.value};
-            const {sendLogin, errormessage} = postLoginUser();
-            
+            const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
+            const {sendLogin, errormessage, check, isfetching} = postLoginUser();
+            const router = useRouter();
+            const c = reactive(check);
 
             const COLORS = [
                 "red",
                 "#ccc"
             ]
 
+            const link = computed(()=> {
+                const l = c.value ? "/login" : "/orderform"; 
+                router.push(l);
+                console.log("change");
+                return l;
+            })
+
             async function loginUser(): Promise<void>{
                 console.log("Emaaail", email.value);
-                user.email = email.value;
-                user.password = password.value;
-                console.log('UuuuseR:', user);
+                loginRequest.email = email.value;
+                loginRequest.password = password.value;
+                console.log('UuuuseR:', loginRequest);
                 
-                sendLogin(user);
-                console.log("Errormessage: " + errormessage.value.toString);
+                sendLogin(loginRequest);
+                
+
+                // // while(isfetching){
+                // //     console.log("--");
+                // // }
+                //     const test = check ? "/login" : "/orderform";
+                //     console.log("test", test);
+                //     router.push(test);
+                //     console.log("Check ausgabe",check.value);
+
             } 
 
             return {
                 loginUser, 
-                user, 
+                loginRequest,
                 email, 
                 password, 
                 errormessage,
-                message : computed(() => {
-                    if(errormessage.value === "WRONG"){
-                        return "Passwort ist ungültig.";
-                    }else if(errormessage.value ==="NOTVALID"){
-                        return "Email-Adresse ist ungültig.";
-                    }else{
-                        return "";
-                    }   
-                }),
                 colorEmail: computed(() => {
-                    if(errormessage.value === "NOTVALID"){
+                    if(errormessage.value != ""){
                         return COLORS[0];
                     }else{
                         return COLORS[1];
                     }
                     
-                }),
-                colorPW: computed(() => {
-                    if(errormessage.value === "WRONG"){
-                        return COLORS[0];
-                    }else{
-                        return COLORS[1];
-                    }
-                    
-                })
-
-                
+                })   
             };
         }
 
@@ -150,7 +152,7 @@ input[type=submit]{
 #pw {
     width: 30%;
     padding: 0.25em;
-    border: 1px solid v-bind('colorPW');
+    border: 1px solid v-bind('colorEmail');
     border-radius:3px;
     resize: vertical;
 }

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
 const history = createWebHistory();
+
 const router = createRouter({
   history,
    routes: 
@@ -46,12 +47,6 @@ const router = createRouter({
       component: () => import('../views/Product.vue'),
       props: true
     },
-    // {
-    //   path: '/product/:ProductName',
-    //   name: 'Product',
-    //   component: () => import('../views/Product.vue'),
-    //   props: true
-    // },
     {
       path: '/register',
       name: 'Register',
@@ -61,13 +56,13 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/orderform',
+      name: 'OrderForm',
+      component: () => import('../views/OrderForm.vue')
     }
   ]
 });
-
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes,
-// });
 
 export default router;
