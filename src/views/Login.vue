@@ -12,7 +12,7 @@
                 <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
             </div>
             <div class="row">    
-            <input type="submit" name="loginUser" value="Login">
+            <input @click="loginUser()" type="submit" name="loginUser" value="Login" >
             <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
             <!-- button machen lloginuser aufrufen ..use.router -->
                         </div>
@@ -29,7 +29,6 @@
     import{ref, defineComponent, computed, reactive} from 'vue'
     import { useRouter, useRoute } from 'vue-router'
 
-
     export default defineComponent({
         name:"Login",
 
@@ -39,31 +38,33 @@
             const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
             const {sendLogin, errormessage, check, isfetching} = postLoginUser();
             const router = useRouter();
-            const c = reactive(check);
+            const c = check;
 
             const COLORS = [
                 "red",
                 "#ccc"
             ]
-
-            const link = computed(()=> {
-                const l = c.value ? "/login" : "/orderform"; 
-                router.push(l);
-                console.log("change");
-                return l;
-            })
+                // const link = computed(()=> {
+                //     const l = c ? "/login" : "/orderform"; 
+                //     //router.push(l);
+                //     console.log("change");
+                //     return l;
+                // })
 
             async function loginUser(): Promise<void>{
-                console.log("Emaaail", email.value);
+
                 loginRequest.email = email.value;
                 loginRequest.password = password.value;
                 console.log('UuuuseR:', loginRequest);
-                
                 sendLogin(loginRequest);
-                
+
+                if(c.value == true ){
+                        console.log("Emaaail", email.value);
+                        router.push("/orderform");
+                    }             
 
                 // // while(isfetching){
-                // //     console.log("--");
+                    // //     console.log("--");
                 // // }
                 //     const test = check ? "/login" : "/orderform";
                 //     console.log("test", test);
