@@ -66,7 +66,7 @@ export default defineComponent({
         }
     }, setup(props, context) {
 
-        const {list, addProduct, deleteProduct} = useCartStore(); 
+        const {list, addProduct, deleteProduct, checkOneMoreAvailable} = useCartStore(); 
         const alert = ref(false); 
         const success = ref(false); 
 
@@ -81,12 +81,13 @@ export default defineComponent({
         }
 
         function add(): void{
-            if(props.tst.available <=0){
+            //not allowed
+            if(!checkOneMoreAvailable(props.tst) || props.tst.available <=0){
                 alert.value = true;
                 setTimeout(()=>{
                     alert.value=false
                  },3000)
-            }else{
+            } else{ //allowed
                 success.value = true;
                 setTimeout(()=>{
                     success.value=false

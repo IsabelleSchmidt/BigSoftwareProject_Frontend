@@ -14,7 +14,7 @@
                 <li id="inTotal"> 
                     <span>Gesamtpreis: {{Math.round((product[0].price*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
                 </li> 
-                <input :value="product[1]" @change="amChange($event.target.value)" min="1" max="20" type="number" id="amount">
+                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="product[0].available" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -28,29 +28,30 @@
 </template>
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent} from 'vue'
+import { defineComponent, ref} from 'vue'
 import {useCartStore} from '@/service/CartStore'
 
 export default defineComponent({
     name: "CartListObject",
     props: {
-        product: Object,           
+        product: Object,       
     }, 
      
     setup(props, context) {
 
-        const {addProduct, changeAmount, deleteProduct} = useCartStore();
+        const {addProduct, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
 
         function amChange(am: number): void{
+            // console.log("AMCHANGE " +  am);
             if(props.product){
-                if(am <= 20 && am >=1){
+                if(checkOneMoreAvailable(props.product[0])){
                     changeAmount(props.product[0], am);
                 }else{
-                    console.log("elseFALL")
+                    changeAmount(props.product[0], props.product[1]);
                 }
             }
-
         }
+
         function trash(): void{
            if(props.product)
             deleteProduct(props.product[0]);
