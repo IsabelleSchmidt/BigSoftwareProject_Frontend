@@ -19,18 +19,10 @@ export default {
         CartListObject
     },
     setup(){
-        const {list, addProduct, deleteProduct} = useCartStore();
-        const price = ref(0);
-        
-        function calcTotal(value: number, key: Product, map: any): void{
-            const zw = price.value;
-            price.value = zw + (key.price*value);
-        }
-        
+        const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+
         const inTotal = computed(()=> {
-            price.value = 0;
-            list.value.forEach(calcTotal);
-            return Math.round((price.value)*Math.pow(10,2))/Math.pow(10,2);
+            return totalPrice();
         });
         
         const productList = computed(() =>{

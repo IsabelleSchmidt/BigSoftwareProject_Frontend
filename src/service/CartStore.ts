@@ -1,5 +1,5 @@
 import Vue, { provide } from 'vue'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 import { computed } from 'vue'
 
@@ -8,6 +8,7 @@ import '@/service/Product'
 const state = reactive({
     list: new Map<Product, number>(),
   })
+const total = ref(0);
 
 function addProduct(product: Product): void{
     const number = 1; 
@@ -31,6 +32,15 @@ function changeAmount(product: Product, amount: number): void{
 function deleteProduct(product: Product): void{
     state.list.delete(product);
 }
+function calcTotal(value: number, key: Product, map: any): void{
+    const zw = total.value;
+    total.value = zw + (key.price*value);
+}
+function totalPrice(){
+    total.value = 0; 
+    state.list.forEach(calcTotal);
+    return Math.round((total.value)*Math.pow(10,2))/Math.pow(10,2);
+}
 
 
   export function useCartStore() {
@@ -40,6 +50,7 @@ function deleteProduct(product: Product): void{
       addProduct,
       changeAmount,
       deleteProduct,
+      totalPrice
     }
   }
 
