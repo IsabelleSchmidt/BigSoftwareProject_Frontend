@@ -4,13 +4,16 @@ import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 
 import '@/service/Product'
+import {useProduct} from '@/service/ProductStore'
 
 const state = reactive({
-    list: new Map<Product, number>(),
+    list: new Map<number, number>(),
   })
-const total = ref(0);
 
-function addProduct(product: Product): void{
+const total = ref(0);
+const {getProductByArtNr} =  useProduct();
+
+function addProduct(product_artnr: number): void{
 
     // console.log("Neu hinzugefügtes Produkt: " + JSON.stringify(product));
     // console.log("Liste vor hinzufügen: " + JSON.stringify(Array.from(state.list)));
@@ -25,21 +28,21 @@ function addProduct(product: Product): void{
     const amount = ref(1);
 
     for (let i = 0; i < state.list.size; i++) {
-        if (Array.from(state.list.keys())[i].articlenr == product.articlenr ) {
+        if (Array.from(state.list.keys())[i] == product_artnr ) {
             
-            const oldproduct = Array.from(state.list.keys())[i];
+            const oldproduct_artnr = Array.from(state.list.keys())[i];
             has = true;
             amount.value = Array.from(state.list.values())[i];
             // console.log("SCHONMAL DRIN, so oft: " + amount.value);
             amount.value++;
-            state.list.set(oldproduct as Product, amount.value);
+            state.list.set(oldproduct_artnr, amount.value);
             break;
         }
     }
 
     if (!has) {
         // console.log("NOCH NICHT DRIN");
-        state.list.set(product, amount.value);
+        state.list.set(product_artnr, amount.value);
     }
 
     // if(state.list.has(product)){
@@ -56,16 +59,23 @@ function addProduct(product: Product): void{
 
     // console.log("Liste nach hinzufügen: " + JSON.stringify(Array.from(state.list)));
 }
-function changeAmount(product: Product, amount: number): void{
-    state.list.set(product, amount as number);
+
+function changeAmount(product_artnr: number, amount: number): void{
+    state.list.set(product_artnr, amount as number);
 
 }
-function deleteProduct(product: Product): void{
-    state.list.delete(product);
+function deleteProduct(product_artnr: number): void{
+    state.list.delete(product_artnr);
 }
-function calcTotal(value: number, key: Product, map: any): void{
+function calcTotal(value: number, key: number, map: any): void{
     const zw = total.value;
-    total.value = zw + (key.price*value);
+
+    const prod = getProductByArtNr(key);
+
+    if(prod) {
+        total.value = zw + (prod.price*value);
+    }
+
 }
 function totalPrice(){
     total.value = 0; 
@@ -74,25 +84,33 @@ function totalPrice(){
 }
 
 
-function checkOneMoreAvailable(product: Product){
+function checkOneMoreAvailable(product_artnr: number){
 
-    let available = true;
+    let av = true;
 
     
         // console.log("SIZE " + state.list.size);
         for (let i = 0; i < state.list.size; i++) {
             // console.log("Artikelnummer in der liste " + Array.from(state.list.keys())[i].articlenr + " ProduktArtikelnummer" + product.articlenr);
-            if (Array.from(state.list.keys())[i].articlenr == product.articlenr ) {
+            if (Array.from(state.list.keys())[i] == product_artnr ) {
                 const amount = Array.from(state.list.values())[i];
+
+                const prod = getProductByArtNr(product_artnr);
+                const available = ref(0);
+
+                if (prod) {
+                    available.value = prod.available;
+                }
+
                 // console.log("Check amount: " + amount + " available: " + product.available);
-                if(amount >= product.available) {
-                    available = false;
+                if(amount >= available.value) {
+                    av = false;
                     break;
                 }
             }
         }
     
-    return available;
+    return av;
 }
 
 

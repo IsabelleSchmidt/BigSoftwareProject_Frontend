@@ -16,8 +16,6 @@ import '@/service/Product'
 
 const state = reactive({
     list: Array<Product>(),
-    img: String,
-    //errormessage: ""
   })
 
   async function update(): Promise<void> {
@@ -49,6 +47,14 @@ const state = reactive({
       });      
 
   } 
+
+  function getProductByArtNr(nr: number){
+    for (let i = 0; i < state.list.length; i++) {
+        if (state.list[i].articlenr == nr) {
+            return state.list[i];
+        }
+    }
+}
     
 
     export function useProduct() {
@@ -57,5 +63,6 @@ const state = reactive({
           list: computed(() => state.list),
           //errormessage: computed(() => state.errormessage),
           update,
+          getProductByArtNr
         }
       }

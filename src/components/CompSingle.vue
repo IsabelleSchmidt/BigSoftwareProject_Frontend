@@ -82,7 +82,7 @@ export default defineComponent({
 
         function add(): void{
             //not allowed
-            if(!checkOneMoreAvailable(props.tst) || props.tst.available <=0){
+            if(!checkOneMoreAvailable(props.tst.articlenr) || props.tst.available <=0){
                 alert.value = true;
                 setTimeout(()=>{
                     alert.value=false
@@ -92,7 +92,7 @@ export default defineComponent({
                 setTimeout(()=>{
                     success.value=false
                  },3000)
-                addProduct(props.tst);
+                addProduct(props.tst.articlenr);
             }
         }
         return {
