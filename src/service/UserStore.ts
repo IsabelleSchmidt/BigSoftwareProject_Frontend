@@ -13,7 +13,7 @@ const state = reactive({
 
 
 
-async function sendLogin(loginRequest: LoginRequest){
+function sendLogin(loginRequest: LoginRequest){
     console.log("Es wird eingeloggt.")
     state.isfetching = true;
     fetch(`http://localhost:9090/api/user/login`,{
@@ -30,6 +30,7 @@ async function sendLogin(loginRequest: LoginRequest){
             state.check = true;
             console.log("true", state.check);
             state.isfetching = false;
+            console.log('Jetzt bin ich im fetch');
             return response.json();
       }).then((jsondata: JwtToken) => {
           state.jwttokens.push(jsondata);
