@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
+
 const history = createWebHistory();
 
 const router = createRouter({
@@ -61,6 +62,11 @@ const router = createRouter({
       path: '/orderform',
       name: 'OrderForm',
       component: () => import('../views/OrderForm.vue')
+    },
+    {
+      path: '/orderConf',
+      name: 'OrderConf',
+      component: () => import('../components/OrderConfirmation.vue'),
     }
   ]
 });
