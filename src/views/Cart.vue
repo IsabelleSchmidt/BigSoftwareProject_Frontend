@@ -3,7 +3,7 @@
         <div id="carthead">
             <h3>Ihre Produkte</h3>
         </div>
-        <div id="cartlist">
+        <div>
             <CartList/>
         </div>
         <div id="order">
@@ -13,6 +13,8 @@
 </template>
 <script>
 import CartList from "@/components/CartList.vue"
+import '@/service/Product'
+
 export default {
     components:{
         CartList
@@ -21,37 +23,32 @@ export default {
 </script>
 <style lang="scss">
     .cart{
-        float: left;
+        display: flex;
+        flex-direction: column;
     } 
-
-   #cartlist{
-       max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;
-
-       
-   }  
+  
    #carthead{
-       max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;
+       display: flex;
+       justify-content: center;
    } 
   #carthead h3{
-       float: left;
        margin-top: 5%;
+       text-align: center;
+       
    
   } 
    #order{
-       max-width: 70%;
-       margin-left: auto;
-       margin-right: auto;
+       display:flex;
+       justify-content: center;
    } 
    #orderB{
        margin: 5%;
-       padding: 1.5% 10%; 
+       padding: 1.5% 10%;
+       //width: 100%; 
        background-color: black;
        border-style: none;
        color: #fff;
+       text-align: center;
       &:hover{
           background-color: #3BA07C;
           

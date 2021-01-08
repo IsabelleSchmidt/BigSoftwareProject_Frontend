@@ -16,11 +16,15 @@
                 <li><p class="description">{{tst.description}}</p></li>
                 <li><p class="price">{{tst.price}} €</p></li>
                 <li class="buttons">
-                    <button class="buttoncart">In den Warenkorb</button>
+                    <button class="buttoncart" @click="add()">In den Warenkorb</button>
                     <button class="buttonfav">
                         <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
                     </button>
                 </li>
+                <li class="success"><v-alert type="success" v-if="success" >Artikel wurde zum Warenkorb hinzugefügt
+                </v-alert></li>
+                <li class="alert"><v-alert type="success" v-if="alert" >Artikel ist nicht mehr verfügbar
+                </v-alert></li>
                 <li class="available">
                     <img class="icontruck" src="../assets/truckicon.png"  alt="Picture"/>
                     <p class="availabletxt">verfügbar</p>
@@ -46,19 +50,26 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed} from 'vue';
+import { defineComponent, computed, ref, PropType} from 'vue';
 
 import '@/service/Product'
+import {useCartStore} from '@/service/CartStore' 
+
+
 
 export default defineComponent({
     name: "CompProducts",
     components:{
     }, props: {
         tst: {
-            type: Object,
-            default: () => ({}),
+             type: Object as PropType<Product>, required: true
         }
     }, setup(props, context) {
+
+        const {list, addProduct, deleteProduct, checkOneMoreAvailable} = useCartStore(); 
+        const alert = ref(false); 
+        const success = ref(false); 
+
         const FARBEN = [
             "red",
             "#FFBF00",
@@ -69,7 +80,25 @@ export default defineComponent({
             context.emit("open-all");
         }
 
+        function add(): void{
+            //not allowed
+            if(!checkOneMoreAvailable(props.tst.articlenr) || props.tst.available <=0){
+                alert.value = true;
+                setTimeout(()=>{
+                    alert.value=false
+                 },3000)
+            } else{ //allowed
+                success.value = true;
+                setTimeout(()=>{
+                    success.value=false
+                 },3000)
+                addProduct(props.tst.articlenr);
+            }
+        }
         return {
+            alert,
+            success,
+            add,
             openproductlist,
             farbe: computed(() => {
                 if (props.tst.nrAvailableItems <= 0) {
@@ -81,8 +110,8 @@ export default defineComponent({
                 }
             }),
         };
-    }
-});
+    },
+});  
  </script>
 
 <style scoped>
@@ -194,7 +223,14 @@ ul {
     float: right;
     font-size: 1.5em;
 }
-
+.alert {
+    color: red;
+    margin-bottom: 3%;
+}
+.success {
+    color:#3BA07C;
+    margin-bottom: 3%;
+}
 .buttoncart {
     margin: 60px 0px 0px 0px;
     padding: 3% 9%;

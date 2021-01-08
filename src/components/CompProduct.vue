@@ -58,6 +58,10 @@ export default defineComponent({
             } else if (filter.room === "alle" && filter.producttype !== "alle") {
                 return list.value.filter(p => p.productType === filter.producttype?.toString());
             } else {
+                q.room.value = route.query.room;
+                q.producttype.value = route.query.producttype;
+                // console.log("nach beidem filtern");
+
                 return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
             }
             

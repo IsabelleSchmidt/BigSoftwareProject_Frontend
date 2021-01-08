@@ -2,37 +2,23 @@
 <div id="line">
     <div class ="productobject">
         <div class="picture">
-            <img src="../assets/monstera.jpg" id="pic">
+                <img v-bind:src="p_path.path" alt="Picture" id="pic">
         </div>
         <div class="information">
             <ul>
-                <li id="prName">Monstera deliciosia</li>
-                <li id="prPrice">25,99€</li> 
+                <li id="prName">{{p_name}}</li>
+                <li id="prPrice">{{p_price}} €</li> 
                 <li id="prNr">
-                    <span>Pnr:</span>
-                    <span> 234987</span>
+                    <span>Pnr: {{p_articlenr}} </span>
                 </li>
                 <li id="inTotal"> 
-                    <span>Gesamtpreis:</span>
-                    <span> 25,99€</span>
+                    <span>Gesamtpreis: {{Math.round((p_price*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
                 </li> 
-
-                <select name="amount" id="amount">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
+                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="p_available" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
-            <button id="delete">
+            <button id="delete" @click="trash()">
                 <img src="../assets/closeImg.png">
             </button>
         </div>
@@ -40,6 +26,71 @@
 </div>
     
 </template>
+<script lang="ts">
+import '@/service/Product'
+import { defineComponent, ref} from 'vue'
+import {useCartStore} from '@/service/CartStore'
+import {useProduct} from '@/service/ProductStore'
+
+export default defineComponent({
+    name: "CartListObject",
+    props: {
+        product: Object,
+    }, 
+     
+    setup(props, context) {
+
+        const {addProduct, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
+        const {getProductByArtNr} = useProduct();
+
+
+        const p_path = ref("");
+        const p_name = ref("");
+        const p_price = ref(0);
+        const p_articlenr = ref(0);
+        const p_available = ref(0);
+
+        let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
+                                'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
+                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
+
+        if (props.product) {
+            p = getProductByArtNr(props.product[0]) as Product;
+            p_path.value =  p.allPictures[0];
+            p_name.value = p.name;
+            p_price.value = p.price;
+            p_articlenr.value = p.articlenr;
+            p_available.value = p.available;
+        }
+
+        function amChange(am: number): void{
+            // console.log("AMCHANGE " +  am);
+            if(props.product){
+                if(checkOneMoreAvailable(props.product[0])){
+                    changeAmount(props.product[0], am);
+                }else{
+                    changeAmount(props.product[0], props.product[1]);
+                }
+            }
+        }
+
+        function trash(): void{
+           if(props.product)
+            deleteProduct(props.product[0]);
+        }
+     
+       return {
+           amChange,
+           trash,
+           p_path,
+           p_name,
+           p_price,
+           p_articlenr,
+           p_available
+       };
+    },
+});
+</script>
 <style lang = "scss">
 ul{
     list-style: none;
@@ -71,10 +122,11 @@ ul{
     font-size: 14px;
 } 
     .productobject{
-        margin-left: 5%;
-        margin-right: 5%;
-        margin-top: 2.5%;
-        margin-bottom: 2.5%;
+        margin-left: 2em;
+        margin-right: 2em;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        min-width: 35em;
         float: left;
     } 
     #delete{
@@ -87,12 +139,11 @@ ul{
    
     #pic{
         float: left;
-        width: 19%;
+        width: 5em;
     } 
-    #line{
+     #line{
         border-bottom: 2px solid #d4d4d4;
-        float: left;
-    } 
+    }  
 
     .information{
         float: left;
