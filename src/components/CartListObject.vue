@@ -2,19 +2,19 @@
 <div id="line">
     <div class ="productobject">
         <div class="picture">
-                <img v-bind:src="p_path.path" alt="Picture" id="pic">
+                <img v-bind:src="ppath.path" alt="Picture" id="pic">
         </div>
         <div class="information">
             <ul>
-                <li id="prName">{{p_name}}</li>
-                <li id="prPrice">{{p_price}} €</li> 
+                <li id="prName">{{pname}}</li>
+                <li id="prPrice">{{pprice}} €</li> 
                 <li id="prNr">
-                    <span>Pnr: {{p_articlenr}} </span>
+                    <span>Pnr: {{particlenr}} </span>
                 </li>
                 <li id="inTotal"> 
-                    <span>Gesamtpreis: {{Math.round((p_price*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
+                    <span>Gesamtpreis: {{Math.round((pprice*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
                 </li> 
-                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="p_available" type="number" id="amount">
+                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -44,11 +44,11 @@ export default defineComponent({
         const {getProductByArtNr} = useProduct();
 
 
-        const p_path = ref("");
-        const p_name = ref("");
-        const p_price = ref(0);
-        const p_articlenr = ref(0);
-        const p_available = ref(0);
+        const ppath = ref("");
+        const pname = ref("");
+        const pprice = ref(0);
+        const particlenr = ref(0);
+        const pavailable = ref(0);
 
         let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
@@ -56,11 +56,11 @@ export default defineComponent({
 
         if (props.product) {
             p = getProductByArtNr(props.product[0]) as Product;
-            p_path.value =  p.allPictures[0];
-            p_name.value = p.name;
-            p_price.value = p.price;
-            p_articlenr.value = p.articlenr;
-            p_available.value = p.available;
+            ppath.value =  p.allPictures[0];
+            pname.value = p.name;
+            pprice.value = p.price;
+            particlenr.value = p.articlenr;
+            pavailable.value = p.available;
         }
 
         function amChange(am: number): void{
@@ -82,11 +82,11 @@ export default defineComponent({
        return {
            amChange,
            trash,
-           p_path,
-           p_name,
-           p_price,
-           p_articlenr,
-           p_available
+           ppath,
+           pname,
+           pprice,
+           particlenr,
+           pavailable
        };
     },
 });
