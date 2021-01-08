@@ -101,9 +101,9 @@ export default defineComponent({
             add,
             openproductlist,
             farbe: computed(() => {
-                if (props.tst.nrAvailableItems <= 0) {
+                if (props.tst.available <= 0) {
                     return FARBEN[0];
-                } else if (props.tst.nrAvailableItems < 20) {
+                } else if (props.tst.available < 20) {
                     return FARBEN[1];
                 } else {
                     return FARBEN[2];
