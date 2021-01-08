@@ -76,7 +76,8 @@
 
         <h2>Lieferung 18.02.2021</h2>
         <div class="row">
-            <img src="../assets/monstera.jpg">
+            <OrderListObject :product="pr" v-for="pr  in productList" :key="pr.id" />
+            <!-- <img src="../assets/monstera.jpg">
             <ul class="product">
                 <li>Produktname</li>
                 <li>Produktnummer</li>
@@ -91,13 +92,13 @@
                 <li>Produktnummer</li>
                 <li>Beschreibung</li>
             </ul>
-            <p class="price">Preis</p>
+            <p class="price">Preis</p> -->
         </div>
         <div class="row">
             <hr>    
         </div>
         <div class="row">
-            <p class="price">Gesamt</p>
+            <p class="price">{{inTotal}}</p>
         </div>
         <br>
         <div class="row">
@@ -107,10 +108,29 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default{
-    name: 'OrderForm'
-} 
+import OrderListObject from "../components/OrderListObject.vue"
+import { defineComponent, computed } from 'vue'
+import {useCartStore} from '@/service/CartStore'
+
+export default defineComponent({
+    name: 'OrderForm',
+    components:{
+        OrderListObject
+    },
+    setup(){
+        const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+
+        const inTotal = computed(()=> {
+            return totalPrice();
+        });
+        
+        const productList = computed(() =>{
+            return Array.from(list.value.entries());
+        });
+
+        return{inTotal, productList};
+    }   
+})
 </script>
 
 <style scoped lang="scss">

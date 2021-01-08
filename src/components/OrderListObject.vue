@@ -7,20 +7,17 @@
         <div class="information">
             <ul>
                 <li id="prName">{{pname}}</li>
-                <li id="prPrice">{{pprice}} €</li> 
                 <li id="prNr">
                     <span>Pnr: {{particlenr}} </span>
                 </li>
+                <li id="prPrice">
+                    <span>{{product[1]}}  x   {{pprice}}€</span>
+                </li>
+                <!-- <li id="prPrice">{{pprice}} €</li>  -->
                 <li id="inTotal"> 
-                    <span>Gesamtpreis: {{Math.round((pprice*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
-                </li> 
-                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="amount">
+                    <span>{{Math.round((pprice*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
+                </li>
             </ul>
-        </div>
-        <div class="close">
-            <button id="delete" @click="trash()">
-                <img src="../assets/closeImg.png">
-            </button>
         </div>
     </div>
 </div>
@@ -40,15 +37,12 @@ export default defineComponent({
      
     setup(props, context) {
 
-        const {addProduct, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
         const {getProductByArtNr} = useProduct();
-
 
         const ppath = ref("");
         const pname = ref("");
         const pprice = ref(0);
         const particlenr = ref(0);
-        const pavailable = ref(0);
 
         let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
@@ -59,34 +53,13 @@ export default defineComponent({
             ppath.value =  p.allPictures[0];
             pname.value = p.name;
             pprice.value = p.price;
-            particlenr.value = p.articlenr;
-            pavailable.value = p.available;
-        }
-
-        function amChange(am: number): void{
-            // console.log("AMCHANGE " +  am);
-            if(props.product){
-                if(checkOneMoreAvailable(props.product[0])){
-                    changeAmount(props.product[0], am);
-                }else{
-                    changeAmount(props.product[0], props.product[1]);
-                }
-            }
-        }
-
-        function trash(): void{
-           if(props.product)
-            deleteProduct(props.product[0]);
         }
      
        return {
-           amChange,
-           trash,
            ppath,
            pname,
            pprice,
            particlenr,
-           pavailable
        };
     },
 });
@@ -107,52 +80,55 @@ ul{
 } 
 #prPrice{
     font-size: 16px;
-    padding-top: 0%;
+    padding: 0%;
 } 
 #prNr{
     font-size: 12px;
     padding-bottom: 0%;
 } 
 #inTotal{
-    font-size: 12px;
+    font-size: 16px;
+    padding-top: 0%;
+    padding-right: 0%;
+    margin: 0;
     float: right;
-    margin: 2.5em 7em 1em 0em;
-
 } 
 #amount{
     float: left;
     font-size: 14px;
 } 
-    .productobject{
-        margin-left: 2em;
-        margin-right: 2em;
-        margin-top: 1.5em;
-        margin-bottom: 1.5em;
-        min-width: 35em;
-        float: left;
+.productobject{
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    min-width: 35em;
+    width: 100%;
+    float: left;
+} 
+#delete{
+    border-style: none;
+    background: none;
+    &:focus{
+        outline: none;
     } 
-    #delete{
-        border-style: none;
-        background: none;
-        &:focus{
-            outline: none;
-        } 
-    } 
-   
-    #pic{
-        float: left;
-        width: 5em;
-    } 
-     #line{
-        border-bottom: 2px solid #d4d4d4;
-    }  
+} 
 
-    .information{
-        float: left;
-        margin-left: 5%;
-    } 
+#pic{
+    float: left;
+    width: 5em;
+} 
+    #line{
+    border-bottom: 2px solid #d4d4d4;
+}  
 
-    .close{
-        float: right;
-    } 
+.information{
+    float: left;
+    margin-left: 0;
+    width: 80%;
+} 
+
+.close{
+    float: right;
+} 
 </style>
