@@ -7,7 +7,7 @@
             <CartList/>
         </div>
         <div id="order">
-            <button id="orderB">Zur Kasse</button>
+            <router-link id="orderB" to="/login"> zur Kasse </router-link>
         </div>
     </div>
 </template>

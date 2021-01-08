@@ -1,5 +1,4 @@
 //import {Client} from '@stomp/stompjs'; //Message
-import Vue from 'vue'
 import { reactive } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 

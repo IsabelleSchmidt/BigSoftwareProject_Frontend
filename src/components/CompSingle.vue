@@ -50,11 +50,13 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref, PropType} from 'vue';
+
+import { defineComponent, computed, ref, PropType, onMounted} from 'vue';
+
 
 import '@/service/Product'
 import {useCartStore} from '@/service/CartStore' 
-
+import {useRouter} from 'vue-router'
 
 
 export default defineComponent({
@@ -70,15 +72,14 @@ export default defineComponent({
         const alert = ref(false); 
         const success = ref(false); 
 
-        const FARBEN = [
-            "red",
-            "#FFBF00",
-            "green",
-        ];
 
-        function openproductlist(): void {
+        const router = useRouter();
+
+        //Callback
+        function openproductlist(): void { 
             context.emit("open-all");
         }
+
 
         function add(): void{
             //not allowed
@@ -95,18 +96,37 @@ export default defineComponent({
                 addProduct(props.tst.articlenr);
             }
         }
+
+        onMounted(async () => {
+            console.log(props.tst.roomType);
+            router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
+
+            //when back button in browser is pressed
+            window.onpopstate = function(event: any) {
+                openproductlist();
+                // router.go(-1);
+            };
+        });
+
+        const COLORS = [
+            "red",
+            "#FFBF00",
+            "green",
+        ];        
+
+
         return {
             alert,
             success,
             add,
             openproductlist,
-            farbe: computed(() => {
+            color: computed(() => {
                 if (props.tst.available <= 0) {
-                    return FARBEN[0];
+                    return COLORS[0];
                 } else if (props.tst.available < 20) {
-                    return FARBEN[1];
+                    return COLORS[1];
                 } else {
-                    return FARBEN[2];
+                    return COLORS[2];
                 }
             }),
         };
@@ -121,7 +141,7 @@ export default defineComponent({
     font-size: 2.5em;
     margin: 6px 10px;
     width: 5%;
-    color: v-bind('farbe');
+    color: v-bind('color');
 }
 
 .pic {
