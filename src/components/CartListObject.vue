@@ -115,9 +115,7 @@ ul{
 } 
 #inTotal{
     font-size: 12px;
-    float: right;
-    margin: 2.5em 7em 1em 0em;
-
+    padding-top: 0%;
 } 
 #amount{
     float: left;
