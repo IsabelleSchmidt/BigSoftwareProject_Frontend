@@ -18,14 +18,22 @@ interface Adress{
     city: string;
 }
 
-interface UserOrderRequest{
-    adress: Adress;
+interface Bankcard{
     iban: string;
-    bankcardOwner: string;
+    owner: string;
     bank: string;
+}
+
+interface Creditcard{
     creditcardOwner: string;
     creditcardnumber: string;
     dateOfExpiry: Date;
+}
+
+interface UserOrderRequest{
+    adress: Adress;
+    bankCard: Bankcard;
+    creditCard: Creditcard;
     token: JwtToken;
 }
 
