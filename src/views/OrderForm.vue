@@ -130,15 +130,20 @@ export default defineComponent({
         const postCode = ref("");
         const city = ref("");
 
-        //UserOrderRequest
+        //Bankcard
         const iban = ref("");
         const bankcardOwner = ref("");
         const bank = ref("");
+
+        //Creditcard
         const creditcardOwner = ref("");
         const creditcardnumber = ref("");
         const dateOfExpiryMonth = ref(1);
         const dateOfExpiryYear = ref(2021);
         const dateOfExpiry = ref(new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1));
+
+        //UserOrderRequest
+        
         const token = jwttokens.value[0];
 
         // console.log("TOKEN: " + JSON.stringify(token));
@@ -154,7 +159,9 @@ export default defineComponent({
         async function sendOrder(): Promise<void>{
             // console.log("sendOrder");
             const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
-            const uor: UserOrderRequest = {'adress': adr, 'iban': iban.value, 'bankcardOwner': bankcardOwner.value, 'bank': bank.value, 'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry': dateOfExpiry.value, 'token': token};
+            const bc: Bankcard = {'iban': iban.value, 'owner': bankcardOwner.value, 'bank': bank.value};
+            const cc: Creditcard = {'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry':dateOfExpiry.value};
+            const uor: UserOrderRequest = {'adress': adr, 'bankCard': bc, 'creditCard':cc, 'token': token};
             
             await postOrder(uor);
         }
