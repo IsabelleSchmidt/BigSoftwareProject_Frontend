@@ -53,6 +53,7 @@ export default defineComponent({
             ppath.value =  p.allPictures[0];
             pname.value = p.name;
             pprice.value = p.price;
+            particlenr.value = p.articlenr;
         }
      
        return {

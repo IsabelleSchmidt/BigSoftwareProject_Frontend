@@ -138,13 +138,13 @@
                         //hier werden die fehler überprüft und die errormessages ausgegeben 
                         for(const error of errormessages.value){
                             if(error.field == "firstName"){
-                                console.log("Er geht in firstname");
+                                // console.log("Er geht in firstname");
                                 firstnameerror.value = error.message;
                             }
                             if(error.field == "lastName"){
                                 lastnameerror.value = error.message; 
                             }
-                            console.log("error.field: ", error.field);
+                            // console.log("error.field: ", error.field);
                             if(error.field == "email"){
                                 emailerror.value = error.message;
                             }

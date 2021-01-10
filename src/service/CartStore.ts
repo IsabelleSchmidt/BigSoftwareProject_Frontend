@@ -90,6 +90,8 @@ function checkOneMoreAvailable(productArtnr: number){
 }
 
 
+
+
   export function useCartStore() {
     return {
       // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
@@ -101,5 +103,7 @@ function checkOneMoreAvailable(productArtnr: number){
       checkOneMoreAvailable
     }
   }
+
+  
 
   

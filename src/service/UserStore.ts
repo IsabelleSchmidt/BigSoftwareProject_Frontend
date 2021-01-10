@@ -58,8 +58,6 @@ async function sendUser(signUpRequest: SignUpRequest) {
     }).catch((exception) => {
         console.log(exception)
     });
-
-    //Ziel -> response in Array<ResponseMessage> umwandeln -> Array von errors in errormessages speichern
     
 }
 
@@ -72,8 +70,14 @@ export function postLoginUser(){
     }
 }
 
+export function useUserStore(){
+    return {
+        jwttokens: computed(() => state.jwttokens)
+    }
+}
+
 export function postUser() {
-    console.log("ERROR LÄNGE: " + state.errormessage.length);
+    // console.log("ERROR LÄNGE: " + state.errormessage.length);
     return{
         errormessages: computed(() => state.errormessages),
         sendUser
