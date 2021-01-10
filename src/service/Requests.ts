@@ -28,3 +28,13 @@ interface UserOrderRequest{
     dateOfExpiry: Date;
     token: JwtToken;
 }
+
+interface ProductDTO{
+    articleNR: number;
+    amount: number;
+}
+interface OrderDT{
+    priceTotal: number;
+    allProductsOrdered: Array<ProductDTO>;
+    jwtToken: JwtToken;
+}

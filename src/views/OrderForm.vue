@@ -156,7 +156,15 @@ export default defineComponent({
             const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
             const uor: UserOrderRequest = {'adress': adr, 'iban': iban.value, 'bankcardOwner': bankcardOwner.value, 'bank': bank.value, 'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry': dateOfExpiry.value, 'token': token};
             
-            await postOrder(uor);
+            const orderList = [];
+            for (let i=0; i<productList.value.length; i++){
+                const p: ProductDTO = {'articleNR': productList.value[i][0], 'amount': productList.value[i][1]};
+                orderList.push(p);
+            }
+
+            const order: OrderDT = {'priceTotal': inTotal.value, 'allProductsOrdered': orderList, 'jwtToken': token};
+
+            await postOrder(uor, order);
         }
 
         return{
