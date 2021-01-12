@@ -27,8 +27,9 @@
             <h2>Zahlungsart</h2>
             <div class="payment">
 
-                <div class="row"><input id="creditcard" type="radio">
-                <label for="creditcard">Kredit- oder Debitkarte</label></div>
+                <div class="row">
+                <p class="error">{{paymenterror}}</p>
+                <input id="creditcard" type="radio" value="creditcard" v-model="payment"><label for="creditcard">Kredit- oder Debitkarte</label></div>
                 <div class="creditC"> 
                     <div class="row"><label for="cardnumber" class="col3">Kartennummer</label><input v-model="creditcardnumber" type="number"></div>
                     <div class="row"><label for="cardholder" class="col3">Name des Karteninhabers</label><input v-model="creditcardOwner" type="text"></div>
@@ -63,8 +64,8 @@
                     </div>
                 </div>
 
-                <div class="row"><input id="bankcard" type="radio">
-                <label for="bankcard">Bankkarte</label></div>
+                <div class="row">
+                <input id="bankcard" type="radio" value="bankcard" v-model="payment"><label for="bankcard">Bankkarte</label></div>
                 <div class="bankC"> 
                     <div class="row"><label for="iban" class="col3">IBAN</label><input v-model="iban" id="iban" type="text"></div>
                     <div class="row"><label for="bank" class="col3">Bank</label><input v-model="bank" id="bank" type="text"></div>
@@ -77,22 +78,6 @@
         <h2>Lieferung 18.02.2021</h2>
         <div class="row">
             <OrderListObject :product="pr" v-for="pr  in productList" :key="pr.id" />
-            <!-- <img src="../assets/monstera.jpg">
-            <ul class="product">
-                <li>Produktname</li>
-                <li>Produktnummer</li>
-                <li>Beschreibung</li>
-            </ul>
-            <p class="price">Preis</p>
-        </div>
-        <div class="row">
-            <img src="../assets/monstera.jpg">
-            <ul class="product">
-                <li>Produktname</li>
-                <li>Produktnummer</li>
-                <li>Beschreibung</li>
-            </ul>
-            <p class="price">Preis</p> -->
         </div>
         <div class="row">
             <hr>    
@@ -124,11 +109,14 @@ export default defineComponent({
         const {postOrder} = usePostOrder();
         const {jwttokens} = useUserStore();
 
+        const payment = ref("");
+        const paymenterror = ref("");
+
         //Adress
-        const streetName = ref("");
-        const houseNumber = ref("");
-        const postCode = ref("");
-        const city = ref("");
+        const streetName = ref(""); //TODO
+        const houseNumber = ref(""); //TODO
+        const postCode = ref(""); //TODO
+        const city = ref(""); //TODO
 
         //Bankcard
         const iban = ref("");
@@ -157,21 +145,27 @@ export default defineComponent({
         });
 
         async function sendOrder(): Promise<void>{
-            // console.log("sendOrder");
-            const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
-            const bc: Bankcard = {'iban': iban.value, 'owner': bankcardOwner.value, 'bank': bank.value};
-            const cc: Creditcard = {'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry':dateOfExpiry.value};
-            const uor: UserOrderRequest = {'adress': adr, 'bankCard': bc, 'creditCard':cc, 'token': token};
-            
-            const orderList = [];
-            for (let i=0; i<productList.value.length; i++){
-                const p: ProductDTO = {'articleNR': productList.value[i][0], 'amount': productList.value[i][1]};
-                orderList.push(p);
+            console.log("sendOrder   " + payment.value);
+            if (payment.value !== "") {
+                paymenterror.value = "";
+                const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
+                const bc: Bankcard = {'iban': iban.value, 'owner': bankcardOwner.value, 'bank': bank.value};
+                const cc: Creditcard = {'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry':dateOfExpiry.value};
+                const uor: UserOrderRequest = {'adress': adr, 'bankCard': bc, 'creditCard':cc, 'token': token};
+                
+                const orderList = [];
+                for (let i=0; i<productList.value.length; i++){
+                    const p: ProductDTO = {'articleNR': productList.value[i][0], 'amount': productList.value[i][1]};
+                    orderList.push(p);
+                }
+
+                const order: OrderDT = {'priceTotal': inTotal.value, 'allProductsOrdered': orderList, 'jwtToken': token};
+
+                await postOrder(uor, order);
+            } else {
+                paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
             }
-
-            const order: OrderDT = {'priceTotal': inTotal.value, 'allProductsOrdered': orderList, 'jwtToken': token};
-
-            await postOrder(uor, order);
+            
         }
 
         return{
@@ -190,7 +184,9 @@ export default defineComponent({
             dateOfExpiryMonth,
             dateOfExpiryYear,
             dateOfExpiry,
-            token
+            token,
+            payment,
+            paymenterror
         };
     }   
 })
@@ -330,4 +326,7 @@ export default defineComponent({
         float: left;
         width: 70%;
     } 
+    .error{
+        color: red;
+    }
 </style>
