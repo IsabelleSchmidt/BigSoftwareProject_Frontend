@@ -7,19 +7,25 @@
             <CartList/>
         </div>
         <div id="order">
-            <router-link id="orderB" to="/login"> zur Kasse </router-link>
+            <router-link  id="orderB" :to="jwttokens.length > 0 ? '/orderform':'/login' "> zur Kasse </router-link>
         </div>
     </div>
 </template>
 <script>
 import CartList from "@/components/CartList.vue"
 import '@/service/Product'
+import { defineComponent} from "vue"
+import {useUserStore} from '../service/UserStore'
 
 export default {
     components:{
-        CartList
-    }
-}
+        CartList,
+    }, setup(){
+            const {jwttokens} = useUserStore();
+            return {jwttokens};
+        }
+    };
+
 </script>
 <style lang="scss">
     .cart{
