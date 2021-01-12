@@ -146,7 +146,7 @@ export default defineComponent({
         
         const token = jwttokens.value[0];
 
-        // console.log("TOKEN: " + JSON.stringify(token));
+        console.log("TOKEN: " + JSON.stringify(token));
 
         const inTotal = computed(()=> {
             return totalPrice();
@@ -190,6 +190,7 @@ export default defineComponent({
             dateOfExpiryMonth,
             dateOfExpiryYear,
             dateOfExpiry,
+            token
         };
     }   
 })
