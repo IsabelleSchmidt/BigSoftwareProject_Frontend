@@ -42,7 +42,6 @@ export default defineComponent({
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            console.log("ONMOUNTED COMPPPRODUCT");
             q.room.value = route.query.room;
             q.producttype.value = route.query.producttype;
             q.name.value = "none";
