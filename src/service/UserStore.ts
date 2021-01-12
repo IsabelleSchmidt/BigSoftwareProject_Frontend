@@ -42,22 +42,32 @@ function sendLogin(loginRequest: LoginRequest){
 
 async function sendUser(signUpRequest: SignUpRequest) {
     console.log("Sende: " + 'User ' +JSON.stringify(signUpRequest));
-    fetch(`http://localhost:9090/api/user/register`,{
+    await fetch(`http://localhost:9090/api/user/register`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(signUpRequest)
     }).then((response) =>{
         if(!response.ok){
             throw new Error(state.errormessage);
+            state.check = false;
         }
         console.log("REGISTRIERUNG GUT");
         return response.json();
     }).then((jsondata: Array<MessageResponse>) =>{
         state.errormessages = jsondata;
-        console.log("ERROROROROROROROROROROR : " + state.errormessages.length);
-    }).catch((exception) => {
-        console.log(exception)
+        if(state.errormessages.length == 0){
+            console.log(`Im Fetch. Errorm länge: ${state.errormessages.length}`);
+            state.check = true;
+            console.log(`Im Fetch. Check status wenn länge null: ${state.check}`);
+        }else{
+            state.check = false;
+        }
+        //state.check = false;
+    }).catch((error) => {
+        console.log(error)
     });
+
+    //Ziel -> response in Array<ResponseMessage> umwandeln -> Array von errors in errormessages speichern
     
 }
 
@@ -77,9 +87,10 @@ export function useUserStore(){
 }
 
 export function postUser() {
-    // console.log("ERROR LÄNGE: " + state.errormessage.length);
+    console.log("ERROR LÄNGE: " + state.errormessages.length);
     return{
         errormessages: computed(() => state.errormessages),
+        check: computed(() => state.check),
         sendUser
     };
 }
