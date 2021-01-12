@@ -51,26 +51,18 @@
                 </div>
             </div>
             <button id="registrierenB" onclick="check()"> </button>
-            <!--<component v-bind:is="compref" @open-reg="changeComp($event)" @open-ord="toggle()" :tst="compref" />-->
-             <router-link id="link" :to="{ path: '/orderform'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
+             <router-link id="link" :to="{ path: '/login'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
         </form>
     </div> 
 </template>
 
 <script lang="ts">
     
-    //import OrderForm from "OrderForm.vue"
-    //import Register from "Register.vue"
     import{ref, defineComponent} from 'vue'
     import {postUser} from '../service/UserStore';
 
     export default defineComponent({
         name: "register",
-        // components:{
-        //     OrderForm,
-        //     Register
-        // },
-    
         setup() {
             const firstname = ref("");
             const lastname = ref("");
@@ -96,20 +88,6 @@
             const component = "OrderForm";
             const compref = ref(component);
             const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
-
-            // function toggle(): void {
-            //     if(compref.value === "Register"){
-            //         compref.value = "Orderform"
-            //     }else{
-            //         compref.value = "Register"
-            //     }
-            // }
-
-            // function changeComp(s:SignUpRequest):void{
-            //     toggle();
-            //     console.log("Im change comp drin ",errormessages.value.length);
-            //     sendUser(s);
-            // }
 
             async function newUser(): Promise<void>{
                 //const user: User = {'firstName': firstname.value, 'lastName': lastname.value, 'email': email.value, 'birthdate': birthdate.value, 'gender': gender.value, 'password': password1.value};
