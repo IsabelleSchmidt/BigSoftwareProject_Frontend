@@ -12,36 +12,38 @@ const state = reactive({
 const total = ref(0);
 const {getProductByArtNr} =  useProduct();
 
-function addProduct(productArtnr: number): void{
-    
+
+function addProduct(productartnr: number): void{
+
     let has =  false;
     const amount = ref(1);
 
     for (let i = 0; i < state.list.size; i++) {
-        if (Array.from(state.list.keys())[i] == productArtnr ) {
+
+        if (Array.from(state.list.keys())[i] == productartnr ) {
             
-            const oldproductArtnr = Array.from(state.list.keys())[i];
+            const oldproductartnr = Array.from(state.list.keys())[i];
             has = true;
             amount.value = Array.from(state.list.values())[i];
-            // console.log("SCHONMAL DRIN, so oft: " + amount.value);
             amount.value++;
-            state.list.set(oldproductArtnr, amount.value);
+            state.list.set(oldproductartnr, amount.value);
             break;
         }
     }
 
     if (!has) {
-        // console.log("NOCH NICHT DRIN");
-        state.list.set(productArtnr, amount.value);
+        state.list.set(productartnr, amount.value);
     }
 }
-
-function changeAmount(productArtnr: number, amount: number): void{
-    state.list.set(productArtnr, amount as number);
-
+function getAmount(productartnr: number){
+    return state.list.get(productartnr);
 }
-function deleteProduct(productArtnr: number): void{
-    state.list.delete(productArtnr);
+function changeAmount(productartnr: number, amount: number): void{
+    state.list.set(productartnr, amount as number);
+}
+
+function deleteProduct(productartnr: number): void{
+    state.list.delete(productartnr);
 }
 function calcTotal(value: number, key: number, map: any): void{
     const zw = total.value;
@@ -60,25 +62,23 @@ function totalPrice(){
 }
 
 
-function checkOneMoreAvailable(productArtnr: number){
+function checkOneMoreAvailable(productartnr: number){
 
     let av = true;
 
     
-        // console.log("SIZE " + state.list.size);
         for (let i = 0; i < state.list.size; i++) {
-            // console.log("Artikelnummer in der liste " + Array.from(state.list.keys())[i].articlenr + " ProduktArtikelnummer" + product.articlenr);
-            if (Array.from(state.list.keys())[i] == productArtnr ) {
+
+            if (Array.from(state.list.keys())[i] == productartnr ) {
                 const amount = Array.from(state.list.values())[i];
 
-                const prod = getProductByArtNr(productArtnr);
+                const prod = getProductByArtNr(productartnr);
                 const available = ref(0);
 
                 if (prod) {
                     available.value = prod.available;
                 }
 
-                // console.log("Check amount: " + amount + " available: " + product.available);
                 if(amount >= available.value) {
                     av = false;
                     break;
@@ -97,6 +97,7 @@ function checkOneMoreAvailable(productArtnr: number){
       // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
       list: computed(() => state.list),
       addProduct,
+      getAmount,
       changeAmount,
       deleteProduct,
       totalPrice,

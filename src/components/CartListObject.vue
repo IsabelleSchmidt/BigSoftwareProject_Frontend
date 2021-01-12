@@ -12,9 +12,9 @@
                     <span>Pnr: {{particlenr}} </span>
                 </li>
                 <li id="inTotal"> 
-                    <span>Gesamtpreis: {{Math.round((pprice*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
+                    <span>Gesamtpreis: {{ptotal}} €</span>
                 </li> 
-                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="amount">
+                <input :value="pamount" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="amount">
             </ul>
         </div>
         <div class="close">
@@ -28,7 +28,7 @@
 </template>
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent, ref} from 'vue'
+import { defineComponent, computed} from 'vue'
 import {useCartStore} from '@/service/CartStore'
 import {useProduct} from '@/service/ProductStore'
 
@@ -40,36 +40,56 @@ export default defineComponent({
      
     setup(props, context) {
 
-        const {addProduct, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
+        const {addProduct, getAmount, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
         const {getProductByArtNr} = useProduct();
 
 
-        const ppath = ref("");
-        const pname = ref("");
-        const pprice = ref(0);
-        const particlenr = ref(0);
-        const pavailable = ref(0);
-
-        let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
-                                'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
-                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
-
-        if (props.product) {
-            p = getProductByArtNr(props.product[0]) as Product;
-            ppath.value =  p.allPictures[0];
-            pname.value = p.name;
-            pprice.value = p.price;
-            particlenr.value = p.articlenr;
-            pavailable.value = p.available;
-        }
-
+        const ppath = computed(()=>{
+            if(props.product)
+                return (getProductByArtNr(props.product[0]) as Product).allPictures[0]; 
+            });
+        const pname = computed(()=>{
+            if(props.product)
+                return (getProductByArtNr(props.product[0]) as Product).name; 
+            });
+        const pprice = computed(()=>{
+            if(props.product)
+                return (getProductByArtNr(props.product[0]) as Product).price; 
+            });
+        const particlenr = computed(()=>{
+            if(props.product)
+                return (getProductByArtNr(props.product[0]) as Product).articlenr; 
+            });
+         const pavailable = computed(()=>{
+            if(props.product)
+                return (getProductByArtNr(props.product[0]) as Product).available; 
+            });
+             const pamount = computed(()=>{
+            if(props.product)
+                return getAmount(props.product[0]);
+            });
+            const ptotal = computed(()=>{
+                if(props.product){
+                    const t = getAmount(props.product[0])
+                    if(t){
+                        return Math.round(((getProductByArtNr(props.product[0]) as Product).price*t)*Math.pow(10,2))/Math.pow(10,2)
+                    }
+                }
+            })
         function amChange(am: number): void{
-            // console.log("AMCHANGE " +  am);
+            
+                
             if(props.product){
-                if(checkOneMoreAvailable(props.product[0])){
-                    changeAmount(props.product[0], am);
-                }else{
-                    changeAmount(props.product[0], props.product[1]);
+                const a = getAmount(props.product[0]);
+                if(a){
+                    if(am < a){
+                        changeAmount(props.product[0], am);
+                    }
+                     else if(checkOneMoreAvailable(props.product[0])){
+                        changeAmount(props.product[0], am);
+                    }else{
+                        changeAmount(props.product[0], a);
+                    }
                 }
             }
         }
@@ -86,7 +106,9 @@ export default defineComponent({
            pname,
            pprice,
            particlenr,
-           pavailable
+           pavailable,
+           pamount,
+           ptotal
        };
     },
 });
