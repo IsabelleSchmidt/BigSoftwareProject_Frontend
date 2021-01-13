@@ -25,7 +25,7 @@ interface Bankcard{
 }
 
 interface Creditcard{
-    creditcardOwner: string;
+    cowner: string;
     creditcardnumber: string;
     dateOfExpiry: Date;
 }
@@ -33,7 +33,7 @@ interface Creditcard{
 interface UserOrderRequest{
     adress: Adress;
     bankCard: Bankcard;
-    creditCard: Creditcard;
+    creditcard: Creditcard;
     token: JwtToken;
 }
 

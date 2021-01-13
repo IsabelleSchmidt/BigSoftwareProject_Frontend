@@ -7,20 +7,31 @@
                 <h2>Versandadresse</h2>
                 <div class="row">
                     <label for="street" class="col7">Straße</label>
+                </div>
+                <div class="row">
+                    <div class="error">{{streetnameerror}}</div>
+                    <input id="street" v-model="streetName" type="text" class="col6" required>
+                </div>
+                <div class="row">
                     <label for="num" class="col1">Hausnummer</label>
                 </div>
                 <div class="row">
-                    <input id="street" v-model="streetName" type="text" class="col6" required>
+                    <div class="error">{{housenumbererror}}</div>
                     <input id="num" v-model="houseNumber" type="text" class="col1" required>
                 </div>
-              
-                <div class="row">
-                    <label for="zipCode" class="col3">PLZ</label>
-                    <label for="city" class="col7">Stadt</label>
+               <div class="row">
+                    <label for="num" class="col1">Postleitzahl</label>
                 </div>
-                <div>
-                    <input id="zipCode" v-model="postCode" type="number" class="col1" required>
-                    <input id="city" v-model="city" type="text" class="col6" required>
+                <div class="row">
+                    <div class="error">{{postcodeerror}}</div>
+                    <input id="num" v-model="postCode" type="text" class="col1" required>
+                </div>
+                <div class="row">
+                    <label for="street" class="col7">Stadt</label>
+                </div>
+                <div class="row">
+                    <div class="error">{{cityerror}}</div>
+                    <input id="street" v-model="city" type="text" class="col6" required>
                 </div>
             </div>
            
@@ -32,7 +43,9 @@
                 <input id="creditcard" type="radio" value="creditcard" v-model="payment"><label for="creditcard">Kredit- oder Debitkarte</label></div>
                 <div class="creditC"> 
                     <div class="row"><label for="cardnumber" class="col3">Kartennummer</label><input v-model="creditcardnumber" type="number"></div>
+                    <div class="error">{{creditcardnumbererror}}</div>
                     <div class="row"><label for="cardholder" class="col3">Name des Karteninhabers</label><input v-model="creditcardOwner" type="text"></div>
+                    <div class="error">{{creditcardownererror}}</div>
                     <div class="row"><label for="expires" class="col3">Ablaufdatum</label>
                         <select v-model="dateOfExpiryMonth">
                             <option value=1 >1</option>
@@ -61,6 +74,7 @@
                             <option value=2030 >2030</option>
                             <option value=2031 >2031</option>
                         </select>
+                        <div class="error">{{dateofexpiryerror}}</div>
                     </div>
                 </div>
 
@@ -68,8 +82,11 @@
                 <input id="bankcard" type="radio" value="bankcard" v-model="payment"><label for="bankcard">Bankkarte</label></div>
                 <div class="bankC"> 
                     <div class="row"><label for="iban" class="col3">IBAN</label><input v-model="iban" id="iban" type="text"></div>
+                        <div class="error">{{ibanerror}}</div>
                     <div class="row"><label for="bank" class="col3">Bank</label><input v-model="bank" id="bank" type="text"></div>
+                        <div class="error">{{bankerror}}</div>
                     <div class="row"><label for="cardholder" class="col3">Name des Karteninhabers</label><input v-model="bankcardOwner" type="text"></div>
+                        <div class="error">{{bankcardownererror}}</div>
                 </div>
                 
             </div>
@@ -106,7 +123,7 @@ export default defineComponent({
     },
     setup(){
         const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
-        const {postOrder} = usePostOrder();
+        const {postOrder, errormessages} = usePostOrder();
         const {jwttokens} = useUserStore();
 
         const payment = ref("");
@@ -130,6 +147,18 @@ export default defineComponent({
         const dateOfExpiryYear = ref(2021);
         const dateOfExpiry = ref(new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1));
 
+        //Errors
+        const streetnameerror = ref("");
+        const housenumbererror = ref("");
+        const postcodeerror = ref("");
+        const cityerror = ref("");
+        const ibanerror = ref("");
+        const bankcardownererror = ref("");
+        const bankerror = ref("");
+        const creditcardownererror = ref("");
+        const creditcardnumbererror = ref("");
+        const dateofexpiryerror = ref("");
+
         //UserOrderRequest
         
         const token = jwttokens.value[0];
@@ -150,8 +179,8 @@ export default defineComponent({
                 paymenterror.value = "";
                 const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
                 const bc: Bankcard = {'iban': iban.value, 'owner': bankcardOwner.value, 'bank': bank.value};
-                const cc: Creditcard = {'creditcardOwner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry':dateOfExpiry.value};
-                const uor: UserOrderRequest = {'adress': adr, 'bankCard': bc, 'creditCard':cc, 'token': token};
+                const cc: Creditcard = {'cowner': creditcardOwner.value, 'creditcardnumber': creditcardnumber.value, 'dateOfExpiry':dateOfExpiry.value};
+                const uor: UserOrderRequest = {'adress': adr, 'bankCard': bc, 'creditcard':cc, 'token': token};
                 
                 const orderList = [];
                 for (let i=0; i<productList.value.length; i++){
@@ -160,8 +189,86 @@ export default defineComponent({
                 }
 
                 const order: OrderDT = {'priceTotal': inTotal.value, 'allProductsOrdered': orderList, 'jwtToken': token};
+                console.log("USER: " + JSON.stringify(uor));
+
+                streetnameerror.value = "";
+                housenumbererror.value = "";
+                postcodeerror.value = "";
+                cityerror.value = "";
+                ibanerror.value = "";
+                bankcardownererror.value = "";
+                bankerror.value = "";
+                creditcardownererror.value = "";
+                creditcardnumbererror.value = "";
+                dateofexpiryerror.value = "";
 
                 await postOrder(uor, order);
+                
+                if(errormessages.value.length > 0){
+                for(const error of errormessages.value){
+                    if(error.field == "adress.streetName"){
+                        streetnameerror.value = error.message;
+                    }
+                    if(error.field == "adress.houseNumber"){
+                        housenumbererror.value = error.message;
+                    }
+                    if(error.field == "adress.postCode"){
+                        postcodeerror.value = error.message;
+                    }
+                    if(error.field == "adress.city"){
+                        cityerror.value = error.message;
+                    }
+                    if(error.field == "bankCard.iban"){
+                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                            ibanerror.value = "";
+                        }else{
+                            ibanerror.value = error.message;    
+                        }
+                                        
+                    }
+                    if(error.field == "bankCard.owner"){
+                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                            bankcardownererror.value = "";
+                        }else{
+                            bankcardownererror.value = error.message;
+                        }
+                        
+                    }
+                    if(error.field == "bankCard.bank"){
+                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                            bankerror.value = "";
+                        }else{
+                            bankerror.value = error.message;
+                        }
+                        
+                    }
+                    if(error.field == "creditcard.cowner"){
+                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                            creditcardOwner.value = "";
+                        }else{
+                            creditcardownererror.value = error.message;
+                        }
+                        
+                    }
+                    if(error.field =="creditcard.creditcardnumber"){
+                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                            creditcardnumbererror.value = "";
+                        }else{
+                            creditcardnumbererror.value = error.message;
+                        }
+    
+                        
+                    }
+                    if(error.field =="creditcard.dateOfExpiry"){
+                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                            creditcardOwner.value = "";
+                        }else{
+                            dateofexpiryerror.value = error.message;
+                        }
+                        
+                    }
+                }
+            }
             } else {
                 paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
             }
@@ -186,7 +293,18 @@ export default defineComponent({
             dateOfExpiry,
             token,
             payment,
-            paymenterror
+            paymenterror,
+            streetnameerror,
+            housenumbererror,
+            postcodeerror,
+            cityerror,
+            ibanerror,
+            bankcardownererror,
+            bankerror,
+            creditcardownererror,
+            creditcardnumbererror,
+            dateofexpiryerror
+
         };
     }   
 })
@@ -328,5 +446,7 @@ export default defineComponent({
     } 
     .error{
         color: red;
+        margin: 5px 0px 1px 0px;
+        font-size: 0.8em;
     }
 </style>
