@@ -1,69 +1,75 @@
 <template>
     <div class="register">
         <h1 align="center">Registrieren</h1>
-         <!--<p id="error" align="center">{{errormessages}}</p> -->
-       <!-- <p id="error" align="center">{{errormessages}}</p>-->
-        <form @submit.prevent="newUser()">
+        <form @submit.prevent="newUser()" >
             <div class="row">
-                <div class="col1"><label for="firstname" class="left"> Vorname </label></div>
-                <div class="col2"><input v-model="firstname" type="text" name="firstname" size="30" maxlenght="50" class="right">
-                   <div class="error"> {{firstnameerror}}</div>
+                <div class="col1"><label for="firstname" class="left"> Vorname&lowast; </label></div>
+                <div class="col2"><input v-model="firstname" type="text" name="firstname" size="30" maxlenght="50" class="right" required>
+                    <div class="error" > {{firstnameerror}} </div>
                 </div>
             </div>  
             <div class="row">
-                <div class="col1"><label for="lastname" class="left">Nachname</label></div>
-                <div class="col2"><input v-model="lastname" type="text" name="lastname" size="30" maxlenght="50" class="right">
-                    <div class="error"> {{lastnameerror}}</div>
+                <div class="col1"><label for="lastname" class="left">Nachname&lowast;</label></div>
+                <div class="col2"><input v-model="lastname" type="text" name="lastname" size="30" maxlenght="50" class="right" required>
+                   <div class="error" > {{lastnameerror}}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="col1"><label for="email" class="left">Email-Adresse</label></div>
-                <div class="col2"><input v-model="email" type="text" name="email" size="30" maxlenght="50" class="right">
-                   <div class="error"> {{emailerror}}</div>
+                <div class="col1"><label for="email" class="left">Email-Adresse&lowast;</label></div>
+                <div class="col2"><input v-model="email" type="text" name="email" size="30" maxlenght="50" class="right" required>
+                   <div class="error" > {{emailerror}}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="col1"><label for="birthdate" class="left">Geburtsdatum</label></div>
-                <div class="col2"><input v-model="birthdate" type="date" name="birthdate" size="30" maxlenght="50" class="right">
-                    <div class="error"> {{birthdateerror}}</div>
+                <div class="col1"><label for="birthdate" class="left">Geburtsdatum&lowast;</label></div>
+                <div class="col2"><input v-model="birthdate" type="date" name="birthdate" size="30" maxlenght="50" class="right" required>
+                   <div class="error"> {{birthdateerror}}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="col1"><label for="gender" class="left">Geschlecht</label></div>
+                <div class="col1"><label for="gender" class="left">Geschlecht&lowast;</label></div>
                 <div class="col2">
-                    <select v-model="gender" name="gender" class="right">
+                    <select v-model="gender" name="gender" class="right" required>
                         <option value="FEMALE">weiblich</option>
                         <option value="MALE">männlich</option>
-                        <option value="DIVERSE">diverse</option>
-                    </select></div>
+                        <option value="DIVERSE">divers</option>
+                    </select>
                     <div class="error"> {{gendererror}}</div>
-            </div>
-            <div class="row">
-                <div class="col1"><label for="password" class="left">Passwort</label></div>
-                <div class="col2"><input id="pw1" v-model="password1" type="password" name="password" size="30" maxlenght="50" class="right">
-                    <div class="error"> {{firstpassworderror}}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="col1"><label for="password" class="left">Passwort wiederholen</label></div>
-                <div class="col2"><input id="pw2" v-model="password2" type="password" name="password" size="30" maxlenght="50" class="right">
-                    <div class="error"> {{secondpassworderror}}</div> 
+                <div class="col1"><label for="password" class="left">Passwort&lowast;</label></div>
+                <div class="col2"><input id="pw1" v-model="password1" type="password" name="password" size="30" maxlenght="50" class="right" required>
+               <div class="correct"> &#10047; Das Passwort muss mindestens 8 Zeichen besitzen</div>
+               <div class="correct"> &#10047; Das Passwort muss mindestens ein Sonderzeichen besitzen</div>
+               <div class="correct"> &#10047; Das Passwort mus mindestens eine Zahl besitzen</div>
                 </div>
             </div>
-            <button id="registrierenB" onclick="check()"> </button>
-             <router-link id="link" :to="{ path: '/login'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
+            <div class="row">
+                <div class="col1"><label for="password" class="left">Passwort wiederholen&lowast;</label></div>
+                <div class="col2"><input id="pw2" v-model="password2" type="password" name="password" size="30" maxlenght="50" class="right" required>
+                   <div class="error"> {{password2error}}</div>
+                   <div class="error"> {{password1error}}</div>
+                </div>
+            </div>
+            <button name="newUser" value="Register" > Registrieren </button>
         </form>
     </div> 
 </template>
 
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ <script src="/src/vuelidate.min.js"></script>
+ <script src="/src/validators.min.js"></script> --> 
 <script lang="ts">
-    
-    import{ref, defineComponent} from 'vue'
     import {postUser} from '../service/UserStore';
+    import{ref, defineComponent, reactive, watch} from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
 
     export default defineComponent({
         name: "register",
+    
         setup() {
+            
             const firstname = ref("");
             const lastname = ref("");
             const email = ref("");
@@ -72,57 +78,46 @@
             const password1 = ref("");
             const password2 = ref("");
             const message = ref("");
-            const {sendUser, errormessages} = postUser();
-            console.log("Test 1:" ,errormessages.value.length);
+
+            const {sendUser, errormessages, check} = postUser();
+            const router = useRouter();
 
             const firstnameerror = ref("");
             const lastnameerror = ref("");
             const emailerror = ref("");
             const birthdateerror = ref("");
             const gendererror = ref("");
-            const firstpassworderror = ref("");
-            const secondpassworderror = ref("");
-
-            const check = ref(true);
-
-            const component = "OrderForm";
-            const compref = ref(component);
-            const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
+            const password1error = ref("");
+            const password2error = ref("");
 
             async function newUser(): Promise<void>{
-                //const user: User = {'firstName': firstname.value, 'lastName': lastname.value, 'email': email.value, 'birthdate': birthdate.value, 'gender': gender.value, 'password': password1.value};
                 console.log("FIRSTNAME " + firstname.value + " LASTNAME " + lastname.value + " EMAIL " + email.value + " PW1 " + password1.value + " PW2 " + password2.value);
-                console.log("Test 2:" ,errormessages.value.length);
 
-                firstnameerror.value = "";
-                lastnameerror.value = "";
-                emailerror.value = "";
-                gendererror.value = "";
-                birthdateerror.value = "";
-                firstpassworderror.value = "";
-                secondpassworderror.value = "";
 
-                    // if(errormessages.value.length == 0){
-                    //     //hier passiert nix... es hat alles geklappt...user wird gesendet
-                    //    // const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
-                    //     //message.value="";
-                    //     //sendUser(signUpRequest);
-                    //     console.log("Im if drin ",errormessages.value.length);
-                    //     //const correct="Alle Eingaben sind richtig";
-                    //     //message.value= correct;
-                    // }
+                if(password1.value == password2.value){
+                    const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
+                    message.value = "";
+                    console.log(`SENDE ${signUpRequest}`);
+
+
+                    firstnameerror.value = "";
+                    lastnameerror.value = "";
+                    emailerror.value = "";
+                    birthdateerror.value = "";
+                    gendererror.value = "";
+                    password1error.value = "";
+                    password2error.value = "";
+
+                    await sendUser(signUpRequest);
 
                     if(errormessages.value.length > 0){
-                        //hier werden die fehler überprüft und die errormessages ausgegeben 
                         for(const error of errormessages.value){
-                            if(error.field == "firstName"){
-                                // console.log("Er geht in firstname");
+                            if(error.field == "firstName" ){
                                 firstnameerror.value = error.message;
                             }
                             if(error.field == "lastName"){
                                 lastnameerror.value = error.message; 
                             }
-                            // console.log("error.field: ", error.field);
                             if(error.field == "email"){
                                 emailerror.value = error.message;
                             }
@@ -132,45 +127,23 @@
                             if(error.field == "gender"){
                                 gendererror.value = error.message;
                             }
-                            
-
+                            if(error.field == "password"){
+                                password1error.value = error.message;
+                            }
                         }
-
                     }else{
-                        //changeComp(signUpRequest);
+                        router.push("/login");
                     }
-
-                if (password1.value === password2.value) {
-                    //const signUpRequest: SignUpRequest = {'firstName': firstname.value,'lastName': lastname.value, 'email': email.value, 'gender' : gender.value, 'birthdate': birthdate.value, 'password': password1.value};
-                    message.value="";
-                    // sendUser(signUpRequest);
-                    secondpassworderror.value = "";
-                  
-                } else { 
+                }else{
+                    password2error.value = "Die Passwörter stimmen nicht überein";
                     password1.value = "";
-                    password2.value = ""; 
-                    secondpassworderror.value = "Die Passwörter stimmen nicht überein." ;
-                }
-
-                if(firstname.value == ""){
-                    firstnameerror.value = "Bitte fülle dieses Feld aus";
-                }
-                if(lastname.value == ""){
-                    lastnameerror.value = "Bitte fülle dieses Feld aus";
-                }
-                if(email.value == ""){
-                    emailerror.value = "Bitte fülle dieses Feld aus";
-                }
-                if(gender.value == ""){
-                    gendererror.value = "Bitte fülle dieses Feld aus";
-                }
-                if(password1.value == ""){
-                    firstpassworderror.value = "Bitte fülle dieses Feld aus";
-                }
-                if(password2.value == ""){
-                    secondpassworderror.value = "Bitte fülle dieses Feld aus";
-                }
+                    password2.value = "";
+                }                        
             }
+
+
+            // function ruleCheck() {
+            // }
 
             return {
                 newUser,
@@ -182,19 +155,15 @@
                 password1,
                 password2,
                 message,
+                errormessages,
                 firstnameerror,
                 lastnameerror,
                 emailerror,
-                birthdateerror,
                 gendererror,
-                firstpassworderror,
-                secondpassworderror,
-                errormessages,
-                component,
-                compref,
+                birthdateerror,
+                password1error,
+                password2error,
                 check
-                // toggle,
-                // changeComp
             };
         }
     });
@@ -268,9 +237,34 @@ input[type=submit]{
 
 }
 
+.right{
+    margin-top: 0.55em;
+}
+
 .error {
     color: red;
-    margin: 5px 0px 0px 0px;
+    margin: 5px 0px 1px 0px;
+    font-size: 0.8em;
+}
+
+button{
+    margin: 5% 0% 5% 15%;
+    padding: 1% 5%;
+    background-color: black;
+    border-style: none;
+    color: #fff;
+    &:hover{
+        background-color: #3BA07C;
+    }
+    &:focus{
+        outline: none;
+    }
+}
+
+.correct{
+    color: black;
+    margin-bottom: 0.15em;
+    font-size: 0.55em;
 }
 
 </style>

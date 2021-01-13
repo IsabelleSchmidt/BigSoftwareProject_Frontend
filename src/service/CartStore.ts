@@ -13,10 +13,10 @@ const total = ref(0);
 const {getProductByArtNr} =  useProduct();
 
 
-function addProduct(productartnr: number): void{
+function addProduct(productartnr: number, am: number): void{
 
     let has =  false;
-    const amount = ref(1);
+    const amount = ref(0);
 
     for (let i = 0; i < state.list.size; i++) {
 
@@ -25,14 +25,14 @@ function addProduct(productartnr: number): void{
             const oldproductartnr = Array.from(state.list.keys())[i];
             has = true;
             amount.value = Array.from(state.list.values())[i];
-            amount.value++;
+            amount.value = Number(amount.value) + Number(am);
             state.list.set(oldproductartnr, amount.value);
             break;
         }
     }
 
     if (!has) {
-        state.list.set(productartnr, amount.value);
+        state.list.set(productartnr, am);
     }
 }
 function getAmount(productartnr: number){
@@ -88,6 +88,14 @@ function checkOneMoreAvailable(productartnr: number){
     
     return av;
 }
+function getCartAmount(){
+    const cartAmount = ref(0);
+    for (let i = 0; i < state.list.size; i++) {
+         cartAmount.value = Number(cartAmount.value) + Number(Array.from(state.list.values())[i]);
+    }
+    return cartAmount.value;
+
+}
 
 
 
@@ -98,6 +106,7 @@ function checkOneMoreAvailable(productartnr: number){
       list: computed(() => state.list),
       addProduct,
       getAmount,
+      getCartAmount,
       changeAmount,
       deleteProduct,
       totalPrice,

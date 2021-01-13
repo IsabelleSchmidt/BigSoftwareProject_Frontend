@@ -14,12 +14,13 @@
             <ul>
                 <li><h3 class="name">{{tst.name}}</h3></li>
                 <li><p class="description">{{tst.description}}</p></li>
-                <li><p class="price">{{tst.price}} €</p></li>
+                <li class="priceLi"><p class="price">{{tst.price}} €</p></li>
+                <li>                    
+                    <label>Menge:</label>
+                    <input :value="pamount" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="am">
+                </li>
                 <li class="buttons">
                     <button class="buttoncart" @click="add()">In den Warenkorb</button>
-                    <button class="buttonfav">
-                        <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
-                    </button>
                 </li>
                 <li class="success"><v-alert type="success" v-if="success" >Artikel wurde zum Warenkorb hinzugefügt
                 </v-alert></li>
@@ -68,12 +69,23 @@ export default defineComponent({
         }
     }, setup(props, context) {
 
-        const {list, addProduct, deleteProduct, checkOneMoreAvailable} = useCartStore(); 
+        const {list, addProduct, deleteProduct, checkOneMoreAvailable, getAmount, changeAmount, getCartAmount} = useCartStore(); 
         const alert = ref(false); 
         const success = ref(false); 
+        const amount = ref(1);
 
 
         const router = useRouter();
+
+        const pavailable = computed(() => {
+            return props.tst.available;
+
+        });
+
+         const pamount = computed(()=>{
+             return amount.value; 
+            
+            });
 
         //Callback
         function openproductlist(): void { 
@@ -82,19 +94,39 @@ export default defineComponent({
 
 
         function add(): void{
-            //not allowed
-            if(!checkOneMoreAvailable(props.tst.articlenr) || props.tst.available <=0){
+            const am = ref(getAmount(props.tst.articlenr));
+
+            if(!checkOneMoreAvailable(props.tst.articlenr) || props.tst.available <=0 ){
                 alert.value = true;
                 setTimeout(()=>{
                     alert.value=false
-                 },3000)
-            } else{ //allowed
+                 },1000)
+            
+            }else if(am.value){
+                if(((Number(am.value))+(Number(amount.value))) > props.tst.available){
+                    alert.value = true;
+                    setTimeout(()=>{
+                        alert.value=false
+                     },1000)
+                
+                }else{
+                    success.value = true;
+                    setTimeout(()=>{
+                        success.value=false
+                    },1000)
+                    addProduct(props.tst.articlenr, amount.value);
+                }    
+            }else{ 
                 success.value = true;
                 setTimeout(()=>{
                     success.value=false
-                 },3000)
-                addProduct(props.tst.articlenr);
+                 },1000)
+                addProduct(props.tst.articlenr, amount.value);
             }
+            amount.value = 1; 
+        }
+        function amChange(am: number): void{    
+            amount.value = am; 
         }
 
         onMounted(async () => {
@@ -118,6 +150,9 @@ export default defineComponent({
         return {
             alert,
             success,
+            pamount,
+            pavailable,
+            amChange, 
             add,
             openproductlist,
             color: computed(() => {
@@ -240,16 +275,20 @@ ul {
 }
 
 .price {
-    float: right;
     font-size: 1.5em;
+}
+.priceLi{
+    float: right;
 }
 .alert {
     color: red;
     margin-bottom: 3%;
+    margin-top: 3%;
 }
 .success {
     color:#3BA07C;
     margin-bottom: 3%;
+    margin-top: 3%;
 }
 .buttoncart {
     margin: 60px 0px 0px 0px;
@@ -267,17 +306,6 @@ ul {
 .buttoncart:focus {
     outline: none;
 }
-
-.buttonfav {
-    border-style: none;
-    background: none;
-    margin: 0% 5%;
-}
-
-.buttons {
-    margin: 10% 0% 0% 0%;
-}
-
 .icontruck {
     width: 25px;
     margin: 10px 10px 15px 10px;
@@ -288,7 +316,9 @@ ul {
     margin-bottom: 0px;
     margin-top: 18px;
 }
-
+#am{
+    margin-left: 10px;
+}
 
 
 </style>

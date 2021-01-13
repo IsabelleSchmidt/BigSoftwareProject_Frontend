@@ -8,3 +8,9 @@ interface MessageResponse{
     message: string;
     field: string;
 }
+
+interface OrderResponse{
+    message: string;
+    field: string;
+    orderid: number;
+}

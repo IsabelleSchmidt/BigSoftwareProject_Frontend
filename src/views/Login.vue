@@ -159,6 +159,10 @@ input[type=submit]{
     list-style-type: none;
 }
 
+.link:hover {
+    color:#3BA07C;
+}
+
 #pw {
     width: 30%;
     padding: 0.25em;
