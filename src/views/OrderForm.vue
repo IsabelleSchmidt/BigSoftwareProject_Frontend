@@ -4,6 +4,11 @@
         <form >
             <div class="adress">
                 <h2>Versandadresse</h2>
+                <div>
+                    <select v-model="selectedadr" name="adress" @change="adrChange($event.target.value)">
+                        <option v-for="item in options" :value="item" :key="item.id">{{item[0]}} {{item[1]}}, {{item[2]}} {{item[3]}}</option>
+                    </select>
+                </div>
                 <div class="row">
                     <label for="street" class="col7">Straße</label>
                 </div>
@@ -110,7 +115,7 @@
 
 <script lang="ts">
 import OrderListObject from "../components/OrderListObject.vue"
-import {defineComponent, computed, ref } from 'vue'
+import {defineComponent, computed, ref, reactive } from 'vue'
 import {useCartStore} from '../service/CartStore'
 import {usePostOrder} from '../service/OrderStore'
 import {useUserStore} from '../service/UserStore'
@@ -119,12 +124,14 @@ import { useRouter, useRoute } from 'vue-router'
 export default defineComponent({
     name: 'OrderForm',
     components:{
-        OrderListObject
+        OrderListObject,
+        // Multiselect,
     },
     setup(context){
         const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+
         const {postOrder, errormessages} = usePostOrder();
-        const {jwttokens} = useUserStore();
+        const {jwttokens, getAdresses} = useUserStore();
         const router = useRouter();
 
 
@@ -132,10 +139,10 @@ export default defineComponent({
         const paymenterror = ref("");
 
         //Adress
-        const streetName = ref(""); //TODO
-        const houseNumber = ref(""); //TODO
-        const postCode = ref(""); //TODO
-        const city = ref(""); //TODO
+        const streetName = ref("");
+        const houseNumber = ref("");
+        const postCode = ref("");
+        const city = ref("");
 
         //Bankcard
         const iban = ref("");
@@ -174,6 +181,16 @@ export default defineComponent({
         const productList = computed(() =>{
             return Array.from(list.value.entries());
         });
+
+        const options = getAdresses();      
+
+        function adrChange(event: string) {
+            const a: Adress = {'streetName': event.split(',')[0], 'houseNumber': event.split(',')[1], 'postCode': event.split(',')[2], 'city': event.split(',')[3]};
+            streetName.value = a.streetName;
+            houseNumber.value = a.houseNumber;
+            postCode.value = a.postCode;
+            city.value = a.city;
+        }
 
         async function sendOrder(): Promise<void>{
             console.log("sendOrder   " + payment.value);
@@ -299,6 +316,8 @@ export default defineComponent({
             token,
             payment,
             paymenterror,
+            options,
+            adrChange,
             streetnameerror,
             housenumbererror,
             postcodeerror,
@@ -309,7 +328,6 @@ export default defineComponent({
             creditcardownererror,
             creditcardnumbererror,
             dateofexpiryerror
-
         };
     }   
 })
