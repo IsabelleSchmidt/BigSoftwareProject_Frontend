@@ -33,46 +33,44 @@ export default defineComponent({
 
         const route = useRoute();
         const ro = ref(route.query.room);
-        const pr = ref(route.query.producttype);
+        const pr = ref(route.query.productType);
         const n = ref(route.query.name);
-        const q = {room: ro, producttype: pr, name: n};
+        const q = {room: ro, productType: pr, name: n};
         const filter = reactive(q);
 
         const {list, update}  = useProduct(); //, errormessage
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            console.log("ONMOUNTED COMPPPRODUCT");
             q.room.value = route.query.room;
-            q.producttype.value = route.query.producttype;
+            q.productType.value = route.query.productType;
             q.name.value = "none";
             await update();
         });
 
         const productlist = computed(() => {
             q.room.value = route.query.room;
-            q.producttype.value = route.query.producttype;
+            q.productType.value = route.query.productType;
             q.name.value = route.query.name;
             
-            if (filter.room === "all" && filter.producttype === "all") {
+            if (filter.room === "all" && filter.productType === "all") {
                 return list.value;
-            } else if (filter.room !== "all" && filter.producttype === "all") {
+            } else if (filter.room !== "all" && filter.productType === "all") {
                 return list.value.filter(p => p.roomType === filter.room?.toString());
-            } else if (filter.room === "all" && filter.producttype !== "all") {
-                return list.value.filter(p => p.productType === filter.producttype?.toString());
+            } else if (filter.room === "all" && filter.productType !== "all") {
+                return list.value.filter(p => p.productType === filter.productType?.toString());
             } else {
                 q.room.value = route.query.room;
-                q.producttype.value = route.query.producttype;
+                q.productType.value = route.query.productType;
                 // console.log("nach beidem filtern");
 
-                return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
+                return list.value.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
             
         });
 
         function openProduct(p: Product): void {
             //send to component above (Product)
-            console.log(p);
             context.emit("open-prod", p);
         }
 

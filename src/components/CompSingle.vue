@@ -56,7 +56,7 @@ import { defineComponent, computed, ref, PropType, onMounted} from 'vue';
 
 import '@/service/Product'
 import {useCartStore} from '@/service/CartStore' 
-import {useRouter} from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
 
 
 export default defineComponent({
@@ -72,14 +72,26 @@ export default defineComponent({
         const alert = ref(false); 
         const success = ref(false); 
 
-
         const router = useRouter();
+        const route = useRoute();
+        const ro = ref(route.query.room);
+        const pr = ref(route.query.productType);
 
         //Callback
         function openproductlist(): void { 
+            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: "none" }});
             context.emit("open-all");
         }
 
+        onMounted(async () => {
+
+            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: props.tst.name }});
+
+            //when back button in browser is pressed
+            window.onpopstate = function(event: any) {
+                openproductlist();
+            };
+        });
 
         function add(): void{
             //not allowed
@@ -97,16 +109,6 @@ export default defineComponent({
             }
         }
 
-        onMounted(async () => {
-            console.log(props.tst.roomType);
-            router.push({ path: '/product', query: { room: props.tst.roomType, productType: props.tst.productType, name: props.tst.name }});
-
-            //when back button in browser is pressed
-            window.onpopstate = function(event: any) {
-                openproductlist();
-                // router.go(-1);
-            };
-        });
 
         const COLORS = [
             "red",
