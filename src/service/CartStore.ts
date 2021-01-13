@@ -55,6 +55,11 @@ function calcTotal(value: number, key: number, map: any): void{
     }
 
 }
+
+function clearCart(){
+    state.list.clear();
+}
+
 function totalPrice(){
     total.value = 0; 
     state.list.forEach(calcTotal);
@@ -110,7 +115,8 @@ function getCartAmount(){
       changeAmount,
       deleteProduct,
       totalPrice,
-      checkOneMoreAvailable
+      checkOneMoreAvailable,
+      clearCart
     }
   }
 

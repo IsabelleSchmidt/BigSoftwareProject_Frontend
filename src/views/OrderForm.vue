@@ -128,7 +128,7 @@ export default defineComponent({
         // Multiselect,
     },
     setup(context){
-        const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+        const {list, addProduct, deleteProduct, totalPrice, clearCart} = useCartStore();
 
         const {postOrder, errormessages} = usePostOrder();
         const {jwttokens, getAdresses} = useUserStore();
@@ -223,7 +223,8 @@ export default defineComponent({
 
                
                 if(await postOrder(uor, order)){
-                  router.push("/orderConf");
+                    clearCart();
+                    router.push("/orderConf");
                 }
 
                 else{
