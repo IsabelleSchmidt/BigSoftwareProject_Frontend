@@ -69,7 +69,7 @@ export default defineComponent({
         }
     }, setup(props, context) {
 
-        const {list, addProduct, deleteProduct, checkOneMoreAvailable, getAmount, changeAmount} = useCartStore(); 
+        const {list, addProduct, deleteProduct, checkOneMoreAvailable, getAmount, changeAmount, getCartAmount} = useCartStore(); 
         const alert = ref(false); 
         const success = ref(false); 
         const amount = ref(1);

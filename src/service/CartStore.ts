@@ -88,6 +88,14 @@ function checkOneMoreAvailable(productartnr: number){
     
     return av;
 }
+function getCartAmount(){
+    const cartAmount = ref(0);
+    for (let i = 0; i < state.list.size; i++) {
+         cartAmount.value = Number(cartAmount.value) + Number(Array.from(state.list.values())[i]);
+    }
+    return cartAmount.value;
+
+}
 
 
 
@@ -98,6 +106,7 @@ function checkOneMoreAvailable(productartnr: number){
       list: computed(() => state.list),
       addProduct,
       getAmount,
+      getCartAmount,
       changeAmount,
       deleteProduct,
       totalPrice,
