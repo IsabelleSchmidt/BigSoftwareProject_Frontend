@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
-
 const history = createWebHistory();
 
 const router = createRouter({
@@ -62,6 +61,14 @@ const router = createRouter({
       path: '/orderform',
       name: 'OrderForm',
       component: () => import('../views/OrderForm.vue')
+    },
+    
+    { 
+    path: '/404', 
+    component: () => import('../components/NotFound.vue') 
+    },
+    {
+      path: '/:catchAll(.*)', redirect:'404'
     },
     {
       path: '/orderConf',
