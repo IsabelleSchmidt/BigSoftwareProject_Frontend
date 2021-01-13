@@ -61,6 +61,11 @@ async function sendUser(signUpRequest: SignUpRequest) {
     
 }
 
+function getAdresses() {
+    console.log("send fetch to get adresses");
+    return [["Burgstraße","5","55262","Heidesheim"], ["Kurfürstenstraße","46","55118","Mainz"]];
+}
+
 export function postLoginUser(){
     return{
         errormessage: computed(() => state.errormessage),
@@ -72,7 +77,8 @@ export function postLoginUser(){
 
 export function useUserStore(){
     return {
-        jwttokens: computed(() => state.jwttokens)
+        jwttokens: computed(() => state.jwttokens),
+        getAdresses
     }
 }
 
