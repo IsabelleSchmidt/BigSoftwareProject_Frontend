@@ -8,10 +8,11 @@ const state = reactive({
     orderlist: list,
     errormessages: Array<MessageResponse>(),
     ordererrormessages: Array<OrderResponse>(),
-    allorders: new Set<number>()
+    allorders: new Set<number>(),
+    orderSuccess: false
 })
 
-async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promise<void> {
+async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promise<boolean> {
 
     console.log("User Order Request" + JSON.stringify(userorderreq));
     console.log("postOrder - Liste Warenkorb: " + JSON.stringify(Array.from(state.orderlist)));
@@ -51,9 +52,11 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         if(!(jsondata.length == 1 && jsondata[0].orderid != -1)){
             state.ordererrormessages = jsondata;
             console.log("ERRORS bei sende bestellte Artikel: " + JSON.stringify(jsondata));
+            state.orderSuccess = false;
         }else{
             state.allorders.add(jsondata[0].orderid);
             console.log("Bestellung erfolgreich!");
+            state.orderSuccess = true;
             //TODO: Bestaetigung anzeigen und auf Bestelluebersicht weiterleiten
         }
         
@@ -61,6 +64,8 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     }).catch((exception) => {
         console.log(exception)
     });
+
+    return state.orderSuccess;
 }
     
 
@@ -68,8 +73,7 @@ export function usePostOrder() {
     return {
         postOrder,
         errormessages: computed(() => state.errormessages),
-        ordererrrormessages: computed(() => state.ordererrormessages),
+        ordererrormessages: computed(() => state.ordererrormessages),
         allorders: state.allorders
-        
     }
 }

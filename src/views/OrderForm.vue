@@ -1,7 +1,6 @@
 <template>
     <div class="orderForm"> 
         <h1>Bestellübersicht</h1>
-<!-- @submit.prevent="sendOrder" -->
         <form >
             <div class="adress">
                 <h2>Versandadresse</h2>
@@ -94,20 +93,23 @@
 
 <script lang="ts">
 import OrderListObject from "../components/OrderListObject.vue"
-import { defineComponent, computed, ref } from 'vue'
-import {useCartStore} from '@/service/CartStore'
-import {usePostOrder} from '@/service/OrderStore'
-import {useUserStore} from '@/service/UserStore'
+import {defineComponent, computed, ref } from 'vue'
+import {useCartStore} from '../service/CartStore'
+import {usePostOrder} from '../service/OrderStore'
+import {useUserStore} from '../service/UserStore'
+import { useRouter, useRoute } from 'vue-router'
 
 export default defineComponent({
     name: 'OrderForm',
     components:{
         OrderListObject
     },
-    setup(){
+    setup(context){
         const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
         const {postOrder} = usePostOrder();
         const {jwttokens} = useUserStore();
+        const router = useRouter();
+
 
         const payment = ref("");
         const paymenterror = ref("");
@@ -161,7 +163,11 @@ export default defineComponent({
 
                 const order: OrderDT = {'priceTotal': inTotal.value, 'allProductsOrdered': orderList, 'jwtToken': token};
 
-                await postOrder(uor, order);
+               
+                if(await postOrder(uor, order)){
+                  router.push("/orderConf");
+                }
+
             } else {
                 paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
             }
