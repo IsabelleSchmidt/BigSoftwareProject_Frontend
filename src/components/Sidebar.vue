@@ -24,6 +24,16 @@
         </ul>
     </div>
 </template>
+<script lang="ts">
+import Vue from 'vue'
+import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
+
+export default defineComponent({
+    
+});
+</script>
+export default defineComponent({
+
 
 <style scoped lang="scss">
     .sidebar{

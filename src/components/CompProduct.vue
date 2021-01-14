@@ -3,6 +3,9 @@
         <div class="columns" id="sidebarBox">
             <Sidebar/>
         </div>
+        <div class="productFilter">
+            <ProductFilter/>
+        </div>
         <div id="productList">
             <ul>           
                 <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id" @open-prod="openProduct($event)"/>
@@ -15,6 +18,7 @@
 <script lang = "ts">
 
 import Sidebar from "../components/Sidebar.vue"
+import ProductFilter from "../components/ProductFilter.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
@@ -25,7 +29,8 @@ export default defineComponent({
     name: "CompProducts",
     components:{
         ProductListObject,
-        Sidebar
+        Sidebar,
+        ProductFilter
     }, props: {
         product: Object,
     },
