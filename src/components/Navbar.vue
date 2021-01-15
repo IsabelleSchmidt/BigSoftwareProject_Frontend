@@ -38,6 +38,7 @@
                 </li>
                 <li><router-link to="/cart">
                         <img src="../assets/warenkorb.png" alt="cart" id="icon"/>
+                        <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
                     </router-link></li>
                 <li><router-link to="/favorits">
                         <img src="../assets/fav.png" alt="wishlist" id="icon"/>
@@ -52,7 +53,25 @@
 </template>
 
 <script lang="ts">
+import {useCartStore} from "@/service/CartStore.ts"
+import { computed, defineComponent, ref } from "vue";
 
+
+    export default defineComponent ({
+        
+        setup(){
+            const {getCartAmount} = useCartStore();
+            const amount = computed( () =>
+                getCartAmount()
+            )
+           
+            return {amount};
+        },
+        
+    })
+
+    
+    
     // import {defineComponent, ref} from "@vue/composition-api";
     // export default defineComponent({
     //     name: "Navbar2",
@@ -195,5 +214,21 @@ nav ul li input {
     line-height: 20px;
     width: 80px;
     margin: 3px 0px 10px 10px;
+}
+
+.total-amount{
+    align-items: center;
+    background: #3BA07C;
+    color: #f3f3f3;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    height: 1em;
+    justify-content: center;
+    padding: 0.25rem;
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    width: 1em;
 }
 </style>
