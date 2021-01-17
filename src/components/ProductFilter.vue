@@ -32,7 +32,11 @@ export default defineComponent({
         });
 
         function changeComp(comp: string): void{
-            component.value = comp; 
+            if(component.value == comp){
+                component.value = ''
+            }else{
+                component.value = comp; 
+            }
         }
 
 

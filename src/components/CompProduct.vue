@@ -40,7 +40,8 @@ export default defineComponent({
         const ro = ref(route.query.room);
         const pr = ref(route.query.productType);
         const n = ref(route.query.name);
-        const q = {room: ro, productType: pr, name: n};
+        const f = ref(route.query.filters)
+        const q = {room: ro, productType: pr, name: n, filters: f};
         const filter = reactive(q);
 
         const {list, update}  = useProduct(); //, errormessage
@@ -50,6 +51,7 @@ export default defineComponent({
             q.room.value = route.query.room;
             q.productType.value = route.query.productType;
             q.name.value = "none";
+            q.filters.value = "none";
             await update();
         });
 
@@ -57,6 +59,21 @@ export default defineComponent({
             q.room.value = route.query.room;
             q.productType.value = route.query.productType;
             q.name.value = route.query.name;
+            q.filters.value = route.query.filters;
+
+            if(filter.filters != "none"){
+                const x = filter.filters?.toString().split("%")
+                if(x){
+                    let highest = x[x.length-1];
+                    const lowest = x[1];
+                    if(highest == '+'){
+                        highest = '50000';
+                    }
+                    console.log("PREiIIIS" + JSON.stringify(x) + "Highest:" + highest + "lowest: "+ lowest)
+                    return list.value.filter(p=> p.price >= parseInt(lowest) && p.price <= parseInt(highest))
+                    }
+
+                }
             
             if (filter.room === "all" && filter.productType === "all") {
                 return list.value;
@@ -64,11 +81,16 @@ export default defineComponent({
                 return list.value.filter(p => p.roomType === filter.room?.toString());
             } else if (filter.room === "all" && filter.productType !== "all") {
                 return list.value.filter(p => p.productType === filter.productType?.toString());
-            } else {
+            } 
+            else if(filter.filters != "none"){
+                filter.filters?.toString().search("price")                
+                
+                return list.value.filter(p => p.price)
+
+            }else{
                 q.room.value = route.query.room;
                 q.productType.value = route.query.productType;
                 // console.log("nach beidem filtern");
-
                 return list.value.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
             
