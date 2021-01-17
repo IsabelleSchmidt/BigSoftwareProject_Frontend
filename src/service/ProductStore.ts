@@ -28,8 +28,9 @@ export let articlenr: number;
 
   async function update(): Promise<void> {
     const productlist = new Array<Product>();
-    fetch(`http://localhost:8080/api/products`, {
-        method: 'GET'
+    fetch(`/api/products`, { //http://localhost:8080
+        method: 'GET',
+        // credentials: 'same-origin'
     })
       .then((response) => {
         if (!response.ok) {
@@ -60,7 +61,7 @@ export let articlenr: number;
     articlenr = -1;
     console.log(" Sende Produkt mit Namen: "+newProduct.name+" an backend.")
     console.log("Sende: "+'Product '+JSON.stringify(newProduct))
-    await fetch(`http://localhost:9090/api/product/new`,{
+    await fetch(`/api/product/new`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(newProduct)
@@ -79,6 +80,7 @@ export let articlenr: number;
       //wenn alles richtig war, neues Produkt hinzufuegen
       if(jsondata.allErrors.length == 0){
         state.list.push(jsondata.product);
+        state.validationerrors = jsondata.allErrors;
         console.log("neues produkt!");
         articlenr = jsondata.product.articlenr;
         console.log("articlenr",jsondata.product.articlenr);
@@ -86,7 +88,7 @@ export let articlenr: number;
       else{
 
         state.validationerrors = jsondata.allErrors;
-        console.log("Fehlerliste: "+jsondata.allErrors);
+        console.log("Fehlerliste: "+JSON.stringify(jsondata.allErrors));
       }
     }).catch((error) => {
       console.log(error);
@@ -103,7 +105,7 @@ export let articlenr: number;
     console.log("Sende Bild an Backend");
     let wassuccessful = false;
     if(articlenr != -1){
-       fetch(`http://localhost:9090/api/product/${articlenr}/newpicture`,{
+       fetch(`/api/product/${articlenr}/newpicture`,{
       method: 'POST',
       headers: {access:'Access-Control-Allow-Origin' },
       body: formData

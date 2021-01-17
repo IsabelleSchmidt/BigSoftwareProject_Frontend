@@ -11,12 +11,30 @@
                   
             <div class="row">
                 <div class="col1"><label for="productType">Produktart</label></div>
-                <div class="col2"><input type ="text" v-model="productType" id="productType" placeholder="Produktart" name="productType" size="30" maxlength="50"><div class="error" v-if="producterror.length>0"> {{producterror}} </div></div>
+                <div class="col2"><select v-model="productType" id="productType" name="productType" placeholder="Produktart">
+                                    <option value="Plant">Pflanze</option>
+                                    <option value="Table">Tisch</option>
+                                    <option value="Chair">Stuhl</option>
+                                    <option value="Bed">Bett</option>
+                                    <option value="Decoration">Dekoration</option>
+                                    <option value="Closet">Schrank/Kommode</option>
+                                    <option value="Couch">Sofa/Couch</option>
+                                </select>
+                    <div class="error" v-if="producterror.length>0"> {{producterror}} </div></div>
             </div>
             
             <div class="row">
                 <div class="col1"><label for="roomType" >Raumart</label></div>
-                <div class="col2"><input type="text" v-model="roomType" id="roomType" placeholder="Raumart" name="roomType" size="30" maxlength="50"><div class="error" v-if="roomerror.length>0"> {{roomerror}} </div></div>
+                <div class="col2"><select type="text" v-model="roomType" id="roomType" placeholder="Raumart">
+                                    <option value="Bathroom">Bad</option>
+                                    <option value="Bedroom">Schlafzimmer</option>
+                                    <option value="Kitchen">Küche</option>
+                                    <option value="Livingroom">Wohnzimmer</option>
+                                    <option value="Eatingroom">Esszimmer</option>
+                                    <option value="Bureau">Arbeitszimmer</option>
+                                    <option value="null">kein passender Raum</option>
+                                </select>
+                    <div class="error" v-if="roomerror.length>0">{{roomType}} {{roomerror}} </div></div>
             </div>
 
             <div class="row">
@@ -37,7 +55,7 @@
 
             <div class="row">
                 <div class="col1"><label for="dimensions">Maße in cm</label><label id="klein">Breite x Höhe x Tiefe</label></div>
-                <div class="col2"><input type="number" v-model="width" id = "width" name="width" min="0.00" step="0.01"> x <input v-model="height" id="height" type="number" name="height" min="0.00" step="0.01"> x <input v-model="depth" id="depth" type="number" name="depth" min="0.00" step="0.01"></div>
+                <div class="col2"><input type="number" v-model="width" id = "width" name="width" min="0.00" step="0.01"> x <input v-model="height" id="height" type="number" name="height" min="0.00" step="0.01"> x <input v-model="depth" id="depth" type="number" name="depth" min="0.00" step="0.01"><div class="error" v-if="sizeerror.length>0"> {{sizeerror}} </div></div>
             </div>
 
             <div class="row">
@@ -90,6 +108,7 @@
         const price = ref(0);
         const picturename = ref("");
         const {sendProduct, validationerrors} = postProduct();
+        let click = "";
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -97,8 +116,9 @@
         const infoerror = ref("");
         const descriptionerror = ref("");
         const priceerror = ref("");
+        const sizeerror = ref("");
         
-        const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':nrAvailableItems.value, 
+        const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'nrAvailableItems':nrAvailableItems.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
 
         async function sendeProd(): Promise<void>{
@@ -109,13 +129,21 @@
             product.price = price.value;
             product.information = information.value;
             product.description = description.value;
+            product.width = width.value;
+            product.height = height.value;
+            product.depth = depth.value;
+            product.nrAvailableItems = nrAvailableItems.value;
             console.log('ProduuuukT:',product);
+            click = "geclicked"
+            // producterror.value = "";
+            // priceerror.value = "";
+            // roomerror.value = "";
+            // nameerror.value = "";
+            // infoerror.value = "";
+            // descriptionerror.value = "";
 
-
-
-            sendProduct(product)
-            .then(() =>{
-
+            await sendProduct(product);
+                
                 // Validation Messages
                 if(validationerrors.value.length > 0){
                     for(const error of validationerrors.value){
@@ -137,38 +165,47 @@
                         if(error.field == "description"){
                             descriptionerror.value = error.message;
                         }
+                        if(error.field == "width"||error.field=="height"||error.field=="depth"){
+                            sizeerror.value = error.message;
+                        }
                     
                     }
                 }else{
                     console.log("ohne errors")
-                    //muss eigentlich in send prod (wird erst bei submit abgeschickt)
-                for(let i = 0; i < filesref.value.length; i++){
-                    // const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
-                    // console.log(filename);
-                    formData.append("picture",filesref.value[i],filesref.value[i].name);
-                    console.log("File",formData.get('picture'))
-                }
+                    producterror.value = "";
+                    priceerror.value = "";
+                    roomerror.value = "";
+                    nameerror.value = "";
+                    infoerror.value = "";
+                    descriptionerror.value = "";
+
+                    console.log("File",formData.get('pictures'))
+                    for(let i = 0; i < filesref.value.length; i++){
+                        // const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
+                        // console.log(filename);
+                        formData.append("picture",filesref.value[i],filesref.value[i].name);
+                        console.log("File",formData.get('picture'))
+                    }
 
                     console.log("articlnr im newProd",articlenr);
 
                     if(sendPicture(formData,articlenr)){
                         // Pop UP
-                    Swal.fire({
-                    title: 'neues Produkt angelegt!',
-                    text: 'weiteres Produkt anlegen...',
-                    icon: 'success',
-                    confirmButtonText: 'weiter',
-                    confirmButtonColor: '#3BA07C',
-                    // }).then((result)=>{
-                    //     if(result.isConfirmed){
-                    //         // router.push("/newProducts")
-                    //         location.reload();
-                    //     }
-                    })
+                        Swal.fire({
+                            title: 'neues Produkt angelegt!',
+                            text: 'weiteres Produkt anlegen...',
+                            icon: 'success',
+                            confirmButtonText: 'weiter',
+                            confirmButtonColor: '#3BA07C',
+                            }).then((result)=>{
+                                if(result.isConfirmed){
+                                    // router.push("/newProducts")
+                                    location.reload();
+                                }
+                        })
                     }
-                
-                }
-            });       
+                    
+                }      
         }
 
         function onFileChange(files: File[]): void{
@@ -193,7 +230,7 @@
             console.log(filesref.value);
         }
 
-        return {deleteFile,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        return {click,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
@@ -240,6 +277,13 @@ label {
     content: "";
     display: table;
     clear: both;
+}
+select{
+    border: 1px solid #ccc;
+    resize: vertical; 
+    padding: 0.25em;
+    border-radius: 3px;
+    width: 31%;
 }
 input{
     border: 1px solid #ccc;

@@ -23,7 +23,7 @@ export default defineComponent({
         const compref = ref(component);
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
-                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
+                                'width': 0, 'depth': 0, 'nrAvailableItems': 0, 'description': "", 'information': ""};
         const prodref = ref(prod);
 
         function toggle(): void {
