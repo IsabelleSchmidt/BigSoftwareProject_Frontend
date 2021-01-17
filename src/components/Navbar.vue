@@ -38,13 +38,12 @@
                 </li>
                 <li><router-link to="/cart">
                         <img src="../assets/warenkorb.png" alt="cart" id="icon"/>
-                    </router-link></li>
-                <li><router-link to="/favorits">
-                        <img src="../assets/fav.png" alt="wishlist" id="icon"/>
-                    </router-link></li>
+                    </router-link>
+                </li>
                 <li><router-link to="/profil">
-                    <img src="../assets/profil.png" alt="profile" id="icon"/>
-                </router-link></li>
+                        <img src="../assets/profil.png" alt="profile" id="icon"/>
+                    </router-link>
+                </li>
             </div>
         </ul>
     </nav>

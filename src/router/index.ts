@@ -26,11 +26,6 @@ const router = createRouter({
       component: () => import('../views/Cart.vue')
     },
     {
-      path: '/favorits',
-      name: 'Favorits',
-      component: () => import('../views/Favorits.vue')
-    },
-    {
       path: '/profil',
       name: 'Profil',
       component: () => import('../views/Profil.vue')
