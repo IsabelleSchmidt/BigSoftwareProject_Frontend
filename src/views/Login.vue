@@ -62,25 +62,26 @@
                     }             
                 })
                 
-            async function loginUser(): Promise<void>{
-
-                loginRequest.email = email.value;
-                loginRequest.password = password.value;
-                // console.log('UuuuseR:', loginRequest);
-                sendLogin(loginRequest);
-                // console.log('Ich bin nach sendlogin', loginRequest);
+                async function loginUser(){
 
 
+                    loginRequest.email = email.value;
+                    loginRequest.password = password.value;
+                    // console.log('UuuuseR:', loginRequest);
+                    await sendLogin(loginRequest);
+                    // console.log('Ich bin nach sendlogin', loginRequest);
 
-                // // while(isfetching){
-                // //     console.log("--");
-                // // }
-                //     const test = check ? "/login" : "/orderform";
-                //     console.log("test", test);
-                //     router.push(test);
-                //     console.log("Check ausgabe",check.value);
 
-            } 
+
+                    // // while(isfetching){
+                    // //     console.log("--");
+                    // // }
+                    //     const test = check ? "/login" : "/orderform";
+                    //     console.log("test", test);
+                    //     router.push(test);
+                    //     console.log("Check ausgabe",check.value);
+
+                } 
 
             return {
                 loginUser, 

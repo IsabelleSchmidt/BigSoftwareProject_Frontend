@@ -1,7 +1,6 @@
 <template>
     <div class="orderForm"> 
         <h1>Bestellübersicht</h1>
-<!-- @submit.prevent="sendOrder()" -->
         <form >
             <div class="adress">
                 <h2>Versandadresse</h2>
@@ -124,19 +123,21 @@ import {useUserStore} from '@/service/UserStore'
 import { useRouter, useRoute } from 'vue-router'
 // import Multiselect from 'vue-multiselect'
 
+
 export default defineComponent({
     name: 'OrderForm',
     components:{
         OrderListObject,
         // Multiselect,
     },
-    setup(){
-        const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+    setup(context){
+        const {list, addProduct, deleteProduct, totalPrice, clearCart} = useCartStore();
 
         const {postOrder, errormessages} = usePostOrder();
-        const {jwttokens, getAdresses, adresses, email} = useUserStore();
 
+        const {jwttokens, getAdresses, adresses, email} = useUserStore();
         const router = useRouter();
+
 
         const payment = ref("");
         const paymenterror = ref("");
@@ -236,89 +237,76 @@ export default defineComponent({
                 creditcardownererror.value = "";
                 creditcardnumbererror.value = "";
                 dateofexpiryerror.value = "";
+               
+                if(await postOrder(uor, order)){
+                    clearCart();
+                    router.push("/orderConf");
+                }
 
-                await postOrder(uor, order);
-                
-                if(errormessages.value.length > 0){
-                for(const error of errormessages.value){
-                    if(error.field == "emptyproduct") {
-                        // valid.value = false;
-                        console.log("EIN PRODUKT IST LEER " + error.field);
-                        //TODO
-                    }
-                    if(error.field == "adress.streetName"){
-                        // valid.value = false;
-                        streetnameerror.value = error.message;
-                    }
-                    if(error.field == "adress.houseNumber"){
-                        // valid.value = false;
-                        housenumbererror.value = error.message;
-                    }
-                    if(error.field == "adress.postCode"){
-                        // valid.value = false;
-                        postcodeerror.value = error.message;
-                    }
-                    if(error.field == "adress.city"){
-                        // valid.value = false;
-                        cityerror.value = error.message;
-                    }
-                    if(error.field == "bankCard.iban"){
-                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                            ibanerror.value = "";
-                        }else{
-                            // valid.value = false;
-                            ibanerror.value = error.message;    
+                else{
+                    for(const error of errormessages.value){
+                        if(error.field == "adress.streetName"){
+                            streetnameerror.value = error.message;
                         }
-                                        
-                    }
-                    if(error.field == "bankCard.owner"){
-                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                            bankcardownererror.value = "";
-                        }else{
-                            // valid.value = false;
-                            bankcardownererror.value = error.message;
+                        if(error.field == "adress.houseNumber"){
+                            housenumbererror.value = error.message;
                         }
-                        
-                    }
-                    if(error.field == "bankCard.bank"){
-                        if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                            bankerror.value = "";
-                        }else{
-                            // valid.value = false;
-                            bankerror.value = error.message;
+                        if(error.field == "adress.postCode"){
+                            postcodeerror.value = error.message;
                         }
-                        
-                    }
-                    if(error.field == "creditcard.cowner"){
-                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                            creditcardOwner.value = "";
-                        }else{
-                            // valid.value = false;
-                            creditcardownererror.value = error.message;
+                        if(error.field == "adress.city"){
+                            cityerror.value = error.message;
                         }
-                        
-                    }
-                    if(error.field =="creditcard.creditcardnumber"){
-                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                            creditcardnumbererror.value = "";
-                        }else{
-                            // valid.value = false;
-                            creditcardnumbererror.value = error.message;
+                        if(error.field == "bankCard.iban"){
+                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                                ibanerror.value = "";
+                            }else{
+                                ibanerror.value = error.message;    
+                            }
+                                            
                         }
-    
-                        
-                    }
-                    if(error.field =="creditcard.dateOfExpiry"){
-                        if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                            creditcardOwner.value = "";
-                        }else{
-                            // valid.value = false;
-                            dateofexpiryerror.value = error.message;
+                        if(error.field == "bankCard.owner"){
+                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                                bankcardownererror.value = "";
+                            }else{
+                                bankcardownererror.value = error.message;
+                            }
+                            
                         }
-                        
+                        if(error.field == "bankCard.bank"){
+                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
+                                bankerror.value = "";
+                            }else{
+                                bankerror.value = error.message;
+                            }
+                            
+                        }
+                        if(error.field == "creditcard.cowner"){
+                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                                creditcardOwner.value = "";
+                            }else{
+                                creditcardownererror.value = error.message;
+                            }
+                            
+                        }
+                        if(error.field =="creditcard.creditcardnumber"){
+                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                                creditcardnumbererror.value = "";
+                            }else{
+                                creditcardnumbererror.value = error.message;
+                            }
+        
+                            
+                        }
+                        if(error.field =="creditcard.dateOfExpiry"){
+                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
+                                creditcardOwner.value = "";
+                            }else{
+                                dateofexpiryerror.value = error.message;
+                            }
+                        }
                     }
                 }
-            }
             } else {
                 // valid.value = false;
                 paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";

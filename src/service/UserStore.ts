@@ -15,7 +15,7 @@ const state = reactive({
 
 
 
-function sendLogin(loginRequest: LoginRequest){
+async function sendLogin(loginRequest: LoginRequest){
     console.log("Es wird eingeloggt.")
     state.isfetching = true;
     fetch(`http://localhost:9090/api/user/login`,{
