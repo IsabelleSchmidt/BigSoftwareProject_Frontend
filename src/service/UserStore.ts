@@ -7,8 +7,10 @@ const state = reactive({
     errormessage: "",
     check: false, //hier wieder false machen
     jwttokens: Array<JwtToken>(),
+    email: "",
     errormessages: Array<MessageResponse>(),
-    isfetching: false
+    isfetching: false,
+    allAdresses: Array<Adress>()
 })
 
 
@@ -34,6 +36,7 @@ function sendLogin(loginRequest: LoginRequest){
             return response.json();
       }).then((jsondata: JwtToken) => {
           state.jwttokens.push(jsondata);
+          state.email = loginRequest.email;
           console.log(state.jwttokens);   
       }).catch((error) => {
           state.errormessage = "Email-Adresse oder Passwort falsch."
@@ -71,9 +74,34 @@ async function sendUser(signUpRequest: SignUpRequest) {
     
 }
 
-function getAdresses() {
-    console.log("send fetch to get adresses");
-    return [["Burgstraße","5","55262","Heidesheim"], ["Kurfürstenstraße","46","55118","Mainz"]];
+async function getAdresses(e: string): Promise<void> {
+    console.log("send fetch to get adresses: " + e);
+
+    const adresses = new Array<Adress>();
+
+    fetch(`http://localhost:9090/api/user/email/${e}`,{
+        method: 'GET'
+    }).then((response) => {
+        if(!response.ok){
+            throw new Error(state.errormessage);
+        }
+        return response.json();
+    }).then((jsondata: Array<Adress>) => {
+        for(let i = 0; i < jsondata.length; i++){
+            adresses.push(jsondata[i]);
+          }
+          state.allAdresses = adresses;
+    }).catch((fehler) => {
+        //fehler.state.errormessage("Fehler bei der Serverkommunikation");
+        //state.liste = alt;
+        console.log(fehler);
+    });   
+    console.log("Adresses nachm Fetch: " + JSON.stringify(state.allAdresses));
+    // const adr1: Adress = {streetName: "Burgstraße", houseNumber: "5", postCode: "55262", city: "Heidesheim"};
+    // adresses.push(adr1);
+    // const adr2: Adress = {streetName: "Kurfürstenstraße", houseNumber: "46", postCode: "55118", city: "Mainz"};
+    // adresses.push(adr2);
+    // return adresses;
 }
 
 export function postLoginUser(){
@@ -88,6 +116,8 @@ export function postLoginUser(){
 export function useUserStore(){
     return {
         jwttokens: computed(() => state.jwttokens),
+        email: computed(() => state.email),
+        adresses: computed(() => state.allAdresses),
         getAdresses
     }
 }

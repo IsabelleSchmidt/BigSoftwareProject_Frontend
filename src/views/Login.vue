@@ -66,9 +66,9 @@
 
                 loginRequest.email = email.value;
                 loginRequest.password = password.value;
-                console.log('UuuuseR:', loginRequest);
+                // console.log('UuuuseR:', loginRequest);
                 sendLogin(loginRequest);
-                console.log('Ich bin nach sendlogin', loginRequest);
+                // console.log('Ich bin nach sendlogin', loginRequest);
 
 
 
