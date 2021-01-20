@@ -26,7 +26,9 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     }).then((response) => {
         if(!response.ok){
             console.log("Error");
+            state.orderSuccess = false;
             throw new Error(state.errormessage);
+            
         }
         return response.json();
     }).then((jsondata: Array<MessageResponse>) =>{
@@ -34,6 +36,8 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         console.log("ERRORS bei sende UserOrderRequests : " + JSON.stringify(state.errormessages));
         if(state.errormessages.length > 0){
             state.orderSuccess=false;
+        }else{
+            state.orderSuccess = true;
         }
     }).catch((exception) => {
         console.log(exception)
