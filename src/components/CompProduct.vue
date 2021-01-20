@@ -38,7 +38,7 @@ export default defineComponent({
         const q = {room: ro, producttype: pr, name: n};
         const filter = reactive(q);
 
-        const {list, update}  = useProduct(); //, errormessage
+        const {allproductslist, update}  = useProduct(); //, errormessage
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
@@ -54,17 +54,17 @@ export default defineComponent({
             q.name.value = route.query.name;
             
             if (filter.room === "all" && filter.producttype === "all") {
-                return list.value;
+                return allproductslist.value;
             } else if (filter.room !== "all" && filter.producttype === "all") {
-                return list.value.filter(p => p.roomType === filter.room?.toString());
+                return allproductslist.value.filter(p => p.roomType === filter.room?.toString());
             } else if (filter.room === "all" && filter.producttype !== "all") {
-                return list.value.filter(p => p.productType === filter.producttype?.toString());
+                return allproductslist.value.filter(p => p.productType === filter.producttype?.toString());
             } else {
                 q.room.value = route.query.room;
                 q.producttype.value = route.query.producttype;
                 // console.log("nach beidem filtern");
 
-                return list.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
+                return allproductslist.value.filter(p => p.productType === filter.producttype?.toString() && p.roomType === filter.room?.toString());
             }
             
         });

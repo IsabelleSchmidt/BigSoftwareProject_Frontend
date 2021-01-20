@@ -177,7 +177,7 @@ export default defineComponent({
         
         const token = jwttokens.value[0];
 
-        console.log("TOKEN: " + JSON.stringify(token));
+        // console.log("TOKEN: " + JSON.stringify(token));
 
         const inTotal = computed(()=> {
             return totalPrice();
@@ -187,17 +187,15 @@ export default defineComponent({
             return Array.from(list.value.entries());
         });
 
-        const options = ref(Array<Adress>());
-
         onMounted(async () => {
             await getAdresses(email.value);
-            console.log("ADRESSES from fetch: " + JSON.stringify(adresses));
+            // console.log("ADRESSES from fetch: " + JSON.stringify(adresses.value));
         });
         
 
         function adrChange(event: string) {
             // const aa = event as Adress;
-            console.log("Adr geändert zu: " + event);
+            // console.log("Adr geändert zu: " + event);
             const a: Adress = {'streetName': event.split(',')[0], 'houseNumber': event.split(',')[1], 'postCode': event.split(',')[2], 'city': event.split(',')[3]};
             streetName.value = a.streetName;
             houseNumber.value = a.houseNumber;
@@ -208,8 +206,7 @@ export default defineComponent({
         async function sendOrder(): Promise<void>{
 
             // valid.value = true;
-
-            console.log("sendOrder   " + payment.value);
+            // console.log("sendOrder   " + payment.value);
 
             if (payment.value !== "") {
                 paymenterror.value = "";
@@ -237,6 +234,8 @@ export default defineComponent({
                 creditcardownererror.value = "";
                 creditcardnumbererror.value = "";
                 dateofexpiryerror.value = "";
+
+
                
                 if(await postOrder(uor, order)){
                     clearCart();
@@ -308,13 +307,8 @@ export default defineComponent({
                     }
                 }
             } else {
-                // valid.value = false;
                 paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
             }
-
-            // if (valid.value == true) {
-            //     router.push("/orderConf");
-            // }
             
         }
 
@@ -337,7 +331,6 @@ export default defineComponent({
             token,
             payment,
             paymenterror,
-            options,
             adrChange,
             streetnameerror,
             housenumbererror,
@@ -349,7 +342,8 @@ export default defineComponent({
             creditcardownererror,
             creditcardnumbererror,
             dateofexpiryerror,
-            notavailableerror
+            notavailableerror,
+            adresses
         };
     }   
 })

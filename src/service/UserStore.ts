@@ -76,32 +76,27 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 async function getAdresses(e: string): Promise<void> {
     console.log("send fetch to get adresses: " + e);
-
     const adresses = new Array<Adress>();
 
-    fetch(`http://localhost:9090/api/user/email/${e}`,{
+    await fetch(`http://localhost:9090/api/user/email/${e}`,{
         method: 'GET'
     }).then((response) => {
         if(!response.ok){
             throw new Error(state.errormessage);
         }
         return response.json();
-    }).then((jsondata: Array<Adress>) => {
-        for(let i = 0; i < jsondata.length; i++){
-            adresses.push(jsondata[i]);
-          }
-          state.allAdresses = adresses;
+    }).then((jsondata: User) => {
+        
+        for (let i = 0; i < Array.from(jsondata.allAdresses).length; i++) {
+            adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
+        }
+        state.allAdresses = adresses;
+        // console.log("Adresses nachm Fetch: " + JSON.stringify(state.allAdresses));
     }).catch((fehler) => {
         //fehler.state.errormessage("Fehler bei der Serverkommunikation");
         //state.liste = alt;
         console.log(fehler);
-    });   
-    console.log("Adresses nachm Fetch: " + JSON.stringify(state.allAdresses));
-    // const adr1: Adress = {streetName: "Burgstraße", houseNumber: "5", postCode: "55262", city: "Heidesheim"};
-    // adresses.push(adr1);
-    // const adr2: Adress = {streetName: "Kurfürstenstraße", houseNumber: "46", postCode: "55118", city: "Mainz"};
-    // adresses.push(adr2);
-    // return adresses;
+    });  
 }
 
 export function postLoginUser(){

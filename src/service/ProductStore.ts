@@ -49,19 +49,28 @@ const state = reactive({
 
   function getProductByArtNr(nr: number){
     for (let i = 0; i < state.list.length; i++) {
-        if (state.list[i].articlenr == nr) {
-            return state.list[i];
-        }
+      if (state.list[i].articlenr == nr) {
+        return state.list[i];
+      }
     }
-}
+  }
+
+  function getAvailableByArtNr(nr: number) {
+    for (let i = 0; i < state.list.length; i++) {
+      if (state.list[i].articlenr == nr) {
+          return state.list[i].available;
+      }
+    }
+  }
     
 
     export function useProduct() {
         return {
           // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
-          list: computed(() => state.list),
+          allproductslist: computed(() => state.list),
           //errormessage: computed(() => state.errormessage),
           update,
-          getProductByArtNr
+          getProductByArtNr,
+          getAvailableByArtNr
         }
       }
