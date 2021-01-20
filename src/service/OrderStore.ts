@@ -1,7 +1,11 @@
 import {useCartStore} from '@/service/CartStore'
 import { computed,reactive} from 'vue'
+import { useProduct} from './ProductStore';
 
 const {list} = useCartStore();
+const {allproductslist, getAvailableByArtNr} = useProduct();
+
+
 
 const state = reactive({
     errormessage: "",
@@ -68,13 +72,24 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
             console.log("Bestellung erfolgreich!");
             state.orderSuccess = true;
         }
-        
-        
     }).catch((exception) => {
         console.log(exception)
     });
 
     return state.orderSuccess;
+}
+
+function checkAllItemsStillAvailable(){
+    for (let i = 0; i < state.orderlist.size; i++) {
+        const artnr = Array.from(state.orderlist.keys())[i];
+        const available = getAvailableByArtNr(artnr) as number;
+        const needtobeavailable = Array.from(state.orderlist.values())[i]
+        if (needtobeavailable > available) {
+            return false;
+            //TODO: aus Warenkorb löschen bzw. Anpassen
+        }
+    } 
+    return true; 
 }
     
 
@@ -83,6 +98,7 @@ export function usePostOrder() {
         postOrder,
         errormessages: computed(() => state.errormessages),
         ordererrormessages: computed(() => state.ordererrormessages),
-        allorders: state.allorders
+        allorders: state.allorders,
+        checkAllItemsStillAvailable
     }
 }

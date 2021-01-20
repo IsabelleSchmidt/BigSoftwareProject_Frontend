@@ -2,12 +2,15 @@
 import { computed, reactive } from 'vue'
 import '../service/Requests'
 import '../service/Response'
+import '../service/User'
 
 const state = reactive({
     errormessage: "",
     check: false, 
     jwttokens: Array<JwtToken>(),
+    email: "",
     errormessages: Array<MessageResponse>(),
+    allAdresses: Array<Adress>()
 })
 
 
@@ -31,6 +34,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean>{
       }).then((jsondata: JwtToken) => {
           console.log("SET TOKEN.");
           state.jwttokens.push(jsondata);
+          state.email = loginRequest.email;
           console.log(state.jwttokens);   
       }).catch((error) => {
           state.errormessage = "Email-Adresse oder Passwort falsch." + error
@@ -61,9 +65,29 @@ async function sendUser(signUpRequest: SignUpRequest){
 
 }
 
-function getAdresses() {
-    console.log("send fetch to get adresses");
-    return [["Burgstraße","5","55262","Heidesheim"], ["Kurfürstenstraße","46","55118","Mainz"]];
+async function getAdresses(e: string): Promise<void> {
+    console.log("send fetch to get adresses: " + e);
+    const adresses = new Array<Adress>();
+
+    await fetch(`http://localhost:9090/api/user/email/${e}`,{
+        method: 'GET'
+    }).then((response) => {
+        if(!response.ok){
+            throw new Error(state.errormessage);
+        }
+        return response.json();
+    }).then((jsondata: User) => {
+        
+        for (let i = 0; i < Array.from(jsondata.allAdresses).length; i++) {
+            adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
+        }
+        state.allAdresses = adresses;
+        // console.log("Adresses nachm Fetch: " + JSON.stringify(state.allAdresses));
+    }).catch((fehler) => {
+        //fehler.state.errormessage("Fehler bei der Serverkommunikation");
+        //state.liste = alt;
+        console.log(fehler);
+    });  
 }
 
 export function postLoginUser(){
@@ -77,6 +101,8 @@ export function postLoginUser(){
 export function useUserStore(){
     return {
         jwttokens: computed(() => state.jwttokens),
+        email: computed(() => state.email),
+        adresses: computed(() => state.allAdresses),
         getAdresses
     }
 }

@@ -6,7 +6,7 @@
                 <h2>Versandadresse</h2>
                 <div>
                     <select v-model="selectedadr" name="adress" @change="adrChange($event.target.value)">
-                        <option v-for="item in options" :value="item" :key="item.id">{{item[0]}} {{item[1]}}, {{item[2]}} {{item[3]}}</option>
+                        <option v-for="item in adresses" :value="[item.streetName,item.houseNumber,item.postCode,item.city]" :key="item.id">{{item.streetName}} {{item.houseNumber}}, {{item.postCode}} {{item.city}}</option>
                     </select>
                 </div>
                 <div class="row">
@@ -97,6 +97,7 @@
         </form>
 
         <h2>Lieferung 18.02.2021</h2>
+        <div class="error">{{notavailableerror}}</div>
         <div class="row">
             <OrderListObject :product="pr" v-for="pr  in productList" :key="pr.id" />
         </div>
@@ -115,11 +116,13 @@
 
 <script lang="ts">
 import OrderListObject from "../components/OrderListObject.vue"
-import {defineComponent, computed, ref, reactive } from 'vue'
+import { defineComponent, computed, ref, reactive, onMounted } from 'vue'
 import {useCartStore} from '../service/CartStore'
 import {usePostOrder} from '../service/OrderStore'
 import {useUserStore} from '../service/UserStore'
 import { useRouter, useRoute } from 'vue-router'
+// import Multiselect from 'vue-multiselect'
+
 
 export default defineComponent({
     name: 'OrderForm',
@@ -131,7 +134,8 @@ export default defineComponent({
         const {list, addProduct, deleteProduct, totalPrice, clearCart} = useCartStore();
 
         const {postOrder, errormessages} = usePostOrder();
-        const {jwttokens, getAdresses} = useUserStore();
+
+        const {jwttokens, getAdresses, adresses, email} = useUserStore();
         const router = useRouter();
 
 
@@ -167,12 +171,13 @@ export default defineComponent({
         const creditcardownererror = ref("");
         const creditcardnumbererror = ref("");
         const dateofexpiryerror = ref("");
+        const notavailableerror = ref("");
 
-        //UserOrderRequest
+        // const valid = ref(true);
         
         const token = jwttokens.value[0];
 
-        console.log("TOKEN: " + JSON.stringify(token));
+        // console.log("TOKEN: " + JSON.stringify(token));
 
         const inTotal = computed(()=> {
             return totalPrice();
@@ -182,9 +187,15 @@ export default defineComponent({
             return Array.from(list.value.entries());
         });
 
-        const options = getAdresses();      
+        onMounted(async () => {
+            await getAdresses(email.value);
+            // console.log("ADRESSES from fetch: " + JSON.stringify(adresses.value));
+        });
+        
 
         function adrChange(event: string) {
+            // const aa = event as Adress;
+            // console.log("Adr geändert zu: " + event);
             const a: Adress = {'streetName': event.split(',')[0], 'houseNumber': event.split(',')[1], 'postCode': event.split(',')[2], 'city': event.split(',')[3]};
             streetName.value = a.streetName;
             houseNumber.value = a.houseNumber;
@@ -193,7 +204,10 @@ export default defineComponent({
         }
 
         async function sendOrder(): Promise<void>{
-            console.log("sendOrder   " + payment.value);
+
+            // valid.value = true;
+            // console.log("sendOrder   " + payment.value);
+
             if (payment.value !== "") {
                 paymenterror.value = "";
                 const adr: Adress = {'streetName': streetName.value, 'houseNumber': houseNumber.value, 'postCode': postCode.value, 'city': city.value};
@@ -311,7 +325,6 @@ export default defineComponent({
             token,
             payment,
             paymenterror,
-            options,
             adrChange,
             streetnameerror,
             housenumbererror,
@@ -322,7 +335,9 @@ export default defineComponent({
             bankerror,
             creditcardownererror,
             creditcardnumbererror,
-            dateofexpiryerror
+            dateofexpiryerror,
+            notavailableerror,
+            adresses
         };
     }   
 })

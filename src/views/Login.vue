@@ -44,6 +44,7 @@
                 
                 async function loginUser(){
 
+
                     loginRequest.email = email.value;
                     loginRequest.password = password.value;
                     console.log('UuuuseR:', loginRequest);
