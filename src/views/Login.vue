@@ -17,7 +17,7 @@
             <!-- button machen lloginuser aufrufen ..use.router -->
                         </div>
             <div class="row">    
-                <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
+                Noch kein Kunde? <router-link id="link" to="/register">Hier registrieren</router-link>
             </div>
         </form>
     </div>
@@ -142,13 +142,6 @@ input[type=submit]{
     padding: 1% 5%;
 }
 
-.link {
-    margin: 4% 0% 5% 6.5%;
-    color: black;
-    text-decoration: none;
-    list-style: none;
-    list-style-type: none;
-}
 
 #pw {
     width: 30%;
@@ -166,4 +159,10 @@ input[type=submit]{
     resize: vertical;
 }
 
+#link {
+    text-decoration: none;
+    list-style: none;
+    list-style-type: none;
+    color: $color-green;
+}
 </style>

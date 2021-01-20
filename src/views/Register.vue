@@ -50,10 +50,17 @@
                     <div class="error"> {{secondpassworderror}}</div> 
                 </div>
             </div>
-            <button id="registerB" onclick="check()"> </button>
+            
             <!--<component v-bind:is="compref" @open-reg="changeComp($event)" @open-ord="toggle()" :tst="compref" />-->
-             <router-link id="link" :to="{ path: '/orderform'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
+            <div class="row"> 
+            <router-link :to="{ path: '/orderform'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
+            </div>
+
+            <div class="row">    
+                Bereits regestriert? <router-link id="link" to="/login">Hier einloggen</router-link>
+            </div>
         </form>
+        
     </div> 
 </template>
 
@@ -261,7 +268,7 @@ input[type=text]{
 }
 
 input[type=submit]{
-    margin: 5% 0% 0% 15%;
+    margin: 5% 0% 2.5% 15%;
 }
 #pw1{
     width: 30%;
@@ -289,6 +296,13 @@ input[type=submit]{
 #registerB{
     padding: 0%;
     visibility: hidden;
+}
+
+#link {
+    text-decoration: none;
+    list-style: none;
+    list-style-type: none;
+    color: $color-green;
 }
 
 </style>
