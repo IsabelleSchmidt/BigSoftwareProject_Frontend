@@ -37,7 +37,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean>{
           state.email = loginRequest.email;
           console.log(state.jwttokens);   
       }).catch((error) => {
-          state.errormessage = "Email-Adresse oder Passwort falsch." + error
+          state.errormessage = "Email-Adresse oder Passwort falsch."
       })
 
       console.log("RETURN");
