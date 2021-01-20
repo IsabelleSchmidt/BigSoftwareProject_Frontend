@@ -221,14 +221,18 @@ export default defineComponent({
                 creditcardnumbererror.value = "";
                 dateofexpiryerror.value = "";
 
-               
-                if(await postOrder(uor, order)){
+               const orderSuccess = await postOrder(uor, order);
+               console.log("Order success vue: "+orderSuccess);
+                if(orderSuccess){
                     clearCart();
                     router.push("/orderConf");
                 }
 
                 else{
+                    //kann man liste nach speziellem error filtern oder so? oder zu switch switchen haha
                     for(const error of errormessages.value){
+                     
+                    
                         if(error.field == "adress.streetName"){
                             streetnameerror.value = error.message;
                         }
@@ -242,55 +246,45 @@ export default defineComponent({
                             cityerror.value = error.message;
                         }
                         if(error.field == "bankCard.iban"){
-                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                                ibanerror.value = "";
-                            }else{
-                                ibanerror.value = error.message;    
-                            }
+                           
+                            ibanerror.value = error.message;    
+                        }
                                             
-                        }
                         if(error.field == "bankCard.owner"){
-                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                                bankcardownererror.value = "";
-                            }else{
-                                bankcardownererror.value = error.message;
-                            }
-                            
+                           
+                            bankcardownererror.value = error.message;
                         }
+                            
+                        
                         if(error.field == "bankCard.bank"){
-                            if(iban.value == "" && bankcardOwner.value == "" && bankcardOwner.value == ""){
-                                bankerror.value = "";
-                            }else{
-                                bankerror.value = error.message;
-                            }
                             
+                             bankerror.value = error.message;
                         }
+                        
                         if(error.field == "creditcard.cowner"){
-                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                                creditcardOwner.value = "";
-                            }else{
-                                creditcardownererror.value = error.message;
-                            }
-                            
+                           
+                            creditcardownererror.value = error.message;
                         }
                         if(error.field =="creditcard.creditcardnumber"){
-                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                                creditcardnumbererror.value = "";
-                            }else{
                                 creditcardnumbererror.value = error.message;
-                            }
-        
-                            
                         }
                         if(error.field =="creditcard.dateOfExpiry"){
-                            if(creditcardnumber.value == "" && creditcardOwner.value == ""){
-                                creditcardOwner.value = "";
-                            }else{
-                                dateofexpiryerror.value = error.message;
-                            }
+                            dateofexpiryerror.value = error.message;
                             
                         }
                     }
+                    if(payment.value == "bankcard"){
+                        dateofexpiryerror.value = "";
+                        creditcardnumbererror.value = "";
+                        creditcardownererror.value = "";
+
+                    }else if(payment.value =="creditcard"){
+                        bankcardownererror.value = "";
+                        ibanerror.value = "";
+                        bankerror.value = "";
+
+                    }
+                  
                 }
             } else {
                 paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";

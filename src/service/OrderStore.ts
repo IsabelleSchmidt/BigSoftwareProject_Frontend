@@ -32,10 +32,16 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     }).then((jsondata: Array<MessageResponse>) =>{
         state.errormessages = jsondata;
         console.log("ERRORS bei sende UserOrderRequests : " + JSON.stringify(state.errormessages));
+        if(state.errormessages.length > 0){
+            state.orderSuccess=false;
+        }
     }).catch((exception) => {
         console.log(exception)
     });
-
+    
+    if(!state.orderSuccess){
+        return false;
+    }
    //Fetch -> ordered Articles
     await fetch(`http://localhost:9090/api/order/new`,{
         method: 'POST',
