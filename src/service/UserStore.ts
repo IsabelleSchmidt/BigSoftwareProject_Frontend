@@ -5,70 +5,60 @@ import '../service/Response'
 
 const state = reactive({
     errormessage: "",
-    check: false, //hier wieder false machen
+    check: false, 
     jwttokens: Array<JwtToken>(),
     errormessages: Array<MessageResponse>(),
-    isfetching: false
 })
 
 
 
-async function sendLogin(loginRequest: LoginRequest){
+async function sendLogin(loginRequest: LoginRequest): Promise<boolean>{
+    state.check = false;
     console.log("Es wird eingeloggt.")
-    state.isfetching = true;
-    fetch(`http://localhost:9090/api/user/login`,{
+    await fetch(`http://localhost:9090/api/user/login`,{
         method: 'POST',
         headers: {"Content-Type":'application/json'},
         body: JSON.stringify(loginRequest),
       }).then((response) => {
             if(!response.ok){
                 state.check = false;
-                console.log("false", state.check);
-                state.isfetching = false;
+                console.log("Responsestatus: "+response.status);
                 throw new Error(state.errormessage);
+            }else{
+                state.check = true;
             }
-            state.check = true;
-            console.log("true", state.check);
-            state.isfetching = false;
-            console.log('Jetzt bin ich im fetch');
             return response.json();
       }).then((jsondata: JwtToken) => {
+          console.log("SET TOKEN.");
           state.jwttokens.push(jsondata);
           console.log(state.jwttokens);   
       }).catch((error) => {
-          state.errormessage = "Email-Adresse oder Passwort falsch."
+          state.errormessage = "Email-Adresse oder Passwort falsch." + error
       })
+
+      console.log("RETURN");
+      return state.check;
 }
 
-async function sendUser(signUpRequest: SignUpRequest) {
+async function sendUser(signUpRequest: SignUpRequest){
+
     console.log("Sende: " + 'User ' +JSON.stringify(signUpRequest));
     await fetch(`http://localhost:9090/api/user/register`,{
       method: 'POST',
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify(signUpRequest)
     }).then((response) =>{
-        if(!response.ok){
+        if(!response.ok){ 
             throw new Error(state.errormessage);
-            state.check = false;
         }
-        console.log("REGISTRIERUNG GUT");
         return response.json();
     }).then((jsondata: Array<MessageResponse>) =>{
+        console.log("JSON")
         state.errormessages = jsondata;
-        if(state.errormessages.length == 0){
-            console.log(`Im Fetch. Errorm länge: ${state.errormessages.length}`);
-            state.check = true;
-            console.log(`Im Fetch. Check status wenn länge null: ${state.check}`);
-        }else{
-            state.check = false;
-        }
-        //state.check = false;
     }).catch((error) => {
         console.log(error)
     });
 
-    //Ziel -> response in Array<ResponseMessage> umwandeln -> Array von errors in errormessages speichern
-    
 }
 
 function getAdresses() {
@@ -80,7 +70,6 @@ export function postLoginUser(){
     return{
         errormessage: computed(() => state.errormessage),
         check: computed(() => state.check),
-        isfetching: computed(()=> state.isfetching),
         sendLogin
     }
 }

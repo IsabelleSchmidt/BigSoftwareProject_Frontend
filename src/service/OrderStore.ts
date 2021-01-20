@@ -57,7 +57,6 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
             state.allorders.add(jsondata[0].orderid);
             console.log("Bestellung erfolgreich!");
             state.orderSuccess = true;
-            //TODO: Bestaetigung anzeigen und auf Bestelluebersicht weiterleiten
         }
         
         

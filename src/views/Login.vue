@@ -12,10 +12,8 @@
                 <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
             </div>
             <div class="row">    
-            <button name="loginUser" value="Login" > Login</button>
-            <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
-            <!-- button machen lloginuser aufrufen ..use.router -->
-                        </div>
+                <button name="loginUser" value="Login" > Login</button>
+            </div>
             <div class="row">    
                 <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
             </div>
@@ -27,7 +25,7 @@
 
     import{postLoginUser} from '../service/UserStore'
     import{ref, defineComponent, computed, reactive, watch} from 'vue'
-    import { useRouter, useRoute } from 'vue-router'
+    import{useRouter, useRoute } from 'vue-router'
 
     export default defineComponent({
         name:"Login",
@@ -36,50 +34,26 @@
             const email = ref("");
             const password = ref("");
             const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
-            const {sendLogin, errormessage, check, isfetching} = postLoginUser();
+            const {sendLogin, errormessage, check} = postLoginUser();
             const router = useRouter();
-            //const c = check;
-
             const COLORS = [
                 "red",
                 "#ccc"
             ]
-                // const link = computed(()=> {
-                //     const l = c ? "/login" : "/orderform"; 
-                //     //router.push(l);
-                //     console.log("change");
-                //     return l;
-                // })
-
-                //watch wird benutzt um die check variable zu überprüfen
-                //weitere if abfrage nötig wenn man sich zum beispiel ausloggen möchte
-                watch(check, (neu, alt)=> {
-                    console.log(`check: ${neu} vorher: ${alt}`);
-
-                if(check.value == true ){
-                        console.log("Emaaail", email.value);
-                        router.push("/orderform");
-                    }             
-                })
+               
                 
                 async function loginUser(){
 
                     loginRequest.email = email.value;
                     loginRequest.password = password.value;
                     console.log('UuuuseR:', loginRequest);
-                    await sendLogin(loginRequest);
-                    console.log('Ich bin nach sendlogin', loginRequest);
-
-
-
-                    // // while(isfetching){
-                    // //     console.log("--");
-                    // // }
-                    //     const test = check ? "/login" : "/orderform";
-                    //     console.log("test", test);
-                    //     router.push(test);
-                    //     console.log("Check ausgabe",check.value);
-
+                    const loginSuccess = await(sendLogin(loginRequest));
+                    if(loginSuccess){
+                        console.log("Login success!");
+                        router.push("/orderForm");
+                    }else{
+                        console.log("LOGIN FEHLGESCHLAGEN.")
+                    }
                 } 
 
             return {

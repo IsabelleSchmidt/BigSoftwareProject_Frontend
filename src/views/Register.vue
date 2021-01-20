@@ -141,10 +141,6 @@
                 }                        
             }
 
-
-            // function ruleCheck() {
-            // }
-
             return {
                 newUser,
                 firstname,
