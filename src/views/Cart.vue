@@ -3,11 +3,11 @@
         <div id="carthead">
             <h3>Ihre Produkte</h3>
         </div>
-        <div>
+        <div id="list">
             <CartList/>
         </div>
         <div id="order">
-            <router-link id="orderB" to="/login"> zur Kasse </router-link>
+            <router-link to="/login"><button value="zur Kasse" id="checkout"> zur Kasse </button></router-link>
         </div>
     </div>
 </template>
@@ -21,41 +21,32 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-    .cart{
-        display: flex;
-        flex-direction: column;
-    } 
-  
-   #carthead{
-       display: flex;
-       justify-content: center;
-   } 
-  #carthead h3{
-       margin-top: 5%;
-       text-align: center;
-       
-   
-  } 
-   #order{
-       display:flex;
-       justify-content: center;
-   } 
-   #orderB{
-       margin: 5%;
-       padding: 1.5% 10%;
-       //width: 100%; 
-       background-color: black;
-       border-style: none;
-       color: #fff;
-       text-align: center;
-      &:hover{
-          background-color: #3BA07C;
-          
-      } 
-      &:focus{
-          outline: none;
-      } 
-   } 
+<style scoped lang="scss">
+.cart{
+    display: flex;
+    flex-direction: column;
+} 
+#list{
+    display: flex;
+    justify-content: center;
+}
+
+#carthead{
+    display: flex;
+    justify-content: center;
+} 
+#carthead h3{
+    margin-top: 5%;
+    text-align: center;
+        
+} 
+#order{
+    display:flex;
+    justify-content: center;
+} 
+
+#checkout{
+    padding: 20% 100%;
+}
 
 </style>

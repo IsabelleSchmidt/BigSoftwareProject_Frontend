@@ -29,8 +29,8 @@
 <script lang="ts">
 import '@/service/Product'
 import { defineComponent, ref} from 'vue'
-import {useCartStore} from '@/service/CartStore'
-import {useProduct} from '@/service/ProductStore'
+import {useCartStore} from '../service/CartStore'
+import {useProduct} from '../service/ProductStore'
 
 export default defineComponent({
     name: "CartListObject",
@@ -91,7 +91,7 @@ export default defineComponent({
     },
 });
 </script>
-<style lang = "scss">
+<style lang = "scss" scoped>
 ul{
     list-style: none;
 } 
@@ -121,36 +121,36 @@ ul{
     float: left;
     font-size: 14px;
 } 
-    .productobject{
-        margin-left: 2em;
-        margin-right: 2em;
-        margin-top: 1.5em;
-        margin-bottom: 1.5em;
-        min-width: 35em;
-        float: left;
+.productobject{
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    min-width: 35em;
+    float: left;
+} 
+#delete{
+    border-style: none;
+    background: none;
+    &:focus{
+        outline: none;
     } 
-    #delete{
-        border-style: none;
-        background: none;
-        &:focus{
-            outline: none;
-        } 
-    } 
-   
-    #pic{
-        float: left;
-        width: 5em;
-    } 
-     #line{
-        border-bottom: 2px solid #d4d4d4;
-    }  
+} 
 
-    .information{
-        float: left;
-        margin-left: 5%;
-    } 
+#pic{
+    float: left;
+    width: 5em;
+} 
+#line{
+    border-bottom: 2px solid $color-grey2;
+}  
 
-    .close{
-        float: right;
-    } 
+.information{
+    float: left;
+    margin-left: 5%;
+} 
+
+.close{
+    float: right;
+} 
 </style>

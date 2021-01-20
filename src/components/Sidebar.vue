@@ -28,9 +28,9 @@
 <style scoped lang="scss">
     .sidebar{
         text-align: left;
-        color: black;
+        color: $color-dark;
         float: left;
-        background-color: #f3f3f3;
+        background-color: $color-grey;
         padding: 1.5%;
         max-width: 15%;
         margin-left: 20px;
@@ -44,13 +44,13 @@
         margin: 0px;
     } 
     #link{
-        color: black;
+        color: $color-dark;
         text-decoration: none;
         list-style: none;
         list-style-type: none;
     } 
     #link:hover{
-        color: #6F492D;
+        color: $color-brown;
         text-decoration: none;
     } 
     li{

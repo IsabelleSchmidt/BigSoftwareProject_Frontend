@@ -12,7 +12,7 @@
                 <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
             </div>
             <div class="row">    
-            <button name="loginUser" value="Login" > Login</button>
+            <input type="submit" name="loginUser" value="Login" >
             <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
             <!-- button machen lloginuser aufrufen ..use.router -->
                         </div>
@@ -128,27 +128,18 @@ label{
     clear: both;
 }
 input:focus{
-    outline-color: #3BA07C;
+    outline-color: $color-green;
 }
 input[type=text]{
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid $color-grey3;
     border-radius:3px;
     resize: vertical;
 }
 input[type=submit]{
     margin: 5% 0% 5% 15%;
     padding: 1% 5%;
-    background-color: black;
-    border-style: none;
-    color: #fff;
-    &:hover{
-        background-color: #3BA07C;
-    }
-    &:focus{
-        outline: none;
-    }
 }
 
 .link {

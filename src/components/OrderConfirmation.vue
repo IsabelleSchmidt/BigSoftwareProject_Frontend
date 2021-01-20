@@ -26,7 +26,7 @@
         margin-top: 120px;
     }
     h1{
-        color: #3BA07C;
+        color: $color-green;
         text-align: center;
     }
     #link{
@@ -34,7 +34,7 @@
         color: black;
     }
     #link:hover{
-        color: #6F492D;
+        color: $color-brown;
     }
     
 </style>

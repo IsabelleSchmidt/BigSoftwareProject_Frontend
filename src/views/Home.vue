@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 h1{
   padding: 1.7em;
   text-align: center;

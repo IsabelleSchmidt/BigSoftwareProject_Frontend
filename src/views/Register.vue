@@ -50,7 +50,7 @@
                     <div class="error"> {{secondpassworderror}}</div> 
                 </div>
             </div>
-            <button id="registrierenB" onclick="check()"> </button>
+            <button id="registerB" onclick="check()"> </button>
             <!--<component v-bind:is="compref" @open-reg="changeComp($event)" @open-ord="toggle()" :tst="compref" />-->
              <router-link id="link" :to="{ path: '/orderform'}" > <input type="submit" name="registerUser" value="Registrieren" /> </router-link> 
         </form>
@@ -250,32 +250,23 @@ label{
     align-content: center;
 }
 input:focus{
-    outline-color: #3BA07C;
+    outline-color: $color-green;
 }
 input[type=text]{
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid $color-grey3;
     border-radius:3px;
     resize: vertical;
 }
+
 input[type=submit]{
     margin: 5% 0% 0% 15%;
-    padding: 1% 5%;
-    background-color: black;
-    border-style: none;
-    color: #fff;
-    &:hover{
-        background-color: #3BA07C;
-    }
-    &:focus{
-        outline: none;
-    }
 }
 #pw1{
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid $color-grey3;
     border-radius:3px;
     resize: vertical;
 
@@ -284,7 +275,7 @@ input[type=submit]{
 #pw2{
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid $color-grey3;
     border-radius:3px;
     resize: vertical;
 
@@ -293,6 +284,11 @@ input[type=submit]{
 .error {
     color: red;
     margin: 5px 0px 0px 0px;
+}
+
+#registerB{
+    padding: 0%;
+    visibility: hidden;
 }
 
 </style>
