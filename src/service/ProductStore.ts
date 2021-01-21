@@ -1,5 +1,5 @@
 //import {Client} from '@stomp/stompjs'; //Message
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
 import { computed } from 'vue'
@@ -54,6 +54,17 @@ const state = reactive({
         }
     }
 }
+function getHightPrice(){
+  const highest = ref(0);
+  for (let i = 0; i < state.list.length; i++) {
+    if (highest.value < state.list[i].price) {
+      highest.value = state.list[i].price;
+
+    }
+  }
+  return highest.value;
+
+}
     
 
     export function useProduct() {
@@ -62,6 +73,7 @@ const state = reactive({
           list: computed(() => state.list),
           //errormessage: computed(() => state.errormessage),
           update,
-          getProductByArtNr
+          getProductByArtNr,
+          getHightPrice
         }
       }
