@@ -58,16 +58,98 @@
     </div>  
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, onMounted} from 'vue'
+import {useFilterStore} from "../service/FilterStore"
 export default defineComponent({
     name: "ColorFilter",
 
     setup(){
+
+        const grey = ref();
+        const black = ref();
+        const beige = ref();
+        const brown = ref();
+        const green = ref();
+        const white = ref();
+        const blue = ref();
+        const red = ref();
+        const yellow = ref();
+        const orange = ref();
+        const rosa = ref();
+        const purple = ref();
+
+        const {colorlist, addColorFilter, deleteColorFilter} = useFilterStore();
+    
+    
         function checked(color: string): void{
             console.log("color" + color)
 
+            if(colorlist.value.has(color)){
+                    deleteColorFilter(color)
+                }else{
+                    addColorFilter(color)
+                }
+
         }
+
+         onMounted(async()=> {
+            console.log("hier ")
+            for(let i = 0; i< colorlist.value.size; i++){
+                const key = Array.from(colorlist.value.keys())[i];
+               if(key  == 'grey'){
+                   grey.value = true; 
+               }
+               if(key  == 'black'){
+                   black.value = true; 
+               }
+               if(key  == 'beige'){
+                   beige.value = true; 
+               }
+               if(key  == 'brown'){
+                   brown.value = true; 
+               }
+               if(key  == 'green'){
+                   green.value = true; 
+               }
+               if(key  == 'white'){
+                   white.value = true; 
+               }
+               if(key  == 'blue'){
+                   blue.value = true; 
+               }
+               if(key  == 'red'){
+                   red.value = true; 
+               }
+               if(key  == 'yellow'){
+                   yellow.value = true; 
+               }
+               if(key  == 'orange'){
+                   orange.value = true; 
+               }
+               if(key  == 'rosa'){
+                   rosa.value = true; 
+               }
+               if(key  == 'purple'){
+                   purple.value = true; 
+               }
+            }
+                    
+            
+        });
+       
         return {
+            grey,
+            black, 
+            beige,
+            brown, 
+            green, 
+            white,
+            blue,
+            red,
+            yellow,
+            orange, 
+            rosa,
+            purple,
             checked
         };
 

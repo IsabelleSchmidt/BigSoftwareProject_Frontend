@@ -79,7 +79,6 @@ export default defineComponent({
     float: left; 
     width: 800px;
     
-    
 }
 
 </style>

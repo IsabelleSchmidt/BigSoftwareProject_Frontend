@@ -8,6 +8,7 @@ const state = reactive({
     widthlist: new Map<string, boolean>(),
     heightlist: new Map<string, boolean>(),
     depthlist: new Map<string, boolean>(),
+    colorlist: new Map<string, boolean>(),
 });
 const {getHightPrice} = useProduct();
 
@@ -157,11 +158,22 @@ const high = ref(0)
     }
     return high.value; 
 }
+function addColorFilter(color: string): void{
+    state.colorlist.set(color, true)
+    console.log("ColorListe add" + JSON.stringify(Array.from(state.colorlist)))
+
+}
+function deleteColorFilter(color: string): void{
+    state.colorlist.delete(color)
+    console.log("ColorListe del" + JSON.stringify(Array.from(state.colorlist)))
+
+}
 function deleteFilter(): void{
     state.pricelist.clear();
     state.widthlist.clear(); 
     state.heightlist.clear(); 
     state.depthlist.clear();
+    state.colorlist.clear();
 }
 
 export function useFilterStore() {
@@ -171,6 +183,8 @@ export function useFilterStore() {
       widthlist: computed(() => state.widthlist),
       heightlist: computed(() => state.heightlist),
       depthlist: computed(() => state.depthlist),
+      colorlist: computed(() => state.colorlist),
+
       addPiceFilter,
       deletePriceFilter,
       getLowestPrice,
@@ -183,6 +197,8 @@ export function useFilterStore() {
       getHeightHigh,
       getDepthHigh,
       getDepthLow,
-      deleteFilter
+      deleteFilter,
+      addColorFilter,
+      deleteColorFilter
     }
   }

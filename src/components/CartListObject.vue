@@ -49,10 +49,11 @@ export default defineComponent({
         const pprice = ref(0);
         const particlenr = ref(0);
         const pavailable = ref(0);
+        const tags = ref();
 
         let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
-                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
+                                'width': 0, 'depth': 0, 'allTags': [], 'available': 0, 'description': "", 'information': ""};
 
         if (props.product) {
             p = getProductByArtNr(props.product[0]) as Product;
@@ -86,7 +87,7 @@ export default defineComponent({
            pname,
            pprice,
            particlenr,
-           pavailable
+           pavailable,
        };
     },
 });

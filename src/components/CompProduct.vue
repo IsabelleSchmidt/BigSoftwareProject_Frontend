@@ -36,7 +36,7 @@ export default defineComponent({
         product: Object,
     },
     setup(props, context){
-
+        
         const route = useRoute();
         const ro = ref(route.query.room);
         const pr = ref(route.query.productType);
@@ -46,7 +46,7 @@ export default defineComponent({
 
         const {list, update}  = useProduct(); //, errormessage
 
-        const {getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
+        const {colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
 
         const lowestPrice = computed(() => {
             console.log("compjtetlowest")
@@ -82,6 +82,11 @@ export default defineComponent({
             console.log("depth")
              return getDepthHigh();
         })
+        const colorArray = computed(()=>{
+            console.log("color")
+            return Array.from(colorlist.value.keys());
+
+        })
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
             q.room.value = route.query.room;
@@ -94,6 +99,8 @@ export default defineComponent({
             console.log("lowest" + lowestPrice.value);
             console.log("highest" + highestPrice.value);
             console.log("widhtcomputed" + widthlow.value);
+            console.log("colorArray"+ colorArray.value);
+
             q.room.value = route.query.room;
             q.productType.value = route.query.productType;
             q.name.value = route.query.name;
@@ -128,6 +135,12 @@ export default defineComponent({
             }
             if(depthlow.value != 1000 && depthhigh.value != 0){
                  merklist = merklist.filter(p => p.depth > depthlow.value && p.depth < depthhigh.value);
+            }
+            if(colorArray.value != null){
+                for(let i = 0; i< colorArray.value.length; i++){
+                    
+                    merklist = merklist.filter(p=> p.allTags[0].value === colorArray.value[i]);
+                }
             }
             return merklist;
         });
