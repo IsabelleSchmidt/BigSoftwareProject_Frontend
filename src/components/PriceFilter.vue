@@ -77,7 +77,7 @@ export default defineComponent({
                if(key  == '600%800'){
                    price68.value = true; 
                }
-               if(key  == '800'){
+               if(key  == '800%+'){
                    price8.value = true; 
                }
             }

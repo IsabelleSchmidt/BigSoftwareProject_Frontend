@@ -83,8 +83,9 @@ export default defineComponent({
              return getDepthHigh();
         })
         const colorArray = computed(()=>{
-            console.log("color")
-            return Array.from(colorlist.value.keys());
+            const c = Array.from(colorlist.value.keys());
+            console.log("color" + c)
+            return c ;
 
         })
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
@@ -136,11 +137,19 @@ export default defineComponent({
             if(depthlow.value != 1000 && depthhigh.value != 0){
                  merklist = merklist.filter(p => p.depth > depthlow.value && p.depth < depthhigh.value);
             }
-            if(colorArray.value != null){
+            if(colorArray.value.length != 0){
+                const gesamt = list.value;
+                const zwlist = ref(merklist);
+                const zw = ref(Array<Product>());
                 for(let i = 0; i< colorArray.value.length; i++){
+                    zwlist.value = gesamt.filter(p=> p.allTags[0].value === colorArray.value[i]);
+                    for(let x = 0; x<zwlist.value.length; x++){
+                        zw.value.push(zwlist.value[x]);
                     
-                    merklist = merklist.filter(p=> p.allTags[0].value === colorArray.value[i]);
+                    }
+                    
                 }
+                merklist = zw.value;
             }
             return merklist;
         });

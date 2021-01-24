@@ -44,6 +44,7 @@ export default defineComponent({
             }
         }
         function delFilter(): void{
+            changeComp('');
             deleteFilter();
         }
 
