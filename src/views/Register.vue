@@ -137,8 +137,8 @@
 
 <script lang="ts">
 import { postUser } from "../service/UserStore";
-import { ref, defineComponent, reactive, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { ref, defineComponent} from "vue";
+import { useRouter} from "vue-router";
 
 export default defineComponent({
   name: "register",

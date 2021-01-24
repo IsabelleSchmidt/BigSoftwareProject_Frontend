@@ -251,7 +251,6 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      console.log("TOKEN UM ADRESSE ZU HOLEN: " + token.email);
       await getAdresses(token);
     });
 
