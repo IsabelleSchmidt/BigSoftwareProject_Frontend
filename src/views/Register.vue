@@ -188,7 +188,6 @@ export default defineComponent({
           password: password1.value,
         };
         message.value = "";
-        console.log(`SENDE ${signUpRequest}`);
 
         firstnameerror.value = "";
         lastnameerror.value = "";

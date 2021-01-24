@@ -69,7 +69,7 @@ export default defineComponent({
       email: email.value,
       password: password.value,
     };
-    const { sendLogin, errormessage, check } = postLoginUser();
+    const { sendLogin, errormessage} = postLoginUser();
     const { reseterrormessage } = useUserStore();
     const router = useRouter();
     const COLORS = ["red", "#ccc"];
