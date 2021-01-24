@@ -251,7 +251,8 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getAdresses(email.value);
+      console.log("TOKEN UM ADRESSE ZU HOLEN: " + token.email);
+      await getAdresses(token);
     });
 
     function adrChange(event: string) {
