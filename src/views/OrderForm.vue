@@ -97,6 +97,7 @@
         </form>
 
         <h2>Lieferung 18.02.2021</h2>
+        <div class="error">{{notavailableerrorempty}}</div>
         <div class="error">{{notavailableerror}}</div>
         <div class="row">
             <OrderListObject :product="pr" v-for="pr  in productList" :key="pr.id" />
@@ -105,7 +106,7 @@
             <hr>    
         </div>
         <div class="row">
-            <p class="price">{{inTotal}}</p>
+            <p class="price">{{inTotal}}€</p>
         </div>
         <br>
         <div class="row">
@@ -131,9 +132,9 @@ export default defineComponent({
         // Multiselect,
     },
     setup(context){
-        const {list, addProduct, deleteProduct, totalPrice, clearCart} = useCartStore();
+        const {list, addProduct, deleteProduct, totalPrice, clearCart, changeAmount} = useCartStore();
 
-        const {postOrder, errormessages} = usePostOrder();
+        const {postOrder, errormessages, ordererrormessages} = usePostOrder();
 
         const {jwttokens, getAdresses, adresses, email} = useUserStore();
         const router = useRouter();
@@ -172,6 +173,7 @@ export default defineComponent({
         const creditcardnumbererror = ref("");
         const dateofexpiryerror = ref("");
         const notavailableerror = ref("");
+        const notavailableerrorempty = ref("");
 
         // const valid = ref(true);
         
@@ -207,6 +209,8 @@ export default defineComponent({
 
             // valid.value = true;
             // console.log("sendOrder   " + payment.value);
+            notavailableerror.value = "";
+            notavailableerrorempty.value = "";
 
             if (payment.value !== "") {
                 paymenterror.value = "";
@@ -245,7 +249,7 @@ export default defineComponent({
                 else{
                     //kann man liste nach speziellem error filtern oder so? oder zu switch switchen haha
                     for(const error of errormessages.value){
-                     
+                        
                     
                         if(error.field == "adress.streetName"){
                             streetnameerror.value = error.message;
@@ -283,10 +287,49 @@ export default defineComponent({
                                 creditcardnumbererror.value = error.message;
                         }
                         if(error.field =="creditcard.dateOfExpiry"){
-                            dateofexpiryerror.value = error.message;
-                            
+                            dateofexpiryerror.value = error.message;   
                         }
                     }
+                    for (const ordererror of ordererrormessages.value) {
+                        // console.log("ORDERERROR.FIELD   " + JSON.stringify(ordererror.field) + "      ORDERERROR.MESSAGE  " + JSON.stringify(ordererror.message));
+                        const deletedstring = "Folgende Artikel wurden aus dem Warenkorb entfernt, da sie inzwischen ausverkauft sind: ";
+                        const amountchangestring = "Bei folgenden Artikeln musst die Menge aufgrund der Verfügbarkeit angepasst werden: ";
+                        const messages = ordererror.message.split("//");
+                        const pnr = [];
+                        const amount = [];
+                        for (let m = 0; m < messages.length; m++) {
+                            if (messages[m].split("--")[1] != null) {
+                                const p = messages[m].split("--")[1] as any;
+                                pnr.push(Number(p));
+                                const a = messages[m].split("--")[3] as any;
+                                amount.push(Number(a));
+                            }
+                        }
+                        console.log("PNR: " + JSON.stringify(pnr));
+                        console.log("AMOUNT: " + JSON.stringify(amount));
+
+                        if (pnr.length > 0) {
+
+                            for (let i = 0; i < pnr.length; i++) {
+                                //change amount of product
+                                if (amount[i] > 0) {
+                                    notavailableerror.value += i==0 ? amountchangestring : "";
+                                    notavailableerror.value += (" " + pnr[i]);
+                                    notavailableerror.value += (i+1)==pnr.length ? "" : ", ";
+                                    changeAmount((Number(pnr[i])), amount[i]);
+                                    
+                                } else {  //delete product
+                                    notavailableerror.value += i==0 ? deletedstring : "";
+                                    notavailableerrorempty.value += (" " + pnr[i]);
+                                    notavailableerror.value += (i+1)==pnr.length ? "" : ", ";
+                                    deleteProduct(pnr[i]);
+                                }
+                            }
+                        }
+                        // console.log("CARTSTORE nach Änderung" + JSON.stringify(Array.from(list.value.entries())));
+                        // notavailableerror.value += ordererror.message.replaceAll("--", " ").replaceAll("//", " ");
+                    }
+
                     if(payment.value == "bankcard"){
                         dateofexpiryerror.value = "";
                         creditcardnumbererror.value = "";
@@ -337,6 +380,7 @@ export default defineComponent({
             creditcardnumbererror,
             dateofexpiryerror,
             notavailableerror,
+            notavailableerrorempty,
             adresses
         };
     }   

@@ -90,6 +90,10 @@ async function getAdresses(e: string): Promise<void> {
     });  
 }
 
+function reseterrormessage() {
+    state.errormessage = "";
+}
+
 export function postLoginUser(){
     return{
         errormessage: computed(() => state.errormessage),
@@ -103,7 +107,8 @@ export function useUserStore(){
         jwttokens: computed(() => state.jwttokens),
         email: computed(() => state.email),
         adresses: computed(() => state.allAdresses),
-        getAdresses
+        getAdresses,
+        reseterrormessage,
     }
 }
 

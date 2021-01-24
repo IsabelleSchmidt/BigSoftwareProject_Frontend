@@ -23,8 +23,8 @@
 
 <script lang="ts">
 
-    import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent, computed, reactive, watch} from 'vue'
+    import{postLoginUser, useUserStore} from '../service/UserStore'
+    import{ref, defineComponent, computed, reactive, watch, onMounted} from 'vue'
     import{useRouter, useRoute } from 'vue-router'
 
     export default defineComponent({
@@ -34,28 +34,32 @@
             const email = ref("");
             const password = ref("");
             const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
-            const {sendLogin, errormessage, check} = postLoginUser();
+            const {sendLogin, errormessage, check, } = postLoginUser();
+            const {reseterrormessage} = useUserStore();
             const router = useRouter();
             const COLORS = [
                 "red",
                 "#ccc"
             ]
+
+            onMounted(async () => {
+                reseterrormessage();
+            });
                
                 
-                async function loginUser(){
+            async function loginUser(){
 
-
-                    loginRequest.email = email.value;
-                    loginRequest.password = password.value;
-                    console.log('UuuuseR:', loginRequest);
-                    const loginSuccess = await(sendLogin(loginRequest));
-                    if(loginSuccess){
-                        console.log("Login success!");
-                        router.push("/orderForm");
-                    }else{
-                        console.log("LOGIN FEHLGESCHLAGEN.")
-                    }
-                } 
+                loginRequest.email = email.value;
+                loginRequest.password = password.value;
+                // console.log('UuuuseR:', loginRequest);
+                const loginSuccess = await(sendLogin(loginRequest));
+                if(loginSuccess){
+                    console.log("Login success!");
+                    router.push("/orderForm");
+                }else{
+                    console.log("LOGIN FEHLGESCHLAGEN.")
+                }
+            } 
 
             return {
                 loginUser, 

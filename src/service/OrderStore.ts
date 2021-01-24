@@ -62,10 +62,10 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         }
         return response.json();
     }).then((jsondata: Array<OrderResponse>) =>{
-
+        
         if(!(jsondata.length == 1 && jsondata[0].orderid != -1)){
             state.ordererrormessages = jsondata;
-            console.log("ERRORS bei sende bestellte Artikel: " + JSON.stringify(jsondata));
+            console.log("ERRORS bei sende bestellte Artikel: JSONDATA: " + JSON.stringify(jsondata) + " an stelle 0: " + JSON.stringify(jsondata[0]));
             state.orderSuccess = false;
         }else{
             state.allorders.add(jsondata[0].orderid);
@@ -75,7 +75,7 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     }).catch((exception) => {
         console.log(exception)
     });
-
+    console.log("STATE ERRORS: " + JSON.stringify(state.ordererrormessages));
     return state.orderSuccess;
 }
 

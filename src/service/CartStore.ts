@@ -39,7 +39,9 @@ function getAmount(productartnr: number){
     return state.list.get(productartnr);
 }
 function changeAmount(productartnr: number, amount: number): void{
-    state.list.set(productartnr, amount as number);
+    state.list.set(productartnr as number, amount as number);
+    // state.list.delete(productartnr);
+    // state.list.set(productartnr, amount as number);
 }
 
 function deleteProduct(productartnr: number): void{
