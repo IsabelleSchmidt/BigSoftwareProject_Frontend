@@ -1,43 +1,67 @@
 <template>
-    <div class="roomList">
-        <!--BSP:  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
+  <div class="roomList">
+    <!--BSP:  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
         <router-link :to="{ path: 'register', query: { plan: 'private' }}">Register</router-link>
         -->
-        <router-link :to="{ path: '/product', query: { room: 'Bad', producttype: 'all', name: 'none' }}"><Room class="listOrder" name="Bad" link="bathroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', producttype: 'all', name: 'none' }}"><Room class="listOrder" name="Schlafzimmer" link="sleepingroom.png"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Kueche', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Küche" link="cookingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Wohnzimmer" link="livingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Esszimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Esszimmer" link="eatingroom.jpg"/></router-link>
-        <router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', producttype: 'all', name: 'none'  }}"><Room class="listOrder" name="Arbeitszimmer" link="workingroom.jpg"/></router-link>
-
-
-        <!--
-        <Room class="listOrder" name="Bad" link="bathroom.jpg"/>
-        <Room class="listOrder" name="Schlafzimmer" link="sleepingroom.png"/>
-        <Room class="listOrder" name="Küche" link="cookingroom.jpg"/>
-        <Room class="listOrder" name="Wohnzimmer" link="livingroom.jpg"/>
-        <Room class="listOrder" name="Esszimmer" link="eatingroom.jpg"/>
-        <Room class="listOrder" name="Arbeitszimmer" link="workingroom.jpg"/>
-        -->
-    </div>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Bad', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Bad" link="bathroom.jpg"
+    /></router-link>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Schlafzimmer', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Schlafzimmer" link="sleepingroom.png"
+    /></router-link>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Kueche', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Küche" link="cookingroom.jpg"
+    /></router-link>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Wohnzimmer', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Wohnzimmer" link="livingroom.jpg"
+    /></router-link>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Esszimmer', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Esszimmer" link="eatingroom.jpg"
+    /></router-link>
+    <router-link
+      :to="{
+        path: '/product',
+        query: { room: 'Arbeitszimmer', producttype: 'all', name: 'none' },
+      }"
+      ><Room class="listOrder" name="Arbeitszimmer" link="workingroom.jpg"
+    /></router-link>
+  </div>
 </template>
 
  <script>
-import Room from '@/components/Room.vue';
+import Room from "@/components/Room.vue";
 
 export default {
-    components:{Room}
-}
+  components: { Room },
+};
 </script>
 
 <style scoped>
-.roomList{
-    padding-left: 1.5em;
+.roomList {
+  padding-left: 1.5em;
 }
 
-.listOrder{
-    float: left;
+.listOrder {
+  float: left;
 }
-
-
 </style>

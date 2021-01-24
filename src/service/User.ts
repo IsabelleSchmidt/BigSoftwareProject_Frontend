@@ -1,4 +1,4 @@
-interface User{
+interface User {
     firstName: string;
     lastName: string;
     email: string;
@@ -6,11 +6,11 @@ interface User{
     password: string;
     gender: string;
     allAdresses: Set<Adress>;
-    
+
 }
 
-interface UserMessage{
+interface UserMessage {
     email: string;
     message: string;
     type: string;
-  }
+}

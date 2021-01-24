@@ -3,25 +3,25 @@ import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 
 import '@/service/Product'
-import {useProduct} from '@/service/ProductStore'
+import { useProduct } from '@/service/ProductStore'
 
 const state = reactive({
     list: new Map<number, number>(),
-  })
+})
 
 const total = ref(0);
-const {getProductByArtNr} =  useProduct();
+const { getProductByArtNr } = useProduct();
 
 
-function addProduct(productartnr: number, am: number): void{
+function addProduct(productartnr: number, am: number): void {
 
-    let has =  false;
+    let has = false;
     const amount = ref(0);
 
     for (let i = 0; i < state.list.size; i++) {
 
-        if (Array.from(state.list.keys())[i] == productartnr ) {
-            
+        if (Array.from(state.list.keys())[i] == productartnr) {
+
             const oldproductartnr = Array.from(state.list.keys())[i];
             has = true;
             amount.value = Array.from(state.list.values())[i];
@@ -35,70 +35,68 @@ function addProduct(productartnr: number, am: number): void{
         state.list.set(productartnr, am);
     }
 }
-function getAmount(productartnr: number){
+function getAmount(productartnr: number) {
     return state.list.get(productartnr);
 }
-function changeAmount(productartnr: number, amount: number): void{
+function changeAmount(productartnr: number, amount: number): void {
     state.list.set(productartnr as number, amount as number);
-    // state.list.delete(productartnr);
-    // state.list.set(productartnr, amount as number);
 }
 
-function deleteProduct(productartnr: number): void{
+function deleteProduct(productartnr: number): void {
     state.list.delete(productartnr);
 }
-function calcTotal(value: number, key: number, map: any): void{
+function calcTotal(value: number, key: number, map: any): void {
     const zw = total.value;
 
     const prod = getProductByArtNr(key);
 
-    if(prod) {
-        total.value = zw + (prod.price*value);
+    if (prod) {
+        total.value = zw + (prod.price * value);
     }
 
 }
 
-function clearCart(){
+function clearCart() {
     state.list.clear();
 }
 
-function totalPrice(){
-    total.value = 0; 
+function totalPrice() {
+    total.value = 0;
     state.list.forEach(calcTotal);
-    return Math.round((total.value)*Math.pow(10,2))/Math.pow(10,2);
+    return Math.round((total.value) * Math.pow(10, 2)) / Math.pow(10, 2);
 }
 
 
-function checkOneMoreAvailable(productartnr: number){
+function checkOneMoreAvailable(productartnr: number) {
 
     let av = true;
 
-    
-        for (let i = 0; i < state.list.size; i++) {
 
-            if (Array.from(state.list.keys())[i] == productartnr ) {
-                const amount = Array.from(state.list.values())[i];
+    for (let i = 0; i < state.list.size; i++) {
 
-                const prod = getProductByArtNr(productartnr);
-                const available = ref(0);
+        if (Array.from(state.list.keys())[i] == productartnr) {
+            const amount = Array.from(state.list.values())[i];
 
-                if (prod) {
-                    available.value = prod.available;
-                }
+            const prod = getProductByArtNr(productartnr);
+            const available = ref(0);
 
-                if(amount >= available.value) {
-                    av = false;
-                    break;
-                }
+            if (prod) {
+                available.value = prod.available;
+            }
+
+            if (amount >= available.value) {
+                av = false;
+                break;
             }
         }
-    
+    }
+
     return av;
 }
-function getCartAmount(){
+function getCartAmount() {
     const cartAmount = ref(0);
     for (let i = 0; i < state.list.size; i++) {
-         cartAmount.value = Number(cartAmount.value) + Number(Array.from(state.list.values())[i]);
+        cartAmount.value = Number(cartAmount.value) + Number(Array.from(state.list.values())[i]);
     }
     return cartAmount.value;
 
@@ -107,21 +105,20 @@ function getCartAmount(){
 
 
 
-  export function useCartStore() {
+export function useCartStore() {
     return {
-      // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
-      list: computed(() => state.list),
-      addProduct,
-      getAmount,
-      getCartAmount,
-      changeAmount,
-      deleteProduct,
-      totalPrice,
-      checkOneMoreAvailable,
-      clearCart
+        // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
+        list: computed(() => state.list),
+        addProduct,
+        getAmount,
+        getCartAmount,
+        changeAmount,
+        deleteProduct,
+        totalPrice,
+        checkOneMoreAvailable,
+        clearCart
     }
-  }
+}
 
-  
 
-  
+

@@ -1,7 +1,7 @@
 <template>
   <ul class="productlistline">
-      <!-- v-link="{path: product.name}" -->
-    <a @click="openproduct()" >
+    <!-- v-link="{path: product.name}" -->
+    <a @click="openproduct()">
       <div class="productListObject">
         <img
           v-bind:src="product.allPictures[0].path"
