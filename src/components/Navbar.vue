@@ -29,8 +29,8 @@
             <div class="navright">
                 <li>
                     <div class="search-box">
-                        <input class="search-txt" placeholder="Suchen">
-                        <a class="search-btn" href="#">
+                        <input v-model="searchinput" class="search-txt" placeholder="Suchen">
+                        <a class="search-btn" @click=search()>
                             <img src="../assets/magnifyingglass.png" alt="" >
 
                         </a>
@@ -53,20 +53,34 @@
 
 <script lang="ts">
 
-     import {defineComponent} from "vue";
+     import {defineComponent, ref} from "vue";
      import {useFilterStore} from "../service/FilterStore";
+     import {useSearchStore} from "../service/SearchStore"
+     import {useRouter} from 'vue-router'
 
         export default defineComponent({
          name: "Navbar2",
          setup() {
             const {setFilterClose} = useFilterStore();
+            const {setSearchactive, setSearchword} = useSearchStore();
+            const router = useRouter();
+
+            const searchinput = ref("");
 
             function closeFilter(): void{
                 setFilterClose(true);
             }
 
+            function search() {
+                setSearchactive(true);
+                setSearchword(searchinput.value);
+                router.push({ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }});
+            }
+
            return{
-               closeFilter
+               closeFilter,
+               search,
+               searchinput
           };
         }
 

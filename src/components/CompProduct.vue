@@ -7,9 +7,11 @@
             <ProductFilter />
         </div>
         <div id="productList">
-            <ul>           
+            <ul>          
                 <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id" @open-prod="openProduct($event)"/>
             </ul>
+            <h4 id>{{sw}}</h4>
+            <h4 id>{{messageEmpty}}</h4>
         </div>
         
     </div>
@@ -22,6 +24,7 @@ import ProductFilter from "../components/ProductFilter.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import {useFilterStore} from "../service/FilterStore";
+import {useSearchStore} from "../service/SearchStore"
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
@@ -43,6 +46,8 @@ export default defineComponent({
         const nameQuery = ref(route.query.name);
         const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
         const filter = reactive(queryObject);
+
+        const {setSearchactive, setSearchword, searchword, searchaktive, clearSearch} = useSearchStore();
 
 
         const {list, update}  = useProduct(); //, errormessage
@@ -140,6 +145,10 @@ export default defineComponent({
             return merklist;
         });
 
+        const sw = computed(() => {
+
+                return searchword.value;
+         }) 
 
         function openProduct(p: Product): void {
             //send to component above (Product)
@@ -149,7 +158,31 @@ export default defineComponent({
             setFilterClose(true);
         }
         
-        return{ productlist, openProduct, closeFilter};
+        return{
+            productlist: computed(() => {
+                if (sw.value == "") {
+                    console.log("normale Product List");
+                    return productlist;
+                } else {
+                    console.log("Product List mit Suchwort");
+                    const t = productlist.value.filter(p => 
+                                p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
+                                p.productType.toLowerCase().includes(sw.value.toLowerCase()) ||
+                                p.roomType.toLowerCase().includes(sw.value.toLowerCase())
+                            );
+                    console.log("Länge der Produktliste nach suche filtern: " + productlist.value.length);
+                    return t;
+                }
+            }), 
+            openProduct,
+            closeFilter, 
+            messageEmpty: computed(() => {
+                console.log("Länge der Produktliste bei return: " + productlist.value.length);
+                return (productlist.value.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden." : "";
+            }),
+            sw
+
+        };
     } 
     
 });
@@ -169,4 +202,10 @@ export default defineComponent({
         max-width: 83%;
         margin-left: 15%;
     } 
+
+    h4{
+        padding: 1em 0em 0em 7.7em;
+        text-align: center;
+    }
+
 </style>
