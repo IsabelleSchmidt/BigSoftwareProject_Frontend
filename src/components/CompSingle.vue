@@ -23,14 +23,30 @@
           </li>
           <li>
             <label>Menge:</label>
-            <input
+           <!-- <input
               :value="pamount"
               @change="amChange($event.target.value)"
               min="1"
               :max="pavailable"
               type="number"
               id="am"
-            />
+            />-->
+             <select
+            :value="pamount"
+            name="pamount"
+            id="am"
+            @change="amChange($event.target.value)"
+          >
+            <option
+              v-for="item in pavailable"
+               :value="[
+               item
+              ]"
+              :key="item.id"
+            >
+            {{ item }}
+             </option>
+          </select>
           </li>
           <li class="buttons">
             <button class="buttoncart" @click="add()">In den Warenkorb</button>
