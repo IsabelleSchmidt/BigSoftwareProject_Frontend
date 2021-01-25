@@ -23,14 +23,6 @@
           </li>
           <li>
             <label>Menge:</label>
-           <!-- <input
-              :value="pamount"
-              @change="amChange($event.target.value)"
-              min="1"
-              :max="pavailable"
-              type="number"
-              id="am"
-            />-->
              <select
             :value="pamount"
             name="pamount"

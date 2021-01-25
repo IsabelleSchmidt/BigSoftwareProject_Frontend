@@ -14,15 +14,6 @@
           <li id="inTotal">
             <span>Gesamtpreis: {{ ptotal }} €</span>
           </li>
-          <!--<input
-            :value="pamount"
-            @change="amChange($event.target.value)"
-            min="1"
-            :max="pavailable"
-            type="number"
-            id="amount"
-          />-->
-          
           <select
             :value="pamount"
             name="pamount"
