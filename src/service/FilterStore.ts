@@ -94,7 +94,10 @@ function getWidthLow(){
 function getWidthHigh(){
     const widthhigh = ref(0)
         for(let i = 0; i < state.widthlist.size; i++){
-            const widthValues = Array.from(state.widthlist.keys())[i].split('%');            
+            const widthValues = Array.from(state.widthlist.keys())[i].split('%'); 
+            if(widthValues[2] == '+'){
+                widthhigh.value = 1000;
+            }
             if(parseInt(widthValues[2]) > widthhigh.value){
                 widthhigh.value = parseInt(widthValues[2]);
             }
@@ -115,6 +118,9 @@ function getHeightHigh(){
 const high = ref(0)
     for(let i = 0; i < state.heightlist.size; i++){
         const values = Array.from(state.heightlist.keys())[i].split('%');
+        if(values[2] == '+'){
+            high.value = 1000;
+        }
         if(parseInt(values[2]) > high.value){
             high.value = parseInt(values[2]);
         }
@@ -134,7 +140,10 @@ function getDepthLow(){
 function getDepthHigh(){
 const high = ref(0)
     for(let i = 0; i < state.depthlist.size; i++){
-        const values = Array.from(state.depthlist.keys())[i].split('%');        
+        const values = Array.from(state.depthlist.keys())[i].split('%');     
+        if(values[2] == '+'){
+            high.value = 1000;
+        }   
         if(parseInt(values[2]) > high.value){
             high.value = parseInt(values[2]);
         }

@@ -126,16 +126,16 @@ export default defineComponent({
                 merklist = zw.value;
             }
             if(lowestPrice.value != 1000 && highestPrice.value != 0){
-                 merklist = merklist.filter(p => p.price > lowestPrice.value && p.price < highestPrice.value);
+                 merklist = merklist.filter(p => p.price >= lowestPrice.value && p.price <= highestPrice.value);
             }
             if(widthlow.value != 1000 && widthhigh.value != 0){
-                 merklist = merklist.filter(p => p.width > widthlow.value && p.width < widthhigh.value);
+                 merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
             }
             if(heightlow.value != 1000 && heighthigh.value != 0){
-                 merklist = merklist.filter(p => p.height > heightlow.value && p.height < heighthigh.value);
+                 merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
             }
             if(depthlow.value != 1000 && depthhigh.value != 0){
-                 merklist = merklist.filter(p => p.depth > depthlow.value && p.depth < depthhigh.value);
+                 merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
             }
             return merklist;
         });
