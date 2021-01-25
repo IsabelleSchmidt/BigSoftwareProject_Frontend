@@ -127,7 +127,7 @@ import {useFilterStore} from '../service/FilterStore'
 export default defineComponent({
       name: "SizeFilter",
     
-    setup(context){
+    setup(){
         const {widthlist, heightlist, depthlist, addSizeFilter, deleteSizeFilter} = useFilterStore();
 
         const width05 = ref();
@@ -159,7 +159,6 @@ export default defineComponent({
 
         function checked(size: string): void{
             const x = size.split('%');
-            console.log("Size" + JSON.stringify(x));
 
             if(x[0] == w){
                  if(widthlist.value.has(size)){
@@ -186,7 +185,6 @@ export default defineComponent({
                
         }
         onMounted(async()=> {
-            console.log("hier ")
             for(let i = 0; i< widthlist.value.size; i++){
                 const key = Array.from(widthlist.value.keys())[i];
                if(key  == 'w%0%50'){

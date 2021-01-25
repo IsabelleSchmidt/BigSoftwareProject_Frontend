@@ -1,6 +1,6 @@
 <template>
     <div class="navbar">
-    <nav>
+    <nav @click="closeFilter()">
         <router-link to="/">
             <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo"/>
         </router-link>
@@ -53,25 +53,25 @@
 
 <script lang="ts">
 
-    // import {defineComponent, ref} from "@vue/composition-api";
-    // export default defineComponent({
-    //     name: "Navbar2",
-    //     props:{},
-    //     setup() {
-    //         const zaehler = ref(0);
-           
-    //         function zaehlmal() {
-      
-    //             zaehler.value++;
-    //         }
+     import {defineComponent} from "vue";
+     import {useFilterStore} from "../service/FilterStore";
 
-    //         return{
-    //             zaehler,
-    //         };
-    //     }
+        export default defineComponent({
+         name: "Navbar2",
+         setup() {
+            const {setFilterClose} = useFilterStore();
+
+            function closeFilter(): void{
+                setFilterClose(true);
+            }
+
+           return{
+               closeFilter
+          };
+        }
 
        
-    // });
+     });
 
 </script>
 

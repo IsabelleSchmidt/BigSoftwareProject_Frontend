@@ -18,24 +18,25 @@ import PriceFilter from "../components/PriceFilter.vue"
 import SizeFilter from "../components/SizeFilter.vue"
 import ColorFilter from "../components/ColorFilter.vue"
 import {useFilterStore} from "../service/FilterStore"
-import { defineComponent, computed, onMounted, ref, watch, reactive } from 'vue';
+import { defineComponent, computed, ref, watch, onMounted} from 'vue';
 
 export default defineComponent({
-    name: "Product",
+    name: "ProductFilter",
     components:{
         PriceFilter,
         SizeFilter,
         ColorFilter
     },
-    setup(context) {
-
-        const {deleteFilter} = useFilterStore();
+    setup() {        
+        const {deleteFilter, filterclose, setFilterClose} = useFilterStore();
         const component = ref('');
 
         const compref = computed(() => {
             return component.value; 
         });
-
+        onMounted(async ()=>{
+            setFilterClose(false);
+        })
         function changeComp(comp: string): void{
             if(component.value == comp){
                 component.value = ''
@@ -46,16 +47,21 @@ export default defineComponent({
         function delFilter(): void{
             changeComp('');
             deleteFilter();
-        }
-
+  
+            }
+            watch(filterclose, (filterclose, old) => {
+                delFilter();
+                setFilterClose(false)
+            })
+        
 
         return {
             component, 
             compref,
             changeComp,
             delFilter
-             
         };
+
     }
 });
 </script>

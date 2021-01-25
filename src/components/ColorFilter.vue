@@ -82,18 +82,14 @@ export default defineComponent({
     
     
         function checked(color: string): void{
-            console.log("color" + color)
-
             if(colorlist.value.has(color)){
                     deleteColorFilter(color)
                 }else{
                     addColorFilter(color)
                 }
-
         }
 
          onMounted(async()=> {
-            console.log("hier ")
             for(let i = 0; i< colorlist.value.size; i++){
                 const key = Array.from(colorlist.value.keys())[i];
                if(key  == 'grey'){

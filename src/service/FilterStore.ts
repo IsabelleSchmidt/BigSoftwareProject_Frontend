@@ -1,4 +1,4 @@
-import { h, reactive, ref } from 'vue'
+import {reactive, ref } from 'vue'
 
 import { computed } from 'vue'
 import {useProduct} from '../service/ProductStore'
@@ -9,23 +9,23 @@ const state = reactive({
     heightlist: new Map<string, boolean>(),
     depthlist: new Map<string, boolean>(),
     colorlist: new Map<string, boolean>(),
+    filterclose: false,
 });
 const {getHightPrice} = useProduct();
 
+function setFilterClose(close: boolean){
+    state.filterclose = close;
+}
 function addPiceFilter(price: string): void{
     state.pricelist.set(price, true)
-    console.log("Liste add" + JSON.stringify(Array.from(state.pricelist)))
 }
 function deletePriceFilter(price: string): void{
     state.pricelist.delete(price);
-    console.log("Liste delete" + JSON.stringify(Array.from(state.pricelist)))
-
 }
 function getLowestPrice(){
     const lowest = ref(1000);
     for(let i = 0; i < state.pricelist.size; i++){
         const priceValues = Array.from(state.pricelist.keys())[i].split('%');
-        console.log("lowestValue "+ lowest.value)
         if(parseInt(priceValues[0]) < lowest.value){
             lowest.value = parseInt(priceValues[0]);
         }
@@ -37,7 +37,6 @@ function getHighestPrice(){
     const highest = ref(0);
     for(let i = 0; i < state.pricelist.size; i++){
         const priceValues = Array.from(state.pricelist.keys())[i].split('%');
-        console.log("highestValue "+ highest.value)
         if(priceValues[1] == '+'){
             const is = getHightPrice();
             if(is)
@@ -58,15 +57,12 @@ function addSizeFilter(size: string, list: string): void{
 
     if(list == w){
         state.widthlist.set(size, true)
-        console.log("WidthListe add" + JSON.stringify(Array.from(state.widthlist)))
     }
     if(list == h){
         state.heightlist.set(size, true)
-        console.log("Heightlist add" + JSON.stringify(Array.from(state.heightlist)))
     }
     if(list == d){
         state.depthlist.set(size, true)
-        console.log("depthlist add" + JSON.stringify(Array.from(state.depthlist)))
     }
 
 }
@@ -77,23 +73,18 @@ function deleteSizeFilter(size: string, list: string): void{
 
     if(list == w){
         state.widthlist.delete(size)
-        console.log("WidthListe del" + JSON.stringify(Array.from(state.widthlist)))
     }
     if(list == h){
         state.heightlist.delete(size)
-        console.log("Heightlist del" + JSON.stringify(Array.from(state.heightlist)))
     }
     if(list == d){
         state.depthlist.delete(size)
-        console.log("depthlist del" + JSON.stringify(Array.from(state.depthlist)))
     }
-
 }
 function getWidthLow(){
         const widthlow = ref(1000);
         for(let i = 0; i < state.widthlist.size; i++){
             const widthValues = Array.from(state.widthlist.keys())[i].split('%');
-            console.log("WlowestValue "+ widthlow.value)
             if(parseInt(widthValues[1]) < widthlow.value){
                 widthlow.value = parseInt(widthValues[1]);
             }
@@ -103,9 +94,7 @@ function getWidthLow(){
 function getWidthHigh(){
     const widthhigh = ref(0)
         for(let i = 0; i < state.widthlist.size; i++){
-            const widthValues = Array.from(state.widthlist.keys())[i].split('%');
-            console.log("WhighestValue "+ widthhigh.value)
-            
+            const widthValues = Array.from(state.widthlist.keys())[i].split('%');            
             if(parseInt(widthValues[2]) > widthhigh.value){
                 widthhigh.value = parseInt(widthValues[2]);
             }
@@ -116,7 +105,6 @@ function getHeightLow(){
     const low = ref(1000);
     for(let i = 0; i < state.heightlist.size; i++){
         const values = Array.from(state.heightlist.keys())[i].split('%');
-        console.log("hlowestValue "+ low.value)
         if(parseInt(values[1]) < low.value){
             low.value = parseInt(values[1]);
         }
@@ -127,8 +115,6 @@ function getHeightHigh(){
 const high = ref(0)
     for(let i = 0; i < state.heightlist.size; i++){
         const values = Array.from(state.heightlist.keys())[i].split('%');
-        console.log("hhighestValue "+ high.value)
-        
         if(parseInt(values[2]) > high.value){
             high.value = parseInt(values[2]);
         }
@@ -139,7 +125,6 @@ function getDepthLow(){
     const low = ref(1000);
     for(let i = 0; i < state.depthlist.size; i++){
         const values = Array.from(state.depthlist.keys())[i].split('%');
-        console.log("dlowestValue "+ low.value)
         if(parseInt(values[1]) < low.value){
             low.value = parseInt(values[1]);
         }
@@ -149,9 +134,7 @@ function getDepthLow(){
 function getDepthHigh(){
 const high = ref(0)
     for(let i = 0; i < state.depthlist.size; i++){
-        const values = Array.from(state.depthlist.keys())[i].split('%');
-        console.log("dhighestValue "+ high.value)
-        
+        const values = Array.from(state.depthlist.keys())[i].split('%');        
         if(parseInt(values[2]) > high.value){
             high.value = parseInt(values[2]);
         }
@@ -160,13 +143,9 @@ const high = ref(0)
 }
 function addColorFilter(color: string): void{
     state.colorlist.set(color, true)
-    console.log("ColorListe add" + JSON.stringify(Array.from(state.colorlist)))
-
 }
 function deleteColorFilter(color: string): void{
     state.colorlist.delete(color)
-    console.log("ColorListe del" + JSON.stringify(Array.from(state.colorlist)))
-
 }
 function deleteFilter(): void{
     state.pricelist.clear();
@@ -184,6 +163,7 @@ export function useFilterStore() {
       heightlist: computed(() => state.heightlist),
       depthlist: computed(() => state.depthlist),
       colorlist: computed(() => state.colorlist),
+      filterclose: computed(() => state.filterclose),
 
       addPiceFilter,
       deletePriceFilter,
@@ -199,6 +179,7 @@ export function useFilterStore() {
       getDepthLow,
       deleteFilter,
       addColorFilter,
-      deleteColorFilter
+      deleteColorFilter,
+      setFilterClose
     }
   }

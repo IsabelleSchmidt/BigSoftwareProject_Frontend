@@ -34,14 +34,13 @@
     </div>
 </template>
 <script lang = "ts">
-import { defineComponent, computed, ref, reactive, onMounted} from 'vue';
-import { useRouter , useRoute} from 'vue-router';
+import { defineComponent, ref, onMounted} from 'vue';
 import {useFilterStore} from '@/service/FilterStore'
 
 export default defineComponent({
     name: "PriceFilter",
     
-    setup(context){
+    setup(){
         const {pricelist, addPiceFilter, deletePriceFilter} = useFilterStore();
 
         const price02 = ref();
@@ -51,10 +50,7 @@ export default defineComponent({
         const price8 = ref();
     
 
-        function checked(price: string): void{
-            const x = price.split('%');
-            console.log("Preis" + JSON.stringify(x));
-                                    
+        function checked(price: string): void{                                    
                 if(pricelist.value.has(price)){
                     deletePriceFilter(price)
                 }else{
@@ -84,8 +80,6 @@ export default defineComponent({
                     
             
         });
-        
-
      
         return{
             price02,

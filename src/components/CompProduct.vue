@@ -1,10 +1,10 @@
 <template>
     <div class="compProduct">
         <div class="columns" id="sidebarBox">
-            <Sidebar/>
+            <Sidebar @click="closeFilter()" />
         </div>
         <div class="productFilter">
-            <ProductFilter/>
+            <ProductFilter />
         </div>
         <div id="productList">
             <ul>           
@@ -38,73 +38,58 @@ export default defineComponent({
     setup(props, context){
         
         const route = useRoute();
-        const ro = ref(route.query.room);
-        const pr = ref(route.query.productType);
-        const n = ref(route.query.name);
-        const q = {room: ro, productType: pr, name: n};
-        const filter = reactive(q);
+        const roomQuery = ref(route.query.room);
+        const productTypeQuery = ref(route.query.productType);
+        const nameQuery = ref(route.query.name);
+        const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
+        const filter = reactive(queryObject);
+
 
         const {list, update}  = useProduct(); //, errormessage
 
-        const {colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
+        const {setFilterClose, colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
 
         const lowestPrice = computed(() => {
-            console.log("compjtetlowest")
             return getLowestPrice();
         })
         const highestPrice = computed(() => {
-            console.log("highestcomp")
              return getHighestPrice();
         })
-        
         const widthlow = computed(() => {
-            console.log("width")
              return getWidthLow();
         })
         const widthhigh = computed(() => {
-            console.log("width")
              return getWidthHigh();
         })
         const heightlow = computed(() => {
-            console.log("height")
              return getHeightLow();
         })
-        
         const heighthigh = computed(() => {
-            console.log("height")
              return getHeightHigh();
         })
         const depthlow = computed(() => {
-            console.log("depth")
              return getDepthLow();
         })
         const depthhigh = computed(() => {
-            console.log("depth")
              return getDepthHigh();
         })
         const colorArray = computed(()=>{
-            const c = Array.from(colorlist.value.keys());
-            console.log("color" + c)
-            return c ;
+            return Array.from(colorlist.value.keys());
 
         })
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            q.room.value = route.query.room;
-            q.productType.value = route.query.productType;
-            q.name.value = "none";
+            queryObject.room.value = route.query.room;
+            queryObject.productType.value = route.query.productType;
+            queryObject.name.value = "none";
             await update();
         });
         
         const productlist = computed(() => {
-            console.log("lowest" + lowestPrice.value);
-            console.log("highest" + highestPrice.value);
-            console.log("widhtcomputed" + widthlow.value);
-            console.log("colorArray"+ colorArray.value);
 
-            q.room.value = route.query.room;
-            q.productType.value = route.query.productType;
-            q.name.value = route.query.name;
+            queryObject.room.value = route.query.room;
+            queryObject.productType.value = route.query.productType;
+            queryObject.name.value = route.query.name;
 
             let merklist = list.value; 
             
@@ -118,27 +103,16 @@ export default defineComponent({
                 merklist = merklist.filter(p => p.productType === filter.productType?.toString());
             }
            else{
-                q.room.value = route.query.room;
-                q.productType.value = route.query.productType;
+                queryObject.room.value = route.query.room;
+                queryObject.productType.value = route.query.productType;
                 // console.log("nach beidem filtern");
                 merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
 
             //Filteroptions
-            if(lowestPrice.value != 1000 && highestPrice.value != 0){
-                 merklist = merklist.filter(p => p.price > lowestPrice.value && p.price < highestPrice.value);
-            }
-            if(widthlow.value != 1000 && widthhigh.value != 0){
-                 merklist = merklist.filter(p => p.width > widthlow.value && p.width < widthhigh.value);
-            }
-            if(heightlow.value != 1000 && heighthigh.value != 0){
-                 merklist = merklist.filter(p => p.height > heightlow.value && p.height < heighthigh.value);
-            }
-            if(depthlow.value != 1000 && depthhigh.value != 0){
-                 merklist = merklist.filter(p => p.depth > depthlow.value && p.depth < depthhigh.value);
-            }
+            
             if(colorArray.value.length != 0){
-                const gesamt = list.value;
+                const gesamt = merklist;
                 const zwlist = ref(merklist);
                 const zw = ref(Array<Product>());
                 for(let i = 0; i< colorArray.value.length; i++){
@@ -151,6 +125,18 @@ export default defineComponent({
                 }
                 merklist = zw.value;
             }
+            if(lowestPrice.value != 1000 && highestPrice.value != 0){
+                 merklist = merklist.filter(p => p.price > lowestPrice.value && p.price < highestPrice.value);
+            }
+            if(widthlow.value != 1000 && widthhigh.value != 0){
+                 merklist = merklist.filter(p => p.width > widthlow.value && p.width < widthhigh.value);
+            }
+            if(heightlow.value != 1000 && heighthigh.value != 0){
+                 merklist = merklist.filter(p => p.height > heightlow.value && p.height < heighthigh.value);
+            }
+            if(depthlow.value != 1000 && depthhigh.value != 0){
+                 merklist = merklist.filter(p => p.depth > depthlow.value && p.depth < depthhigh.value);
+            }
             return merklist;
         });
 
@@ -159,9 +145,13 @@ export default defineComponent({
             //send to component above (Product)
             context.emit("open-prod", p);
         }
-
-        return{ productlist, openProduct}; //, errormessage 
+        function closeFilter(){
+            setFilterClose(true);
+        }
+        
+        return{ productlist, openProduct, closeFilter};
     } 
+    
 });
  </script>
 
