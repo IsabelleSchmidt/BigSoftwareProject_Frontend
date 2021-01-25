@@ -10,7 +10,6 @@
 import CompProduct from "../components/CompProduct.vue"
 import CompSingle from "../components/CompSingle.vue"
 import { defineComponent, ref, onMounted } from "vue"
-import {useSearchStore} from "../service/SearchStore"
 import { useRouter } from 'vue-router'
 import '../service/Product'
 
@@ -30,8 +29,6 @@ export default defineComponent({
                                 'width': 0, 'depth': 0, 'allTags': [], 'available': 0, 'description': "", 'information': ""};
         const prodref = ref(prod);
         const COMPONENTS = ["CompProduct", "CompSingle"];
-
-        const {setSearchactive, setSearchword, searchword, searchaktive} = useSearchStore();
 
 
         onMounted(async () => {

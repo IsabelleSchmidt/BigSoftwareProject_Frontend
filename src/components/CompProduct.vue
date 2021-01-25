@@ -1,7 +1,7 @@
 <template>
     <div class="compProduct">
         <div class="columns" id="sidebarBox">
-            <Sidebar @click="closeFilter()" />
+            <Sidebar @click="closeFilter()"/>
         </div>
         <div class="productFilter">
             <ProductFilter />
@@ -47,8 +47,7 @@ export default defineComponent({
         const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
         const filter = reactive(queryObject);
 
-        const {setSearchactive, setSearchword, searchword, searchaktive, clearSearch} = useSearchStore();
-
+        const {searchword, clearSearch} = useSearchStore();
 
         const {list, update}  = useProduct(); //, errormessage
 
@@ -146,39 +145,54 @@ export default defineComponent({
         });
 
         const sw = computed(() => {
-
                 return searchword.value;
-         }) 
+        }); 
+
+        const searchproductList = computed(() => {
+            if (sw.value != "") {
+                return productlist.value.filter(p => 
+                                p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
+                                p.productType.toLowerCase().includes(sw.value.toLowerCase()) ||
+                                p.roomType.toLowerCase().includes(sw.value.toLowerCase())
+                        );
+            }
+        });
 
         function openProduct(p: Product): void {
             //send to component above (Product)
             context.emit("open-prod", p);
         }
+
+        //delete filters and searchinputs
         function closeFilter(){
             setFilterClose(true);
+            clearSearch();
         }
         
         return{
             productlist: computed(() => {
                 if (sw.value == "") {
-                    console.log("normale Product List");
-                    return productlist;
+                    // console.log("normale Product List");
+                    return productlist.value;
                 } else {
-                    console.log("Product List mit Suchwort");
-                    const t = productlist.value.filter(p => 
-                                p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
-                                p.productType.toLowerCase().includes(sw.value.toLowerCase()) ||
-                                p.roomType.toLowerCase().includes(sw.value.toLowerCase())
-                            );
-                    console.log("Länge der Produktliste nach suche filtern: " + productlist.value.length);
-                    return t;
+                    // console.log("Product List mit Suchwort");
+                    return searchproductList.value;
                 }
             }), 
+            // productlist,
             openProduct,
             closeFilter, 
+            searchproductList,
             messageEmpty: computed(() => {
-                console.log("Länge der Produktliste bei return: " + productlist.value.length);
-                return (productlist.value.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden." : "";
+                
+                if (sw.value == "") {
+                    // console.log("Ohne Suche: Länge der Produktliste bei return: " + productlist.value.length);
+                    return (productlist.value.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden." : "";
+                } else {
+                    // console.log("Mit Suche: Länge der Produktliste bei return: " + searchproductList.value?.length);
+                    return (searchproductList.value?.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden: " + sw.value: "";
+                }
+                
             }),
             sw
 

@@ -5,44 +5,44 @@
             <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo"/>
         </router-link>
         <ul>
-            <li><router-link :to="{ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }}">Produkte</router-link>
+            <li><router-link :to="{ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }}" @click="closeSearch()">Produkte</router-link>
                 <ul>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Pflanze', name: 'none'}}">Pflanzen</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Tisch', name: 'none'}}">Tische</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Stuhl', name: 'none' }}">Stühle</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Bett', name: 'none' }}">Betten</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Dekoration', name: 'none'}}">Deko</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Sofa/Couch',name: 'none' }}">Sofa/Couch</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Schrank/Kommode', name: 'none'}}">Schränke/Kommoden</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Pflanze', name: 'none'}}" @click="closeSearch()">Pflanzen</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Tisch', name: 'none'}}" @click="closeSearch()">Tische</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Stuhl', name: 'none' }}" @click="closeSearch()">Stühle</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Bett', name: 'none' }}" @click="closeSearch()">Betten</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Dekoration', name: 'none'}}" @click="closeSearch()">Deko</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Sofa/Couch',name: 'none' }}" @click="closeSearch()">Sofa/Couch</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Schrank/Kommode', name: 'none'}}" @click="closeSearch()">Schränke/Kommoden</router-link></li>
                 </ul>
             </li>
-            <li><router-link to="/rooms">Räume</router-link>
+            <li><router-link to="/rooms" @click="closeSearch()">Räume</router-link>
                 <ul>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Bad', productType: 'all', name: 'none' }}">Bad</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', productType: 'all', name: 'none' }}">Schlafzimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Kueche', productType: 'all', name: 'none' }}">Küche</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', productType: 'all', name: 'none'}}">Wohnzimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Esszimmer', productType: 'all', name: 'none'}}">Esszimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', productType: 'all', name: 'none'}}">Arbeitszimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Bad', productType: 'all', name: 'none' }}" @click="closeSearch()">Bad</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', productType: 'all', name: 'none' }}" @click="closeSearch()">Schlafzimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Kueche', productType: 'all', name: 'none' }}" @click="closeSearch()">Küche</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', productType: 'all', name: 'none'}}" @click="closeSearch()">Wohnzimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Esszimmer', productType: 'all', name: 'none'}}" @click="closeSearch()">Esszimmer</router-link></li>
+                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', productType: 'all', name: 'none'}}" @click="closeSearch()">Arbeitszimmer</router-link></li>
                 </ul>
             </li>
             <div class="navright">
                 <li>
                     <div class="search-box">
-                        <input v-model="searchinput" class="search-txt" placeholder="Suchen">
+                        <input v-model="searchinput" class="search-txt" placeholder="Suchen" @keyup.enter="enterClicked()">
                         <a class="search-btn" @click=search()>
                             <img src="../assets/magnifyingglass.png" alt="" >
 
                         </a>
                     </div> 
                 </li>
-                <li><router-link to="/cart">
+                <li><router-link to="/cart" @click="closeSearch()">
                         <img src="../assets/warenkorb.png" alt="cart" id="icon"/>
                     </router-link></li>
                 <li><router-link to="/favorits">
                         <img src="../assets/fav.png" alt="wishlist" id="icon"/>
                     </router-link></li>
-                <li><router-link to="/profil">
+                <li><router-link to="/profil" @click="closeSearch()">
                     <img src="../assets/profil.png" alt="profile" id="icon"/>
                 </router-link></li>
             </div>
@@ -53,7 +53,7 @@
 
 <script lang="ts">
 
-     import {defineComponent, ref} from "vue";
+     import {defineComponent, ref, watch} from "vue";
      import {useFilterStore} from "../service/FilterStore";
      import {useSearchStore} from "../service/SearchStore"
      import {useRouter} from 'vue-router'
@@ -62,11 +62,13 @@
          name: "Navbar2",
          setup() {
             const {setFilterClose} = useFilterStore();
-            const {setSearchactive, setSearchword} = useSearchStore();
+            const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
             const router = useRouter();
+            
 
             const searchinput = ref("");
 
+            //close filter
             function closeFilter(): void{
                 setFilterClose(true);
             }
@@ -77,10 +79,26 @@
                 router.push({ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }});
             }
 
+            function closeSearch() {
+                clearSearch();
+            }
+
+            watch(searchaktive, (searchaktive, old) => {
+                if (!searchaktive) {
+                    searchinput.value = "";
+                }
+            })
+
+            function enterClicked() {
+                search();
+            }
+
            return{
                closeFilter,
                search,
-               searchinput
+               searchinput,
+               closeSearch,
+               enterClicked
           };
         }
 
