@@ -46,20 +46,21 @@
                     <img src="../assets/profil.png" alt="profile" id="icon"/>
                 </router-link></li>
             </div>
+            
         </ul>
+        
     </nav>
     </div>
 </template>
 
-<script lang="ts">
-
-     import {defineComponent, ref, watch} from "vue";
-     import {useFilterStore} from "../service/FilterStore";
-     import {useSearchStore} from "../service/SearchStore"
-     import {useRouter} from 'vue-router'
+<script lang="ts" >
+    import {defineComponent, ref, watch} from "vue";
+    import {useFilterStore} from "../service/FilterStore";
+    import {useSearchStore} from "../service/SearchStore"
+    import {useRouter} from 'vue-router'
 
         export default defineComponent({
-         name: "Navbar2",
+        name: "Navbar2",
          setup() {
             const {setFilterClose} = useFilterStore();
             const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
@@ -83,7 +84,7 @@
                 clearSearch();
             }
 
-            watch(searchaktive, (searchaktive, old) => {
+            watch(searchaktive, (searchaktive) => {
                 if (!searchaktive) {
                     searchinput.value = "";
                 }
@@ -98,16 +99,16 @@
                search,
                searchinput,
                closeSearch,
-               enterClicked
+               enterClicked,
           };
         }
-
-       
+        
      });
 
 </script>
 
 <style scoped lang="scss">
+
 #logo{
     height: 50px;
 }

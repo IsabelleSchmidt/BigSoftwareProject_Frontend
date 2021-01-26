@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "vue-advanced-search": "^0.1.43",
+    "vue-router": "^4.0.0-0",
+    "vue-simple-suggest": "^1.10.3",
+    "vue-suggestion": "^1.1.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
@@ -29,6 +32,6 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0"
+    "vue-jest": "^5.0.0-alpha.8"
   }
 }

@@ -10,7 +10,6 @@
             <ul>          
                 <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id" @open-prod="openProduct($event)"/>
             </ul>
-            <h4 id>{{sw}}</h4>
             <h4 id>{{messageEmpty}}</h4>
         </div>
         
@@ -194,7 +193,6 @@ export default defineComponent({
                 }
                 
             }),
-            sw
 
         };
     } 
