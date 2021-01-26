@@ -7,7 +7,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Pflanze', name: 'none' },
+            query: { room: 'all', producttype: 'PLANT', name: 'none' },
           }"
           >Pflanzen</router-link
         >
@@ -17,7 +17,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Tisch', name: 'none' },
+            query: { room: 'all', producttype: 'TABLE', name: 'none' },
           }"
           >Tische</router-link
         >
@@ -27,7 +27,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Stuhl', name: 'none' },
+            query: { room: 'all', producttype: 'CHAIR', name: 'none' },
           }"
           >Stühle</router-link
         >
@@ -37,7 +37,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Bett', name: 'none' },
+            query: { room: 'all', producttype: 'BED', name: 'none' },
           }"
           >Betten</router-link
         >
@@ -47,7 +47,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Dekoration', name: 'none' },
+            query: { room: 'all', producttype: 'DECORATION', name: 'none' },
           }"
           >Deko</router-link
         >
@@ -57,7 +57,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', producttype: 'Sofa/Couch', name: 'none' },
+            query: { room: 'all', producttype: 'COUCH', name: 'none' },
           }"
           >Sofa/Couch</router-link
         >
@@ -69,7 +69,7 @@
             path: '/product',
             query: {
               room: 'all',
-              producttype: 'Schrank/Kommode',
+              producttype: 'CLOSET',
               name: 'none',
             },
           }"
@@ -87,7 +87,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Bad', producttype: 'all', name: 'none' },
+            query: { room: 'BATHROOM', producttype: 'all', name: 'none' },
           }"
           >Bad</router-link
         >
@@ -97,7 +97,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Schlafzimmer', producttype: 'all', name: 'none' },
+            query: { room: 'BEDROOM', producttype: 'all', name: 'none' },
           }"
           >Schlafzimmer</router-link
         >
@@ -107,7 +107,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Kueche', producttype: 'all', name: 'none' },
+            query: { room: 'KITCHEN', producttype: 'all', name: 'none' },
           }"
           >Küche</router-link
         >
@@ -117,7 +117,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Wohnzimmer', producttype: 'all', name: 'none' },
+            query: { room: 'LIVINGROOM', producttype: 'all', name: 'none' },
           }"
           >Wohnzimmer</router-link
         >
@@ -127,7 +127,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Esszimmer', producttype: 'all', name: 'none' },
+            query: { room: 'DININGROOM', producttype: 'all', name: 'none' },
           }"
           >Esszimmer</router-link
         >
@@ -137,7 +137,7 @@
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'Arbeitszimmer', producttype: 'all', name: 'none' },
+            query: { room: 'BUREAU', producttype: 'all', name: 'none' },
           }"
           >Arbeitszimmer</router-link
         >
