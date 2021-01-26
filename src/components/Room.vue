@@ -30,7 +30,7 @@ img {
     font-size: 1.5em;
     padding-top: 0.7em;
     padding-bottom: 0.7em;
-    background-color: #f3f3f3;
+    background-color: $color-grey;
     width:400px;
     text-align: center;
     border-radius: 0px 0px 10px 10px;

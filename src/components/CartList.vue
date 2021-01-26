@@ -1,9 +1,9 @@
 <template>
     <div class= "cartlist">
-        <ul>
+        <ul class="list">
          <CartListObject :product="pr" v-for="pr  in productList" :key="pr.id" />
-
         </ul>
+        
         <div class="inTotalDiv">
             <span class="inTotal">Gesamtsumme: {{inTotal}} €</span>
         </div>
@@ -12,7 +12,7 @@
 <script lang ="ts">
 import CartListObject from "../components/CartListObject.vue"
 import {computed, reactive, ref} from 'vue'; 
-import {useCartStore} from '@/service/CartStore'
+import {useCartStore} from '../service/CartStore'
 
 export default {
     components:{
@@ -33,25 +33,20 @@ export default {
     }   
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 
-    
-    .cartlist--center{
-        display:flex;
-    justify-content: center;
-    } 
+.list{
+    display: inline-grid;
+    grid-template-columns: auto;
+    margin-right: 2.8rem;
+}
+.list:after{
+    content: "";
+    display: block;
+}
 
-    .cartlist{
-        display: inline-grid;
-        grid-template-columns: auto;
-        margin-right: 2.8rem;
-    } 
-    .inTotalDiv{
-        float:right;
-    }
-    .inTotal {
-        font-size: 1.3em;
-    }
-
+.inTotal {
+    font-size: 1.3em;
+}
 
 </style>

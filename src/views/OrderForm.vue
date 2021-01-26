@@ -139,13 +139,13 @@ export default{
         display: inline-block;
     } 
     input:focus{
-        outline-color: #3BA07C;
+        outline-color: $color-green;
         outline-style: solid;
         outline-width: 1px;
     } 
     input[type=text]{
         padding: .25em;
-        border: 1px solid #ccc;
+        border: 1px solid $color-grey3;
         border-radius: 3px;
     }  
     /* Chrome, Safari, Edge, Opera remove arrows */
@@ -157,7 +157,7 @@ export default{
     /* Firefox remove arrows*/
     input[type=number]{
         padding: .25em;
-        border: 1px solid #ccc;
+        border: 1px solid $color-grey3;
         border-radius: 3px;
         appearance: none;
     } 
@@ -166,28 +166,18 @@ export default{
         display: block;
         padding: 1% 5%;
         margin: 0 auto;
-        background-color: black;
-        border-style: none;
-        color: #fff;
-        border-radius: 3px;
-        &:hover{
-            background-color: #3BA07C;
-        } 
-        &:focus{
-            outline: none;
-        }
     }
     select{
         display: inline;
         padding: .25em;
-        border: 1px solid #ccc;
+        border: 1px solid $color-grey3;
         border-radius: 5px;
-        background-color: #ffffff;
+        background-color: white;
         box-sizing: border-box;
         margin-right: 2em;
     } 
     select:focus{
-        outline-color: #3BA07C;
+        outline-color: $color-green;
         outline-style: solid;
         outline-width: 1px;
     } 

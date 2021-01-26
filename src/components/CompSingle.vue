@@ -15,11 +15,8 @@
                 <li><h3 class="name">{{tst.name}}</h3></li>
                 <li><p class="description">{{tst.description}}</p></li>
                 <li><p class="price">{{tst.price}} €</p></li>
-                <li class="buttons">
+                <li>
                     <button class="buttoncart" @click="add()">In den Warenkorb</button>
-                    <button class="buttonfav">
-                        <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
-                    </button>
                 </li>
                 <li class="success"><v-alert type="success" v-if="success" >Artikel wurde zum Warenkorb hinzugefügt
                 </v-alert></li>
@@ -55,7 +52,7 @@ import { defineComponent, computed, ref, PropType, onMounted} from 'vue';
 
 
 import '@/service/Product'
-import {useCartStore} from '@/service/CartStore' 
+import {useCartStore} from "../service/CartStore" 
 import {useRouter, useRoute} from 'vue-router'
 
 
@@ -136,7 +133,7 @@ export default defineComponent({
 });  
  </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .availablepoint {
     float:left;
@@ -190,8 +187,8 @@ export default defineComponent({
 hr {
     width: 95%;
     height: 0.15em;
-    background-color: #f3f3f3;
-    color: #f3f3f3;
+    background-color: $color-grey;
+    color: $color-grey;
     
 }
 
@@ -211,7 +208,7 @@ summary::after{
     content: '+';
     position: absolute;
     right: 1em;
-    color: #3BA07C;
+    color: $color-green;
     margin-right: 4em;
     transition: all 0.5s;
 
@@ -219,7 +216,7 @@ summary::after{
 } 
 details[open] summary::after{
     content: '-';
-    color:#3BA07C;
+    color:$color-green;
     margin-right: 4em;
 } 
 
@@ -234,7 +231,7 @@ details[open] summary::after{
 }
 
 .back:hover{
-    color: #3BA07C;
+    color: $color-green;
 }
 
 ul {
@@ -248,36 +245,16 @@ ul {
 .alert {
     color: red;
     margin-bottom: 3%;
+    margin-top: 3%;
 }
 .success {
-    color:#3BA07C;
+    color:$color-green;
     margin-bottom: 3%;
+    margin-top: 3%;
 }
 .buttoncart {
     margin: 60px 0px 0px 0px;
     padding: 3% 9%;
-    background-color: #3BA07C;
-    border-style: none;
-    color: white;
-    border-radius: 40px;
-}
-
-.buttoncart:hover {
-    background-color: #87E1A6;
-}
-
-.buttoncart:focus {
-    outline: none;
-}
-
-.buttonfav {
-    border-style: none;
-    background: none;
-    margin: 0% 5%;
-}
-
-.buttons {
-    margin: 10% 0% 0% 0%;
 }
 
 .icontruck {

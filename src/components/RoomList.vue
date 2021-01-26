@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lamg="scss">
 .roomList{
     padding-left: 1.5em;
 }

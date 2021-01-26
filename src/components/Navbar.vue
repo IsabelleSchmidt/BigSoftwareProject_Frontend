@@ -36,15 +36,19 @@
                         </a>
                     </div> 
                 </li>
-                <li><router-link to="/cart">
+                <li>
+                    <div id="margin">
+                    <router-link to="/cart" id="hitbox">
                         <img src="../assets/warenkorb.png" alt="cart" id="icon"/>
-                    </router-link></li>
-                <li><router-link to="/favorits">
-                        <img src="../assets/fav.png" alt="wishlist" id="icon"/>
-                    </router-link></li>
-                <li><router-link to="/profil">
-                    <img src="../assets/profil.png" alt="profile" id="icon"/>
-                </router-link></li>
+                    </router-link>
+                    </div>
+                </li>
+                <li><div id="margin">
+                    <router-link to="/profil" id="hitbox">
+                        <img src="../assets/profil.png" alt="profile" id="icon"/>
+                    </router-link>
+                </div>
+                </li>
             </div>
         </ul>
     </nav>
@@ -52,26 +56,6 @@
 </template>
 
 <script lang="ts">
-
-    // import {defineComponent, ref} from "@vue/composition-api";
-    // export default defineComponent({
-    //     name: "Navbar2",
-    //     props:{},
-    //     setup() {
-    //         const zaehler = ref(0);
-           
-    //         function zaehlmal() {
-      
-    //             zaehler.value++;
-    //         }
-
-    //         return{
-    //             zaehler,
-    //         };
-    //     }
-
-       
-    // });
 
 </script>
 
@@ -81,11 +65,18 @@
 }
 #icon{
     height: 24px;
+    padding: 0px 10px 0px 10px;
+}
+#hitbox{
+    padding: 0;
+}
+#margin{
+    margin: 15px 10px 0px 10px;
 }
 nav{
     width: 100%;
     height: 60px;
-    background-color: #fff;
+    background-color: white;
     top:0;
     right:0;
     left:0;
@@ -102,7 +93,7 @@ nav{
  }
 
 nav img {
-    color: #222;
+    color: $color-dark;
     font-size: 24px;
     line-height: 55px;
     float: left;
@@ -119,21 +110,21 @@ nav ul li {
 
 nav ul li a {
     display: block;
-    color: #222;
+    color: $color-dark;
     font-size: 14px;
     padding: 16px 14px;
     text-decoration: none;
 }
 
 nav ul li a:hover {
-    color: #3BA07C;
+    color: $color-green;
     text-decoration: none;
 }
 
 nav ul li ul {
     display: none;
     position: absolute;
-    background-color: #fff;
+    background-color: white;
     padding: 10px ;
     border-radius: 0px 0px 4px 4px; 
 }
@@ -152,7 +143,7 @@ nav ul li ul li #link {
 }
 
 nav ul li ul li a:hover {
-    background-color: #f3f3f3;
+    background-color: $color-grey;
     text-decoration: none;
 }
 
@@ -167,7 +158,7 @@ nav ul li input {
 .search-box {  
     height: 26px;
     width: 250px;
-    background: #f3f3f3;
+    background: $color-grey;
     border-radius: 40px;
     padding: 10px;
     margin: 8px 0px 0px 0px;
@@ -189,7 +180,7 @@ nav ul li input {
     background:none;
     outline:none;
     float: left;
-    color: #000000;
+    color: $color-dark;
     font-size: 16px;
     transition: 0.4s;
     line-height: 20px;

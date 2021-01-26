@@ -12,12 +12,12 @@
                 <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
             </div>
             <div class="row">    
-            <button name="loginUser" value="Login" > Login</button>
+            <input type="submit" name="loginUser" value="Login" >
             <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
             <!-- button machen lloginuser aufrufen ..use.router -->
                         </div>
             <div class="row">    
-                <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
+                Noch kein Kunde? <router-link id="link" to="/register">Hier registrieren</router-link>
             </div>
         </form>
     </div>
@@ -128,36 +128,20 @@ label{
     clear: both;
 }
 input:focus{
-    outline-color: #3BA07C;
+    outline-color: $color-green;
 }
 input[type=text]{
     width: 30%;
     padding: 0.25em;
-    border: 1px solid #ccc;
+    border: 1px solid $color-grey3;
     border-radius:3px;
     resize: vertical;
 }
 input[type=submit]{
     margin: 5% 0% 5% 15%;
     padding: 1% 5%;
-    background-color: black;
-    border-style: none;
-    color: #fff;
-    &:hover{
-        background-color: #3BA07C;
-    }
-    &:focus{
-        outline: none;
-    }
 }
 
-.link {
-    margin: 4% 0% 5% 6.5%;
-    color: black;
-    text-decoration: none;
-    list-style: none;
-    list-style-type: none;
-}
 
 #pw {
     width: 30%;
@@ -175,4 +159,10 @@ input[type=submit]{
     resize: vertical;
 }
 
+#link {
+    text-decoration: none;
+    list-style: none;
+    list-style-type: none;
+    color: $color-green;
+}
 </style>

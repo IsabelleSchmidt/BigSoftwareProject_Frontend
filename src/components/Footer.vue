@@ -20,7 +20,7 @@
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 *{
     margin: 0;
     padding: 0;
@@ -30,8 +30,8 @@
 }
 
 footer {
-    color:#ffffff;
-    background-color: #3BA07C;
+    color:white;
+    background-color: $color-green;
     height: 10%;
     font-size: 1em;
     
