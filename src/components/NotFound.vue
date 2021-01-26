@@ -7,9 +7,9 @@
 <style scoped lang="scss">
 
 .picture{
-    display: block;
+  display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 70%;
 }
 </style>
