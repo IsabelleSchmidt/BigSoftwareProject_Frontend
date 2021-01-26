@@ -151,8 +151,8 @@ export default defineComponent({
             if (sw.value != "") {
                 return productlist.value.filter(p => 
                                 p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
-                                p.productType.toLowerCase().includes(sw.value.toLowerCase()) ||
-                                p.roomType.toLowerCase().includes(sw.value.toLowerCase())
+                                p.productType.toLowerCase() === (sw.value.toLowerCase()) ||
+                                p.roomType.toLowerCase() === (sw.value.toLowerCase())
                         );
             }
         });
