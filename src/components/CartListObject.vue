@@ -14,14 +14,22 @@
           <li id="inTotal">
             <span>Gesamtpreis: {{ ptotal }} €</span>
           </li>
-          <input
+          <select
             :value="pamount"
-            @change="amChange($event.target.value)"
-            min="1"
-            :max="pavailable"
-            type="number"
+            name="pamount"
             id="amount"
-          />
+            @change="amChange($event.target.value)"
+          >
+            <option
+              v-for="item in pavailable"
+               :value="[
+               item
+              ]"
+              :key="item.id"
+            >
+            {{ item }}
+             </option>
+          </select>
         </ul>
       </div>
       <div class="close">
@@ -93,7 +101,7 @@ export default defineComponent({
     });
     function amChange(am: number): void {
       if (props.product) {
-        const a = getAmount(props.product[0]);
+      /*  const a = getAmount(props.product[0]);
         if (a) {
           if (am < a) {
             changeAmount(props.product[0], Number(am));
@@ -102,7 +110,9 @@ export default defineComponent({
           } else {
             changeAmount(props.product[0], a);
           }
-        }
+        }*/
+          changeAmount(props.product[0], Number(am));
+
       }
     }
 
