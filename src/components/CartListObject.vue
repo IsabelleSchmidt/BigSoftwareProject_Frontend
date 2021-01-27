@@ -1,96 +1,139 @@
 <template>
-<div id="line">
-    <div class ="productobject">
-        <div class="picture">
-                <img v-bind:src="ppath.path" alt="Picture" id="pic">
-        </div>
-        <div class="information">
-            <ul>
-                <li id="prName">{{pname}}</li>
-                <li id="prPrice">{{pprice}} €</li> 
-                <li id="prNr">
-                    <span>Pnr: {{particlenr}} </span>
-                </li>
-                <li id="inTotal"> 
-                    <span>Gesamtpreis: {{Math.round((pprice*product[1])*Math.pow(10,2))/Math.pow(10,2)}} €</span>
-                </li> 
-                <input :value="product[1]" @change="amChange($event.target.value)" min="1" :max="pavailable" type="number" id="amount">
-            </ul>
-        </div>
-        <div class="close">
-            <button id="delete" @click="trash()">
-                <img src="../assets/closeImg.png">
-            </button>
-        </div>
+  <div id="line">
+    <div class="productobject">
+      <div class="picture">
+        <img v-bind:src="ppath.path" alt="Picture" id="pic" />
+      </div>
+      <div class="information">
+        <ul>
+          <li id="prName">{{ pname }}</li>
+          <li id="prPrice">{{ pprice }} €</li>
+          <li id="prNr">
+            <span>Pnr: {{ particlenr }} </span>
+          </li>
+          <li id="inTotal">
+            <span>Gesamtpreis: {{ ptotal }} €</span>
+          </li>
+          <select
+            :value="pamount"
+            name="pamount"
+            id="amount"
+            @change="amChange($event.target.value)"
+          >
+            <option
+              v-for="item in pavailable"
+               :value="[
+               item
+              ]"
+              :key="item.id"
+            >
+            {{ item }}
+             </option>
+          </select>
+        </ul>
+      </div>
+      <div class="close">
+        <button id="delete" @click="trash()">
+          <img src="../assets/closeImg.png" />
+        </button>
+      </div>
     </div>
-</div>
-    
+  </div>
 </template>
+
 <script lang="ts">
-import '@/service/Product'
-import { defineComponent, ref} from 'vue'
-import {useCartStore} from '../service/CartStore'
-import {useProduct} from '../service/ProductStore'
+import "@/service/Product";
+import { defineComponent, computed } from "vue";
+import { useCartStore } from "../service/CartStore";
+import { useProduct } from "../service/ProductStore";
 
 export default defineComponent({
-    name: "CartListObject",
-    props: {
-        product: Object,
-    }, 
-     
-    setup(props, context) {
+  name: "CartListObject",
+  props: {
+    product: Object,
+  },
 
-        const {addProduct, changeAmount, deleteProduct, checkOneMoreAvailable} = useCartStore();
-        const {getProductByArtNr} = useProduct();
+  setup(props) {
+    const {
+      getAmount,
+      changeAmount,
+      deleteProduct,
+    } = useCartStore();
+    const { getProductByArtNr } = useProduct();
 
-
-        const ppath = ref("");
-        const pname = ref("");
-        const pprice = ref(0);
-        const particlenr = ref(0);
-        const pavailable = ref(0);
-
-        let p: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
-                                'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
-                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
-
-        if (props.product) {
-            p = getProductByArtNr(props.product[0]) as Product;
-            ppath.value =  p.allPictures[0];
-            pname.value = p.name;
-            pprice.value = p.price;
-            particlenr.value = p.articlenr;
-            pavailable.value = p.available;
+    const ppath = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).allPictures[0];
+    });
+    const pname = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).name;
+    });
+    const pprice = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).price;
+    });
+    const particlenr = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).articlenr;
+    });
+    const pavailable = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).available;
+    });
+    const pamount = computed(() => {
+      if (props.product) return getAmount(props.product[0]);
+    });
+    const ptotal = computed(() => {
+      if (props.product) {
+        const t = getAmount(props.product[0]);
+        if (t) {
+          return (
+            Math.round(
+              (getProductByArtNr(props.product[0]) as Product).price *
+                t *
+                Math.pow(10, 2)
+            ) / Math.pow(10, 2)
+          );
         }
+      }
+    });
+    function amChange(am: number): void {
+      if (props.product) {
+      /*  const a = getAmount(props.product[0]);
+        if (a) {
+          if (am < a) {
+            changeAmount(props.product[0], Number(am));
+          } else if (checkOneMoreAvailable(props.product[0])) {
+            changeAmount(props.product[0], Number(am));
+          } else {
+            changeAmount(props.product[0], a);
+          }
+        }*/
+          changeAmount(props.product[0], Number(am));
 
-        function amChange(am: number): void{
-            // console.log("AMCHANGE " +  am);
-            if(props.product){
-                if(checkOneMoreAvailable(props.product[0])){
-                    changeAmount(props.product[0], am);
-                }else{
-                    changeAmount(props.product[0], props.product[1]);
-                }
-            }
-        }
+      }
+    }
 
-        function trash(): void{
-           if(props.product)
-            deleteProduct(props.product[0]);
-        }
-     
-       return {
-           amChange,
-           trash,
-           ppath,
-           pname,
-           pprice,
-           particlenr,
-           pavailable
-       };
-    },
+    function trash(): void {
+      if (props.product) deleteProduct(props.product[0]);
+    }
+
+    return {
+      amChange,
+      trash,
+      ppath,
+      pname,
+      pprice,
+      particlenr,
+      pavailable,
+      pamount,
+      ptotal,
+    };
+  },
 });
 </script>
+
 <style lang = "scss" scoped>
 ul{
     list-style: none;

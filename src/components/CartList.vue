@@ -11,27 +11,28 @@
 </template>
 <script lang ="ts">
 import CartListObject from "../components/CartListObject.vue"
-import {computed, reactive, ref} from 'vue'; 
+import {computed} from 'vue'; 
 import {useCartStore} from '../service/CartStore'
 
 export default {
-    components:{
-        CartListObject
-    },
-    setup(){
-        const {list, addProduct, deleteProduct, totalPrice} = useCartStore();
+  components: {
+    CartListObject,
+  },
+  setup() {
+    const { list, totalPrice } = useCartStore();
 
-        const inTotal = computed(()=> {
-            return totalPrice();
-        });
-        
-        const productList = computed(() =>{
-            return Array.from(list.value.entries());
-        });
+    const inTotal = computed(() => {
+      return totalPrice();
+    });
 
-        return{inTotal, productList};
-    }   
-}
+    const productList = computed(() => {
+      console.log("CARTCHANGE" + JSON.stringify(Array.from(list.value)));
+      return Array.from(list.value.entries());
+    });
+
+    return { inTotal, productList };
+  },
+};
 </script>
 <style lang="scss" scoped>
 

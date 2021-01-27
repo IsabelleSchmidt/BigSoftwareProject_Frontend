@@ -24,7 +24,7 @@ export default /*defineComponent*/{
     },
     setup(){
 
-        const {list, update}  = useProduct(); //, errormessage
+        const {allproductslist, update}  = useProduct(); //, errormessage
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
@@ -33,7 +33,7 @@ export default /*defineComponent*/{
 
         const productlist = computed(() => {
         
-          return list.value;
+          return allproductslist.value;
         
         });
         const imgage = computed

@@ -1,67 +1,219 @@
 <template>
-    <div class="navbar">
+  <div class="navbar">
     <nav>
-        <router-link to="/">
-            <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo"/>
-        </router-link>
-        <ul>
-            <li><router-link :to="{ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }}">Produkte</router-link>
-                <ul>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Pflanze', name: 'none'}}">Pflanzen</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Tisch', name: 'none'  }}">Tische</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Stuhl', name: 'none'  }}">Stühle</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Bett', name: 'none'  }}">Betten</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Dekoration', name: 'none'  }}">Deko</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Sofa/Couch',name: 'none'  }}">Sofa/Couch</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'all', productType: 'Schrank/Kommode', name: 'none'  }}">Schränke/Kommoden</router-link></li>
-                </ul>
+      <router-link to="/">
+        <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo" />
+      </router-link>
+      <ul>
+        <li>
+          <router-link
+            :to="{
+              path: '/product',
+              query: { room: 'all', productType: 'all', name: 'none' },
+            }"
+            >Produkte</router-link
+          >
+          <ul>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'all', productType: 'PLANT', name: 'none' },
+                }"
+                >Pflanzen</router-link
+              >
             </li>
-            <li><router-link to="/rooms">Räume</router-link>
-                <ul>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Bad', productType: 'all', name: 'none'  }}">Bad</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Schlafzimmer', productType: 'all', name: 'none'  }}">Schlafzimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Kueche', productType: 'all', name: 'none'  }}">Küche</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Wohnzimmer', productType: 'all', name: 'none'  }}">Wohnzimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Esszimmer', productType: 'all', name: 'none'  }}">Esszimmer</router-link></li>
-                    <li id="link"><router-link :to="{ path: '/product', query: { room: 'Arbeitszimmer', productType: 'all', name: 'none'  }}">Arbeitszimmer</router-link></li>
-                </ul>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'all', productType: 'TABLE', name: 'none' },
+                }"
+                >Tische</router-link
+              >
             </li>
-            <div class="navright">
-                <li>
-                    <div class="search-box">
-                        <input class="search-txt" placeholder="Suchen">
-                        <a class="search-btn" href="#">
-                            <img src="../assets/magnifyingglass.png" alt="" >
-
-                        </a>
-                    </div> 
-                </li>
-                <li>
-                    <div id="margin">
-                    <router-link to="/cart" id="hitbox">
-                        <img src="../assets/warenkorb.png" alt="cart" id="icon"/>
-                    </router-link>
-                    </div>
-                </li>
-                <li><div id="margin">
-                    <router-link to="/profil" id="hitbox">
-                        <img src="../assets/profil.png" alt="profile" id="icon"/>
-                    </router-link>
-                </div>
-                </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'all', productType: 'CHAIR', name: 'none' },
+                }"
+                >Stühle</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'all', productType: 'BED', name: 'none' },
+                }"
+                >Betten</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'all',
+                    productType: 'DECORATION',
+                    name: 'none',
+                  },
+                }"
+                >Deko</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'all',
+                    productType: 'COUCH',
+                    name: 'none',
+                  },
+                }"
+                >Sofa/Couch</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'all',
+                    productType: 'CLOSET',
+                    name: 'none',
+                  },
+                }"
+                >Schränke/Kommoden</router-link
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <router-link to="/rooms">Räume</router-link>
+          <ul>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'BATHROOM', productType: 'all', name: 'none' },
+                }"
+                >Bad</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'BEDROOM',
+                    productType: 'all',
+                    name: 'none',
+                  },
+                }"
+                >Schlafzimmer</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: { room: 'KITCHEN', productType: 'all', name: 'none' },
+                }"
+                >Küche</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'LIVINGROOM',
+                    productType: 'all',
+                    name: 'none',
+                  },
+                }"
+                >Wohnzimmer</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'DININGROOM',
+                    productType: 'all',
+                    name: 'none',
+                  },
+                }"
+                >Esszimmer</router-link
+              >
+            </li>
+            <li id="link">
+              <router-link
+                :to="{
+                  path: '/product',
+                  query: {
+                    room: 'BUREAU',
+                    productType: 'all',
+                    name: 'none',
+                  },
+                }"
+                >Arbeitszimmer</router-link
+              >
+            </li>
+          </ul>
+        </li>
+        <div class="navright">
+          <li>
+            <div class="search-box">
+              <input class="search-txt" placeholder="Suchen" />
+              <a class="search-btn" href="#">
+                <img src="../assets/magnifyingglass.png" alt="" />
+              </a>
             </div>
-        </ul>
+          </li>
+          <li>
+            <div id="margin">
+              <router-link to="/cart" id="hitbox">
+                <img src="../assets/warenkorb.png" alt="cart" id="icon" />
+                <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
+              </router-link>
+            </div>
+          </li>
+          <li>
+            <div id="margin">
+              <router-link to="/profil" id="hitbox">
+                <img src="../assets/profil.png" alt="profile" id="icon" />
+              </router-link>
+            </div>            
+          </li>
+        </div>
+      </ul>
     </nav>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
+import { useCartStore } from "@/service/CartStore.ts";
+import { computed, defineComponent, ref } from "vue";
+
+export default defineComponent({
+  setup() {
+    const { getCartAmount } = useCartStore();
+    const amount = computed(() => getCartAmount());
+
+    return { amount };
+  },
+});
 
 </script>
 
 <style scoped lang="scss">
-#logo{
-    height: 50px;
+#logo {
+  height: 50px;
 }
 #icon{
     height: 24px;
@@ -85,12 +237,12 @@ nav{
 }
 
 .down nav {
-    transform: translate3d(0, -60px, 0);
- }
+  transform: translate3d(0, -60px, 0);
+}
 
- .up nav{
-    position: fixed;
- }
+.up nav {
+  position: fixed;
+}
 
 nav img {
     color: $color-dark;
@@ -101,12 +253,10 @@ nav img {
 }
 
 nav ul li {
-    float: left;
-    list-style: none;
-    position: relative;
+  float: left;
+  list-style: none;
+  position: relative;
 }
-
-
 
 nav ul li a {
     display: block;
@@ -130,16 +280,16 @@ nav ul li ul {
 }
 
 nav ul li:hover ul {
-    display: block; 
+  display: block;
 }
 
 nav ul li ul li {
-    width: 180px; 
-    text-align: left;
+  width: 180px;
+  text-align: left;
 }
 
 nav ul li ul li #link {
-    padding: 8px 14px;
+  padding: 8px 14px;
 }
 
 nav ul li ul li a:hover {
@@ -148,11 +298,11 @@ nav ul li ul li a:hover {
 }
 
 nav ul li input {
-    margin: 12px 10px 10px 10px ;
+  margin: 12px 10px 10px 10px;
 }
 
 .navright {
-    float: right;
+  float: right;
 }
 
 .search-box {  
@@ -164,15 +314,15 @@ nav ul li input {
     margin: 8px 0px 0px 0px;
 }
 
-.search-btn img{
-    float: right;
-    width: 20px;
-    
-    padding: 0px 0px 10px 0px;
+.search-btn img {
+  float: right;
+  width: 20px;
+
+  padding: 0px 0px 10px 0px;
 }
 
 .search-btn {
-    padding: 0px 5px 10px 0px;
+  padding: 0px 5px 10px 0px;
 }
 
 .search-txt {
@@ -186,5 +336,20 @@ nav ul li input {
     line-height: 20px;
     width: 80px;
     margin: 3px 0px 10px 10px;
+}
+.total-amount {
+  align-items: center;
+  background: #3ba07c;
+  color: #f3f3f3;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  height: 1em;
+  justify-content: center;
+  padding: 0.25rem;
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  width: 1em;
 }
 </style>

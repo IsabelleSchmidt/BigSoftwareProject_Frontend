@@ -1,131 +1,131 @@
 <template>
-    <div class="login">
-        <h1 align="center">Login</h1>
-        <p id="error" align="center">{{errormessage}}</p>
-        <form @submit.prevent="loginUser()">
-            <div class="row">
-                <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
-                <div class="col2"><input v-model="email" id="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
-            </div>  
-            <div class="row">
-                <div class="col1"><label for="password" class="left">Passwort</label></div>
-                <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
-            </div>
-            <div class="row">    
-            <input type="submit" name="loginUser" value="Login" >
-            <!--<router-link v-on:click="loginUser()" :to="check2 ? '/orderform' : '/login'" > Login </router-link>-->
-            <!-- button machen lloginuser aufrufen ..use.router -->
-                        </div>
-            <div class="row">    
+  <div class="login">
+    <h1 align="center">Login</h1>
+    <p id="error" align="center">{{ errormessage }}</p>
+    <form @submit.prevent="loginUser()">
+      <div class="row">
+        <div class="col1">
+          <label for="email" class="left">E-Mail Adresse</label>
+        </div>
+        <div class="col2">
+          <input
+            v-model="email"
+            id="email"
+            type="text"
+            name="email"
+            size="30"
+            maxlenght="50"
+            class="right"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col1">
+          <label for="password" class="left">Passwort</label>
+        </div>
+        <div class="col2">
+          <input
+            v-model="password"
+            id="pw"
+            type="password"
+            name="password"
+            size="20"
+            maxlenght="50"
+            class="right"
+          />
+        </div>
+      </div>
+      <input type="submit" name="loginUser" value="Login" >
+      <div class="row">    
                 Noch kein Kunde? <router-link id="link" to="/register">Hier registrieren</router-link>
             </div>
-        </form>
-    </div>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
+import { postLoginUser, useUserStore } from "../service/UserStore";
+import {
+  ref,
+  defineComponent,
+  computed,
+  reactive,
+  watch,
+  onMounted,
+} from "vue";
+import { useRouter, useRoute } from "vue-router";
 
-    import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent, computed, reactive, watch} from 'vue'
-    import { useRouter, useRoute } from 'vue-router'
+export default defineComponent({
+  name: "Login",
 
-    export default defineComponent({
-        name:"Login",
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const loginRequest: LoginRequest = {
+      email: email.value,
+      password: password.value,
+    };
+    const { sendLogin, errormessage} = postLoginUser();
+    const { reseterrormessage } = useUserStore();
+    const router = useRouter();
+    const COLORS = ["red", "#ccc"];
 
-        setup(){
-            const email = ref("");
-            const password = ref("");
-            const loginRequest: LoginRequest = {'email':email.value, 'password':password.value};
-            const {sendLogin, errormessage, check, isfetching} = postLoginUser();
-            const router = useRouter();
-            //const c = check;
-
-            const COLORS = [
-                "red",
-                "#ccc"
-            ]
-                // const link = computed(()=> {
-                //     const l = c ? "/login" : "/orderform"; 
-                //     //router.push(l);
-                //     console.log("change");
-                //     return l;
-                // })
-
-                //watch wird benutzt um die check variable zu überprüfen
-                //weitere if abfrage nötig wenn man sich zum beispiel ausloggen möchte
-                watch(check, (neu, alt)=> {
-                    console.log(`check: ${neu} vorher: ${alt}`);
-
-                if(check.value == true ){
-                        console.log("Emaaail", email.value);
-                        router.push("/orderform");
-                    }             
-                })
-                
-            async function loginUser(): Promise<void>{
-
-                loginRequest.email = email.value;
-                loginRequest.password = password.value;
-                console.log('UuuuseR:', loginRequest);
-                sendLogin(loginRequest);
-                console.log('Ich bin nach sendlogin', loginRequest);
-
-
-
-                // // while(isfetching){
-                // //     console.log("--");
-                // // }
-                //     const test = check ? "/login" : "/orderform";
-                //     console.log("test", test);
-                //     router.push(test);
-                //     console.log("Check ausgabe",check.value);
-
-            } 
-
-            return {
-                loginUser, 
-                loginRequest,
-                email, 
-                password, 
-                errormessage,
-                colorEmail: computed(() => {
-                    if(errormessage.value != ""){
-                        return COLORS[0];
-                    }else{
-                        return COLORS[1];
-                    }
-                    
-                })   
-            };
-        }
-
+    onMounted(async () => {
+      reseterrormessage();
     });
 
+    async function loginUser() {
+      loginRequest.email = email.value;
+      loginRequest.password = password.value;
+      const loginSuccess = await sendLogin(loginRequest);
+      if (loginSuccess) {
+        console.log("Login success!");
+        router.push("/orderForm");
+      } else {
+        console.log("Login denied.");
+      }
+    }
+
+    return {
+      loginUser,
+      loginRequest,
+      email,
+      password,
+      errormessage,
+      colorEmail: computed(() => {
+        if (errormessage.value != "") {
+          return COLORS[0];
+        } else {
+          return COLORS[1];
+        }
+      }),
+    };
+  },
+});
 </script>
 
 <style scoped lang="scss">
-
-form{
-    margin: 5% 0% 15% 35%;
+form {
+  margin: 5% 0% 15% 35%;
 }
-label{
-    padding: 12px 12px 12px 0;
-    display: inline-block;
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
 }
-.col1{
-    float: left;
-    width: 25%;
-}
-
-.col2{
-    float: left;
-    width:75%;
+.col1 {
+  float: left;
+  width: 25%;
 }
 
-.row:after{
-    content:"";
-    display: table;
-    clear: both;
+.col2 {
+  float: left;
+  width: 75%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 input:focus{
     outline-color: $color-green;
@@ -142,21 +142,20 @@ input[type=submit]{
     padding: 1% 5%;
 }
 
-
 #pw {
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid v-bind('colorEmail');
-    border-radius:3px;
-    resize: vertical;
+  width: 30%;
+  padding: 0.25em;
+  border: 1px solid v-bind("colorEmail");
+  border-radius: 3px;
+  resize: vertical;
 }
 
 #email {
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid v-bind('colorEmail');
-    border-radius:3px;
-    resize: vertical;
+  width: 30%;
+  padding: 0.25em;
+  border: 1px solid v-bind("colorEmail");
+  border-radius: 3px;
+  resize: vertical;
 }
 
 #link {

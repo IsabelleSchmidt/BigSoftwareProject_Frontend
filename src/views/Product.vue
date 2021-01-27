@@ -1,9 +1,13 @@
 <template>
-    <div class="product">
-        <!-- <button @click="toggle()">Toggle</button> -->
-        <component v-bind:is="compref" @open-prod="changeComp($event)" @open-all="toggle()" :tst="prodref"/>
-        
-    </div>
+  <div class="product">
+    <!-- <button @click="toggle()">Toggle</button> -->
+    <component
+      v-bind:is="compref"
+      @open-prod="changeComp($event)"
+      @open-all="toggle()"
+      :tst="prodref"
+    />
+  </div>
 </template>
 
 <script lang="ts">

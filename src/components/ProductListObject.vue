@@ -1,6 +1,5 @@
 <template>
   <ul class="productlistline">
-      <!-- v-link="{path: product.name}" -->
     <a id="hitbox" @click="openproduct()" >
       <div class="productListObject">
         <img
@@ -18,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import "@/service/Product";
+import "../service/Product";
 import { defineComponent } from "vue";
 
 export default defineComponent({

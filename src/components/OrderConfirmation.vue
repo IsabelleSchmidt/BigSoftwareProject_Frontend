@@ -1,13 +1,15 @@
 <template>
-    <div class="vertical">
-        <div class="center">
-            <h1>Vielen Dank für Ihre<br>
-                 Bestellung!</h1>
-        </div>
-        <div class="center">
-            <router-link to="/" id="link">Zurück zur Startseite</router-link>
-        </div>
+  <div class="vertical">
+    <div class="center">
+      <h1>
+        Vielen Dank für Ihre<br />
+        Bestellung!
+      </h1>
     </div>
+    <div class="center">
+      <router-link to="/" id="link">Zurück zur Startseite</router-link>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
