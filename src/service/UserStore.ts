@@ -62,13 +62,13 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
-async function getAdresses(jwttoken: JwtToken): Promise<void> {
+async function getAdresses(): Promise<void> {
     const adresses = new Array<Adress>();
-
+    const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/getAdress`, {
-        method: 'POST',
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(jwttoken)
+        method: 'GET',
+        headers: { "Content-Type": "application/json",
+                   "Authorization" : "Bearer " + token.accessToken},
     }).then((response) => {
         if (!response.ok) {
             throw new Error(state.errormessage);

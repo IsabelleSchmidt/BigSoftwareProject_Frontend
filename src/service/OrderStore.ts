@@ -1,9 +1,11 @@
 import { useCartStore } from '@/service/CartStore'
 import { computed, reactive } from 'vue'
 import { useProduct } from './ProductStore';
+import { useUserStore } from './UserStore';
 
 const { list } = useCartStore();
 const { allproductslist, getAvailableByArtNr } = useProduct();
+const {jwttokens} = useUserStore();
 
 
 
@@ -17,15 +19,13 @@ const state = reactive({
 })
 
 async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promise<boolean> {
-
-    console.log("User Order Request" + JSON.stringify(userorderreq));
-    console.log("postOrder - Liste Warenkorb: " + JSON.stringify(Array.from(state.orderlist)));
-    console.log("Liste der Bestellten Produkte: " + JSON.stringify(order));
+    const token = jwttokens.value[0];
 
     //Fetch -> UserDetails
     await fetch(`http://localhost:9090/api/user/newOrder/user`, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization" : "Bearer " + token.accessToken},
         body: JSON.stringify(userorderreq)
     }).then((response) => {
         if (!response.ok) {
@@ -52,7 +52,8 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     //Fetch -> ordered Articles
     await fetch(`http://localhost:9090/api/order/new`, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                   "Authorization" : "Bearer " + token.accessToken },
         body: JSON.stringify(order)
     }).then((response) => {
         if (!response.ok) {
