@@ -181,8 +181,6 @@
 
                     console.log("File",formData.get('pictures'))
                     for(let i = 0; i < filesref.value.length; i++){
-                        // const filename = name.value + i + '.' +filesref.value[i].type.substring(6,filesref.value[i].type.length)
-                        // console.log(filename);
                         formData.append("picture",filesref.value[i],filesref.value[i].name);
                         console.log("File",formData.get('picture'))
                     }

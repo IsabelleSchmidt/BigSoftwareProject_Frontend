@@ -42,7 +42,7 @@ export let articlenr: number;
       })
       .then((jsondata: Array<Product>)=>{
         // console.log("yiiiha");
-        // console.log(jsondata);
+        console.log(jsondata[jsondata.length-1]);
         for(let i = 0; i < jsondata.length; i++){
           productlist.push(jsondata[i]);
         }
