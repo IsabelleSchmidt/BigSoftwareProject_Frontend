@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <nav>
+    <nav @click="closeFilter()">
       <router-link to="/">
         <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo" />
       </router-link>
@@ -199,13 +199,21 @@
 <script lang="ts">
 import { useCartStore } from "@/service/CartStore.ts";
 import { computed, defineComponent, ref } from "vue";
+import {useFilterStore} from "../service/FilterStore";
 
 export default defineComponent({
+  name: "Navbar",
   setup() {
     const { getCartAmount } = useCartStore();
     const amount = computed(() => getCartAmount());
 
-    return { amount };
+    const {setFilterClose} = useFilterStore();
+
+    function closeFilter(): void{
+        setFilterClose(true);
+    }
+
+    return { amount, closeFilter };
   },
 });
 

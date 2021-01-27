@@ -1,7 +1,11 @@
 <template>
-  <div class="compProduct">
-    <div class="columns" id="sidebarBox">
-      <Sidebar />
+    <div class="compProduct">
+        <div class="columns" id="sidebarBox">
+            <Sidebar @click="closeFilter()" />
+        </div>
+        <div class="productFilter">
+            <ProductFilter />
+        </div>
     </div>
     <div id="productList">
       <ul>
@@ -14,83 +18,154 @@
         />
       </ul>
     </div>
-  </div>
 </template>
 
 <script lang = "ts">
-import Sidebar from "../components/Sidebar.vue";
-import ProductListObject from "../components/ProductListObject.vue";
+
+import Sidebar from "../components/Sidebar.vue"
+import ProductFilter from "../components/ProductFilter.vue"
+import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import { defineComponent, computed, onMounted, ref, reactive } from "vue";
-import { useRoute } from "vue-router";
-import "../service/Product";
+import {useFilterStore} from "../service/FilterStore";
+import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
+import {useRoute} from "vue-router";
+import '../service/Product'
 
 export default defineComponent({
-  name: "CompProducts",
-  components: {
-    ProductListObject,
-    Sidebar,
-  },
-  props: {
-    product: Object,
-  },
-  setup(props, context) {
-
-
+    name: "CompProducts",
+    components:{
+        ProductListObject,
+        Sidebar,
+        ProductFilter
+    }, props: {
+        product: Object,
+    },
+    setup(props, context){
+        
         const route = useRoute();
-        const ro = ref(route.query.room);
-        const pr = ref(route.query.productType);
-        const n = ref(route.query.name);
-        const q = {room: ro, productType: pr, name: n};
-        const filter = reactive(q);
+        const roomQuery = ref(route.query.room);
+        const productTypeQuery = ref(route.query.productType);
+        const nameQuery = ref(route.query.name);
+        const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
+        const filter = reactive(queryObject);
+
 
     const { allproductslist, update } = useProduct(); //, errormessage
 
 
     // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
     onMounted(async () => {
-      q.room.value = route.query.room;
-      q.productType.value = route.query.productType;
-      q.name.value = "none";
+      queryObject.room.value = route.query.room;
+      queryObject.productType.value = route.query.productType;
+      queryObject.name.value = "none";
       await update();
     });
 
+        const {setFilterClose, colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
+
+        const lowestPrice = computed(() => {
+            return getLowestPrice();
+        })
+        const highestPrice = computed(() => {
+             return getHighestPrice();
+        })
+        const widthlow = computed(() => {
+             return getWidthLow();
+        })
+        const widthhigh = computed(() => {
+             return getWidthHigh();
+        })
+        const heightlow = computed(() => {
+             return getHeightLow();
+        })
+        const heighthigh = computed(() => {
+             return getHeightHigh();
+        })
+        const depthlow = computed(() => {
+             return getDepthLow();
+        })
+        const depthhigh = computed(() => {
+             return getDepthHigh();
+        })
+        const colorArray = computed(()=>{
+            return Array.from(colorlist.value.keys());
+
+        })
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-            q.room.value = route.query.room;
-            q.productType.value = route.query.productType;
-            q.name.value = "none";
+            queryObject.room.value = route.query.room;
+            queryObject.productType.value = route.query.productType;
+            queryObject.name.value = "none";
             await update();
         });
-
+        
         const productlist = computed(() => {
-            q.room.value = route.query.room;
-            q.productType.value = route.query.productType;
-            q.name.value = route.query.name;
-            
-            if (filter.room === "all" && filter.productType === "all") {
-                return allproductslist.value;
-            } else if (filter.room !== "all" && filter.productType === "all") {
-                return allproductslist.value.filter(p => p.roomType === filter.room?.toString());
-            } else if (filter.room === "all" && filter.productType !== "all") {
-                return allproductslist.value.filter(p => p.productType === filter.productType?.toString());
-            } else {
-                q.room.value = route.query.room;
-                q.productType.value = route.query.productType;
-                // console.log("nach beidem filtern");
 
-                return allproductslist.value.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
-            }
+            queryObject.room.value = route.query.room;
+            queryObject.productType.value = route.query.productType;
+            queryObject.name.value = route.query.name;
+
+            let merklist = allproductslist.value; 
             
+            if (filter.room === "all" && filter.productType === "all" ) {
+                merklist = allproductslist.value;
+            }
+             else if (filter.room !== "all" && filter.productType === "all") {
+                 merklist =  merklist.filter(p => p.roomType === filter.room?.toString());
+            }
+            else if (filter.room === "all" && filter.productType !== "all") {
+                merklist = merklist.filter(p => p.productType === filter.productType?.toString());
+            }
+           else{
+                queryObject.room.value = route.query.room;
+                queryObject.productType.value = route.query.productType;
+                // console.log("nach beidem filtern");
+                merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
+            }
+
+            //Filteroptions
+            
+            if(colorArray.value.length != 0){
+                const gesamt = merklist;
+                const zwlist = ref(merklist);
+                const zw = ref(Array<Product>());
+                for(let i = 0; i< colorArray.value.length; i++){
+                    zwlist.value = gesamt.filter(p=> p.allTags[0].value === colorArray.value[i]);
+                    for(let x = 0; x<zwlist.value.length; x++){
+                        zw.value.push(zwlist.value[x]);
+                    
+                    }
+                    
+                }
+                merklist = zw.value;
+            }
+            if(lowestPrice.value != 1000 && highestPrice.value != 0){
+                 merklist = merklist.filter(p => p.price >= lowestPrice.value && p.price <= highestPrice.value);
+            }
+            if(widthlow.value != 1000 && widthhigh.value != 0){
+                 merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
+            }
+            if(heightlow.value != 1000 && heighthigh.value != 0){
+                 merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
+            }
+            if(depthlow.value != 1000 && depthhigh.value != 0){
+                 merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
+            }
+            return merklist;
         });
+
 
         function openProduct(p: Product): void {
             //send to component above (Product)
             context.emit("open-prod", p);
         }
-
-    return { productlist, openProduct }; //, errormessage
-  },
+        function closeFilter(){
+            setFilterClose(true);
+        }
+        
+        return{ productlist, openProduct, closeFilter};
+    } 
+    
 });
 </script>
 

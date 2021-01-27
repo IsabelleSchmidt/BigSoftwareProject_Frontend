@@ -59,6 +59,7 @@ export default defineComponent({
       changeAmount,
       deleteProduct,
     } = useCartStore();
+
     const { getProductByArtNr } = useProduct();
 
     const ppath = computed(() => {
@@ -95,9 +96,11 @@ export default defineComponent({
                 Math.pow(10, 2)
             ) / Math.pow(10, 2)
           );
-        }
+        
       }
+    }
     });
+
     function amChange(am: number): void {
       if (props.product) {
       /*  const a = getAmount(props.product[0]);

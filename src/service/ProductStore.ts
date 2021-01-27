@@ -1,8 +1,6 @@
-
-import { reactive } from 'vue'
+//import {Client} from '@stomp/stompjs'; //Message
+import { reactive, computed, ref } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
-
-import { computed } from 'vue'
 
 import '@/service/Product'
 
@@ -52,14 +50,27 @@ function getAvailableByArtNr(nr: number) {
     }
   }
 }
+function getHightPrice(){
+  const highest = ref(0);
+  for (let i = 0; i < state.list.length; i++) {
+    if (highest.value < state.list[i].price) {
+      highest.value = state.list[i].price;
 
+    }
+  }
+  return highest.value;
+
+}
+    
 
 export function useProduct() {
   return {
     // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
     allproductslist: computed(() => state.list),
+    //errormessage: computed(() => state.errormessage),
     update,
     getProductByArtNr,
-    getAvailableByArtNr
+    getAvailableByArtNr,
+    getHightPrice
   }
 }

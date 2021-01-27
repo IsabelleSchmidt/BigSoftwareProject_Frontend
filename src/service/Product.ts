@@ -1,3 +1,9 @@
+interface Tag {
+//     id: number;
+//    version: number;
+//    allProductsWithTag: Product;
+    value: string;
+ }
 
 interface Product {
     articlenr: number;
@@ -10,6 +16,7 @@ interface Product {
     height: number;
     width: number;
     depth: number;
+    allTags: Array<Tag>;
     available: number;
     description: string;
     information: string;
