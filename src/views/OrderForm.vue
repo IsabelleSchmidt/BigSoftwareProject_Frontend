@@ -201,7 +201,7 @@ export default defineComponent({
 
     const { postOrder, errormessages, ordererrormessages } = usePostOrder();
 
-    const {getAdresses, adresses, email } = useUserStore();
+    const {jwttokens, getAdresses, adresses, email } = useUserStore();
     const router = useRouter();
 
     const payment = ref("");
@@ -243,6 +243,9 @@ export default defineComponent({
     const notavailableerror = ref("");
     const notavailableerrorempty = ref("");
 
+    //token
+    const token = jwttokens.value[0];
+
     const inTotal = computed(() => {
       return totalPrice();
     });
@@ -252,7 +255,12 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getAdresses();
+        if(jwttokens.value.length == 0){
+          router.push("/login");
+        }else{
+          await getAdresses();
+        }
+        
     });
 
     function adrChange(event: string) {
