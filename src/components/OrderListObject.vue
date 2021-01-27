@@ -58,6 +58,7 @@ export default defineComponent({
       height: 0,
       width: 0,
       depth: 0,
+      allTags: [],
       available: 0,
       description: "",
       information: "",
