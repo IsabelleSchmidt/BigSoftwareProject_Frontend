@@ -240,6 +240,8 @@ export default defineComponent({
     const dateofexpiryerror = ref("");
     const notavailableerror = ref("");
     const notavailableerrorempty = ref("");
+
+    //token
     const token = jwttokens.value[0];
 
     const inTotal = computed(() => {
@@ -251,7 +253,12 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getAdresses(token);
+        if(jwttokens.value.length == 0){
+          router.push("/login");
+        }else{
+          await getAdresses(token);
+        }
+        
     });
 
     function adrChange(event: string) {
