@@ -31,7 +31,6 @@
 <script lang="ts">
 import "@/service/Product";
 import { defineComponent, ref } from "vue";
-import { useCartStore } from "@/service/CartStore";
 import { useProduct } from "@/service/ProductStore";
 
 export default defineComponent({
