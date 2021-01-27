@@ -6,12 +6,12 @@
       <div class="adress">
         <h2>Versandadresse</h2>
         <div>
-          <select
-            v-model="selectedadr"
+          <select v-model="selectedadr"
             name="adress"
             @change="adrChange($event.target.value)"
           >
             <option
+              
               v-for="item in adresses"
               :value="[
                 item.streetName,
@@ -178,7 +178,7 @@
 
 <script lang="ts">
 import OrderListObject from "../components/OrderListObject.vue";
-import { defineComponent, computed, ref, reactive, onMounted } from "vue";
+import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { useCartStore } from "../service/CartStore";
 import { usePostOrder } from "../service/OrderStore";
 import { useUserStore } from "../service/UserStore";
@@ -206,6 +206,8 @@ export default defineComponent({
 
     const payment = ref("");
     const paymenterror = ref("");
+
+    const selectedadr = ref("");
 
     //adress
     const streetName = ref("");
@@ -426,6 +428,21 @@ export default defineComponent({
       }
     }
 
+    watch(payment, (payment) => {
+        if(payment === "creditcard") {
+          //delete bankcard input
+          iban.value = "";
+          bank.value = "";
+          bankcardOwner.value = "";
+        } else {
+          //delete creditcard input
+          creditcardnumber.value = "";
+          creditcardOwner.value = "";
+          dateOfExpiryMonth.value = 1;
+          dateOfExpiryYear.value = 2021;
+        }
+    });
+
     return {
       inTotal,
       productList,
@@ -459,6 +476,7 @@ export default defineComponent({
       notavailableerror,
       notavailableerrorempty,
       adresses,
+      selectedadr
     };
   },
 });
