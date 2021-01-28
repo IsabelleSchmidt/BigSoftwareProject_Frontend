@@ -1,8 +1,9 @@
 <template>
   <div class="navbar">
     <nav @click="closeFilter()">
-      <router-link to="/">
+      <router-link to="/" @click="closeSearch()">
         <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo" />
+        
       </router-link>
       <ul>
         <li>
@@ -11,6 +12,7 @@
               path: '/product',
               query: { room: 'all', productType: 'all', name: 'none' },
             }"
+            @click="closeSearch()"
             >Produkte</router-link
           >
           <ul>
@@ -20,6 +22,7 @@
                   path: '/product',
                   query: { room: 'all', productType: 'PLANT', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Pflanzen</router-link
               >
             </li>
@@ -29,6 +32,7 @@
                   path: '/product',
                   query: { room: 'all', productType: 'TABLE', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Tische</router-link
               >
             </li>
@@ -38,6 +42,7 @@
                   path: '/product',
                   query: { room: 'all', productType: 'CHAIR', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Stühle</router-link
               >
             </li>
@@ -47,6 +52,7 @@
                   path: '/product',
                   query: { room: 'all', productType: 'BED', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Betten</router-link
               >
             </li>
@@ -60,6 +66,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Deko</router-link
               >
             </li>
@@ -73,6 +80,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Sofa/Couch</router-link
               >
             </li>
@@ -86,13 +94,14 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Schränke/Kommoden</router-link
               >
             </li>
           </ul>
         </li>
         <li>
-          <router-link to="/rooms">Räume</router-link>
+          <router-link to="/rooms" @click="closeSearch()">Räume</router-link>
           <ul>
             <li id="link">
               <router-link
@@ -100,6 +109,7 @@
                   path: '/product',
                   query: { room: 'BATHROOM', productType: 'all', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Bad</router-link
               >
             </li>
@@ -113,6 +123,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Schlafzimmer</router-link
               >
             </li>
@@ -122,6 +133,7 @@
                   path: '/product',
                   query: { room: 'KITCHEN', productType: 'all', name: 'none' },
                 }"
+                @click="closeSearch()"
                 >Küche</router-link
               >
             </li>
@@ -135,6 +147,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Wohnzimmer</router-link
               >
             </li>
@@ -148,6 +161,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Esszimmer</router-link
               >
             </li>
@@ -161,6 +175,7 @@
                     name: 'none',
                   },
                 }"
+                @click="closeSearch()"
                 >Arbeitszimmer</router-link
               >
             </li>
@@ -169,15 +184,15 @@
         <div class="navright">
           <li>
             <div class="search-box">
-              <input class="search-txt" placeholder="Suchen" />
-              <a class="search-btn" href="#">
+              <input v-model="searchinput" class="search-txt" placeholder="Suchen" @keyup.enter="enterClicked()">
+              <a class="search-btn" @click="search()">
                 <img src="../assets/magnifyingglass.png" alt="" />
               </a>
             </div>
           </li>
           <li>
             <div id="margin">
-              <router-link to="/cart" id="hitbox">
+              <router-link to="/cart" id="hitbox" @click="closeSearch()">
                 <img src="../assets/warenkorb.png" alt="cart" id="icon" />
                 <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
               </router-link>
@@ -185,7 +200,7 @@
           </li>
           <li>
             <div id="margin">
-              <router-link to="/profil" id="hitbox">
+              <router-link to="/profil" id="hitbox" @click="closeSearch()">
                 <img src="../assets/profil.png" alt="profile" id="icon" />
               </router-link>
             </div>            
@@ -196,32 +211,70 @@
   </div>
 </template>
 
-<script lang="ts">
-import { useCartStore } from "@/service/CartStore.ts";
-import { computed, defineComponent, ref } from "vue";
-import {useFilterStore} from "../service/FilterStore";
+<script lang="ts" >
+    import {defineComponent, ref, watch, computed} from "vue";
+    import {useFilterStore} from "../service/FilterStore";
+    import {useSearchStore} from "../service/SearchStore"
+    import {useRouter} from 'vue-router'
+    import { useCartStore } from "@/service/CartStore.ts";
 
-export default defineComponent({
-  name: "Navbar",
-  setup() {
-    const { getCartAmount } = useCartStore();
-    const amount = computed(() => getCartAmount());
+        export default defineComponent({
+        name: "Navbar2",
+         setup() {
+            const {setFilterClose} = useFilterStore();
+            const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
+            const router = useRouter();
 
-    const {setFilterClose} = useFilterStore();
+            const { getCartAmount } = useCartStore();
+            const amount = computed(() => getCartAmount());
+            
 
-    function closeFilter(): void{
-        setFilterClose(true);
-    }
+            const searchinput = ref("");
 
-    return { amount, closeFilter };
-  },
-});
+            //close filter
+            function closeFilter(): void{
+                setFilterClose(true);
+            }
+
+            function search() {
+                console.log("search: " + searchinput.value);
+                setSearchactive(true);
+                setSearchword(searchinput.value);
+                router.push({ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }});
+            }
+
+            function closeSearch() {
+                clearSearch();
+            }
+
+            watch(searchaktive, (searchaktive) => {
+                if (!searchaktive) {
+                    searchinput.value = "";
+                }
+            })
+
+            function enterClicked() {
+                search();
+            }
+
+           return{
+              amount,
+               closeFilter,
+               search,
+               searchinput,
+               closeSearch,
+               enterClicked,
+          };
+        }
+        
+     });
 
 </script>
 
 <style scoped lang="scss">
-#logo {
-  height: 50px;
+
+#logo{
+    height: 50px;
 }
 #icon{
     height: 24px;

@@ -166,7 +166,7 @@ function deleteFilter(): void{
 
 export function useFilterStore() {
     return {
-      // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
+      // computed(): reactive but read-only-Version
       pricelist: computed(() => state.pricelist),
       widthlist: computed(() => state.widthlist),
       heightlist: computed(() => state.heightlist),

@@ -35,8 +35,6 @@ export default defineComponent({
         const COMPONENTS = ["CompProduct", "CompSingle"];
 
 
-
-
         onMounted(async () => {
 
             router.afterEach((to) => {

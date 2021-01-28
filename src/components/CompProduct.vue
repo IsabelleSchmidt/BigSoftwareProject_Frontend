@@ -1,22 +1,18 @@
 <template>
     <div class="compProduct">
         <div class="columns" id="sidebarBox">
-            <Sidebar @click="closeFilter()" />
+            <Sidebar @click="closeFilter()"/>
         </div>
         <div class="productFilter">
             <ProductFilter />
         </div>
-    </div>
-    <div id="productList">
-      <ul>
-        <ProductListObject
-          id="listOrder"
-          :product="pr"
-          v-for="pr in productlist"
-          :key="pr.id"
-          @open-prod="openProduct($event)"
-        />
-      </ul>
+        <div id="productList">
+            <ul>          
+                <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id" @open-prod="openProduct($event)"/>
+            </ul>
+            <h4 id>{{messageEmpty}}</h4>
+        </div>
+        
     </div>
 </template>
 
@@ -27,6 +23,7 @@ import ProductFilter from "../components/ProductFilter.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import {useFilterStore} from "../service/FilterStore";
+import {useSearchStore} from "../service/SearchStore"
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
@@ -49,6 +46,7 @@ export default defineComponent({
         const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
         const filter = reactive(queryObject);
 
+        const {searchword, clearSearch} = useSearchStore();
 
     const { allproductslist, update } = useProduct(); //, errormessage
 
@@ -119,12 +117,10 @@ export default defineComponent({
            else{
                 queryObject.room.value = route.query.room;
                 queryObject.productType.value = route.query.productType;
-                // console.log("nach beidem filtern");
                 merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
 
             //Filteroptions
-            
             if(colorArray.value.length != 0){
                 const gesamt = merklist;
                 const zwlist = ref(merklist);
@@ -151,35 +147,80 @@ export default defineComponent({
             if(depthlow.value != 1000 && depthhigh.value != 0){
                  merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
             }
+            
             return merklist;
         });
 
+        const sw = computed(() => {
+                return searchword.value;
+        }); 
+
+        const searchproductList = computed(() => {
+            if (sw.value != "") {
+                return productlist.value.filter(p => 
+                                p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
+                                p.productType.toLowerCase() === (sw.value.toLowerCase()) ||
+                                p.roomType.toLowerCase() === (sw.value.toLowerCase())
+                        );
+            }
+        });
 
         function openProduct(p: Product): void {
             //send to component above (Product)
             context.emit("open-prod", p);
         }
+
+        //delete filters and searchinputs
         function closeFilter(){
             setFilterClose(true);
+            clearSearch();
         }
         
-        return{ productlist, openProduct, closeFilter};
+        return{
+            productlist: computed(() => {
+                if (sw.value == "") {
+                    return productlist.value;
+                } else {
+                    return searchproductList.value;
+                }
+            }), 
+            // productlist,
+            openProduct,
+            closeFilter, 
+            searchproductList,
+            messageEmpty: computed(() => {
+                
+                if (sw.value == "") {
+                    console.log("Ohne Suche: Länge der Produktliste bei return: " + productlist.value.length + "---sw.value: " + sw.value.length);
+                    return (productlist.value.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden." : "";
+                } else {
+                    console.log("Mit Suche: Länge der Produktliste bei return: " + searchproductList.value?.length + "---sw.value: " + sw.value.length);
+                    return (searchproductList.value?.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden: " + sw.value: "";
+                }
+                
+            }),
+
+        };
     } 
     
 });
 </script>
 
  <style scoped lang="scss">
-#listOrder {
-  display: inline;
-  float: left;
-  margin-bottom: 20px;
-  //margin: 0px 0px 20px 10px;
-}
+    #listOrder{
+        display: inline;
+        float: left;
+        margin-bottom: 20px;
+    } 
 
-#productList {
-  float: left;
-  max-width: 83%;
-  margin-left: 15%;
-}
+    #productList{
+        float: left;
+        max-width: 83%;
+        margin-left: 15%;
+    } 
+
+    h4{
+        padding: 1em 0em 0em 7.7em;
+        text-align: center;
+    }
 </style>
