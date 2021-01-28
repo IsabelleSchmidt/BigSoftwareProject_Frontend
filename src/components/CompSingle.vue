@@ -6,20 +6,20 @@
     <div class="top2">
       <div class="left">
         <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
-        <div v-for="i in tst.allPictures" :key="i">
+        <div v-for="i in productObject.allPictures" :key="i">
           <img class="pic" v-bind:src="i.path" alt="Picture" />
         </div>
       </div>
       <div class="right">
         <ul>
           <li>
-            <h3 class="name">{{ tst.name }}</h3>
+            <h3 class="name">{{ productObject.name }}</h3>
           </li>
           <li>
-            <p class="description">{{ tst.description }}</p>
+            <p class="description">{{ productObject.description }}</p>
           </li>
           <li class="priceLi">
-            <p class="price">{{ tst.price }} €</p>
+            <p class="price">{{ productObject.price }} €</p>
           </li>
           <li>
             <label>Menge:</label>
@@ -63,14 +63,14 @@
       <hr />
       <details>
         <summary>Produktinformationen</summary>
-        <p class="p1">{{ tst.information }}</p>
+        <p class="p1">{{ productObject.information }}</p>
       </details>
       <hr />
       <details>
         <summary>Produktgröße</summary>
         <p class="p1">
-          {{ tst.width }} (Breite) x {{ tst.depth }} (Länge) x
-          {{ tst.height }} (Höhe)
+          {{ productObject.width }} (Breite) x {{ productObject.depth }} (Länge) x
+          {{ productObject.height }} (Höhe)
         </p>
       </details>
       <hr />

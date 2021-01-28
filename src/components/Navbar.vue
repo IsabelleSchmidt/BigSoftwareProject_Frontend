@@ -1,18 +1,18 @@
 <template>
   <div class="navbar">
     <nav @click="closeFilter()">
-      <router-link to="/" @click="closeSearch()">
+      <div @click="closeSearch()">
+      <router-link to="/">
         <img src="@/assets/logoPFlAMOEHUS.jpg" alt="Logo" id="logo" />
-        
       </router-link>
+      </div>
       <ul>
-        <li>
+        <li @click="closeSearch()">
           <router-link
             :to="{
               path: '/product',
               query: { room: 'all', productType: 'all', name: 'none' },
             }"
-            @click="closeSearch()"
             >Produkte</router-link
           >
           <ul>
@@ -22,7 +22,6 @@
                   path: '/product',
                   query: { room: 'all', productType: 'PLANT', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Pflanzen</router-link
               >
             </li>
@@ -32,7 +31,6 @@
                   path: '/product',
                   query: { room: 'all', productType: 'TABLE', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Tische</router-link
               >
             </li>
@@ -42,7 +40,6 @@
                   path: '/product',
                   query: { room: 'all', productType: 'CHAIR', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Stühle</router-link
               >
             </li>
@@ -52,7 +49,6 @@
                   path: '/product',
                   query: { room: 'all', productType: 'BED', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Betten</router-link
               >
             </li>
@@ -66,7 +62,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Deko</router-link
               >
             </li>
@@ -80,7 +75,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Sofa/Couch</router-link
               >
             </li>
@@ -94,14 +88,13 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Schränke/Kommoden</router-link
               >
             </li>
           </ul>
         </li>
-        <li>
-          <router-link to="/rooms" @click="closeSearch()">Räume</router-link>
+        <li @click="closeSearch()">
+          <router-link to="/rooms">Räume</router-link>
           <ul>
             <li id="link">
               <router-link
@@ -109,7 +102,6 @@
                   path: '/product',
                   query: { room: 'BATHROOM', productType: 'all', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Bad</router-link
               >
             </li>
@@ -123,7 +115,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Schlafzimmer</router-link
               >
             </li>
@@ -133,7 +124,6 @@
                   path: '/product',
                   query: { room: 'KITCHEN', productType: 'all', name: 'none' },
                 }"
-                @click="closeSearch()"
                 >Küche</router-link
               >
             </li>
@@ -147,7 +137,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Wohnzimmer</router-link
               >
             </li>
@@ -161,7 +150,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Esszimmer</router-link
               >
             </li>
@@ -175,7 +163,6 @@
                     name: 'none',
                   },
                 }"
-                @click="closeSearch()"
                 >Arbeitszimmer</router-link
               >
             </li>
@@ -191,16 +178,16 @@
             </div>
           </li>
           <li>
-            <div id="margin">
-              <router-link to="/cart" id="hitbox" @click="closeSearch()">
+            <div id="margin" @click="closeSearch()">
+              <router-link to="/cart" id="hitbox">
                 <img src="../assets/warenkorb.png" alt="cart" id="icon" />
                 <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
               </router-link>
             </div>
           </li>
           <li>
-            <div id="margin">
-              <router-link to="/profil" id="hitbox" @click="closeSearch()">
+            <div id="margin"  @click="closeSearch()">
+              <router-link to="/profil" id="hitbox">
                 <img src="../assets/profil.png" alt="profile" id="icon" />
               </router-link>
             </div>            
@@ -384,6 +371,7 @@ nav ul li input {
 
 .search-btn {
   padding: 0px 5px 10px 0px;
+  cursor: pointer;
 }
 
 .search-txt {

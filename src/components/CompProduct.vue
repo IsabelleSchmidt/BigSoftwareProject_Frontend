@@ -23,7 +23,8 @@ import ProductFilter from "../components/ProductFilter.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import {useFilterStore} from "../service/FilterStore";
-import {useSearchStore} from "../service/SearchStore"
+import {useSearchStore} from "../service/SearchStore";
+import{useLanguage} from "../service/Language";
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useRoute} from "vue-router";
 import '../service/Product'
@@ -49,7 +50,7 @@ export default defineComponent({
         const {searchword, clearSearch} = useSearchStore();
 
     const { allproductslist, update } = useProduct(); //, errormessage
-
+    const{germanTranslation} = useLanguage();
 
     // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
     onMounted(async () => {
@@ -160,7 +161,9 @@ export default defineComponent({
                 return productlist.value.filter(p => 
                                 p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
                                 p.productType.toLowerCase() === (sw.value.toLowerCase()) ||
-                                p.roomType.toLowerCase() === (sw.value.toLowerCase())
+                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.productType.toLowerCase()) ||
+                                p.roomType.toLowerCase() === (sw.value.toLowerCase()) ||
+                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.roomType.toLowerCase())
                         );
             }
         });
