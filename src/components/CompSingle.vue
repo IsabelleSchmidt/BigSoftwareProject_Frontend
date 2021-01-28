@@ -83,26 +83,22 @@ import { defineComponent, computed, ref, PropType, onMounted } from "vue";
 
 import "@/service/Product";
 import { useCartStore } from "../service/CartStore";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CompProducts",
   components: {},
   props: {
-    tst: {
+    productObject: {
       type: Object as PropType<Product>,
       required: true,
     },
   },
   setup(props, context) {
     const {
-      list,
       addProduct,
-      deleteProduct,
       checkOneMoreAvailable,
       getAmount,
-      changeAmount,
-      getCartAmount,
     } = useCartStore();
     const alert = ref(false);
     const success = ref(false);
@@ -111,7 +107,7 @@ export default defineComponent({
     const router = useRouter();
 
     const pavailable = computed(() => {
-      return props.tst.available;
+      return props.productObject.available;
     });
 
     const pamount = computed(() => {
@@ -124,18 +120,18 @@ export default defineComponent({
     }
 
     function add(): void {
-      const am = ref(getAmount(props.tst.articlenr));
+      const am = ref(getAmount(props.productObject.articlenr));
 
       if (
-        !checkOneMoreAvailable(props.tst.articlenr) ||
-        props.tst.available <= 0
+        !checkOneMoreAvailable(props.productObject.articlenr) ||
+        props.productObject.available <= 0
       ) {
         alert.value = true;
         setTimeout(() => {
           alert.value = false;
         }, 1000);
       } else if (am.value) {
-        if (Number(am.value) + Number(amount.value) > props.tst.available) {
+        if (Number(am.value) + Number(amount.value) > props.productObject.available) {
           alert.value = true;
           setTimeout(() => {
             alert.value = false;
@@ -145,14 +141,14 @@ export default defineComponent({
           setTimeout(() => {
             success.value = false;
           }, 1000);
-          addProduct(props.tst.articlenr, amount.value);
+          addProduct(props.productObject.articlenr, amount.value);
         }
       } else {
         success.value = true;
         setTimeout(() => {
           success.value = false;
         }, 1000);
-        addProduct(props.tst.articlenr, amount.value);
+        addProduct(props.productObject.articlenr, amount.value);
       }
       amount.value = 1;
     }
@@ -161,20 +157,19 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      console.log(props.tst.roomType);
+      console.log(props.productObject.roomType);
       router.push({
         path: "/product",
         query: {
-          room: props.tst.roomType,
-          productType: props.tst.productType,
-          name: props.tst.name,
+          room: props.productObject.roomType,
+          productType: props.productObject.productType,
+          name: props.productObject.name,
         },
       });
 
       //when back button in browser is pressed
       window.onpopstate = function (event: any) {
         openproductlist();
-        // router.go(-1);
       };
     });
 
@@ -189,9 +184,9 @@ export default defineComponent({
       add,
       openproductlist,
       color: computed(() => {
-        if (props.tst.available <= 0) {
+        if (props.productObject.available <= 0) {
           return COLORS[0];
-        } else if (props.tst.available < 20) {
+        } else if (props.productObject.available < 20) {
           return COLORS[1];
         } else {
           return COLORS[2];

@@ -5,7 +5,7 @@
       v-bind:is="compref"
       @open-prod="changeComp($event)"
       @open-all="toggle()"
-      :tst="prodref"
+      :productObject="prodref"
     />
   </div>
 </template>
