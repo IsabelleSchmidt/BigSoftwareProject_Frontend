@@ -312,7 +312,6 @@ export default defineComponent({
           allProductsOrdered: orderList,
           jwtToken: token,
         };
-        console.log("USER: " + JSON.stringify(uor));
 
         streetnameerror.value = "";
         housenumbererror.value = "";
@@ -326,7 +325,6 @@ export default defineComponent({
         dateofexpiryerror.value = "";
 
         const orderSuccess = await postOrder(uor, order);
-        console.log("Order success vue: " + orderSuccess);
 
         if (orderSuccess) {
           clearCart();
@@ -394,8 +392,6 @@ export default defineComponent({
                 amount.push(Number(a));
               }
             }
-            console.log("PNR: " + JSON.stringify(pnr));
-            console.log("AMOUNT: " + JSON.stringify(amount));
 
             if (pnr.length > 0) {
               for (let i = 0; i < pnr.length; i++) {

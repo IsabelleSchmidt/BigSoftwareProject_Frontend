@@ -26,7 +26,6 @@ export default {
     });
 
     const productList = computed(() => {
-      console.log("CARTCHANGE" + JSON.stringify(Array.from(list.value)));
       return Array.from(list.value.entries());
     });
 

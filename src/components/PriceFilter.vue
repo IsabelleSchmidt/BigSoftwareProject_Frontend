@@ -58,7 +58,6 @@ export default defineComponent({
                 }
         }
         onMounted(async()=> {
-            console.log("hier ")
             for(let i = 0; i< pricelist.value.size; i++){
                 const key = Array.from(pricelist.value.keys())[i];
                if(key  == '0%200'){

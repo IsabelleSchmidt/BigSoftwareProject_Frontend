@@ -29,7 +29,6 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         body: JSON.stringify(userorderreq)
     }).then((response) => {
         if (!response.ok) {
-            console.log("Error");
             state.orderSuccess = false;
             throw new Error(state.errormessage);
 
@@ -57,7 +56,6 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         body: JSON.stringify(order)
     }).then((response) => {
         if (!response.ok) {
-            console.log("Error");
             throw new Error(state.errormessage);
         }
         return response.json();
@@ -73,7 +71,6 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     }).catch((exception) => {
         console.log(exception)
     });
-    console.log("STATE ERRORS: " + JSON.stringify(state.ordererrormessages));
     return state.orderSuccess;
 }
 

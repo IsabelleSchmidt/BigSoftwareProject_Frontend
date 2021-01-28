@@ -17,7 +17,6 @@ const state = reactive({
 
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
-    console.log("Es wird eingeloggt.")
     await fetch(`http://localhost:9090/api/user/login`, {
         method: 'POST',
         headers: { "Content-Type": 'application/json' },
@@ -33,18 +32,14 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     }).then((jsondata: JwtToken) => {
         state.jwttokens.push(jsondata);
         state.email = loginRequest.email;
-        console.log(state.jwttokens);
     }).catch((error) => {
         state.errormessage = "Email-Adresse oder Passwort falsch."
     })
 
-    console.log("RETURN");
     return state.check;
 }
 
 async function sendUser(signUpRequest: SignUpRequest) {
-
-    console.log("Sende: " + 'User ' + JSON.stringify(signUpRequest));
     await fetch(`http://localhost:9090/api/user/register`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },

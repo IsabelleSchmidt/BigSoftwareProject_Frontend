@@ -237,7 +237,6 @@
             }
 
             function search() {
-                console.log("search: " + searchinput.value);
                 setSearchactive(true);
                 setSearchword(searchinput.value);
                 router.push({ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }});

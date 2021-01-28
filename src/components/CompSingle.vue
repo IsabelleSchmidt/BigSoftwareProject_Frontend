@@ -170,6 +170,7 @@ export default defineComponent({
       //when back button in browser is pressed
       window.onpopstate = function (event: any) {
         openproductlist();
+        // router.go(-1);
       };
     });
 

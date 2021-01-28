@@ -79,10 +79,7 @@ export default defineComponent({
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
       if (loginSuccess) {
-        console.log("Login success!");
         router.push("/orderForm");
-      } else {
-        console.log("Login denied.");
       }
     }
 

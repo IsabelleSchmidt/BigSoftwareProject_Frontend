@@ -22,10 +22,11 @@ import Sidebar from "../components/Sidebar.vue"
 import ProductFilter from "../components/ProductFilter.vue"
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
-import {useFilterStore} from "../service/FilterStore";
-import {useSearchStore} from "../service/SearchStore"
+import { useFilterStore } from "../service/FilterStore";
+import { useSearchStore } from "../service/SearchStore"
+import { useLanguage } from "../service/Language";
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
-import {useRoute} from "vue-router";
+import { useRoute } from "vue-router";
 import '../service/Product'
 
 export default defineComponent({
@@ -46,18 +47,17 @@ export default defineComponent({
         const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
         const filter = reactive(queryObject);
 
-        const {searchword, clearSearch} = useSearchStore();
+        const { searchword, clearSearch } = useSearchStore();
+        const { allproductslist, update } = useProduct();
+        const { germanTranslation } = useLanguage();
 
-    const { allproductslist, update } = useProduct(); //, errormessage
-
-
-    // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
-    onMounted(async () => {
-      queryObject.room.value = route.query.room;
-      queryObject.productType.value = route.query.productType;
-      queryObject.name.value = "none";
-      await update();
-    });
+        // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
+        onMounted(async () => {
+        queryObject.room.value = route.query.room;
+        queryObject.productType.value = route.query.productType;
+        queryObject.name.value = "none";
+        await update();
+        });
 
         const {setFilterClose, colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
 
@@ -160,7 +160,9 @@ export default defineComponent({
                 return productlist.value.filter(p => 
                                 p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
                                 p.productType.toLowerCase() === (sw.value.toLowerCase()) ||
-                                p.roomType.toLowerCase() === (sw.value.toLowerCase())
+                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.productType.toLowerCase()) ||
+                                p.roomType.toLowerCase() === (sw.value.toLowerCase()) ||
+                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.roomType.toLowerCase())
                         );
             }
         });
@@ -191,10 +193,8 @@ export default defineComponent({
             messageEmpty: computed(() => {
                 
                 if (sw.value == "") {
-                    console.log("Ohne Suche: Länge der Produktliste bei return: " + productlist.value.length + "---sw.value: " + sw.value.length);
                     return (productlist.value.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden." : "";
                 } else {
-                    console.log("Mit Suche: Länge der Produktliste bei return: " + searchproductList.value?.length + "---sw.value: " + sw.value.length);
                     return (searchproductList.value?.length == 0) ? "Für diese Anfrage sind leider keine Artikel vorhanden: " + sw.value: "";
                 }
                 

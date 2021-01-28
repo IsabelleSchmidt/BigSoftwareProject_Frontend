@@ -170,18 +170,6 @@ export default defineComponent({
     const password2error = ref("");
 
     async function newUser(): Promise<void> {
-      console.log(
-        "FIRSTNAME " +
-          firstname.value +
-          " LASTNAME " +
-          lastname.value +
-          " EMAIL " +
-          email.value +
-          " PW1 " +
-          password1.value +
-          " PW2 " +
-          password2.value
-      );
 
       if (password1.value == password2.value) {
         const signUpRequest: SignUpRequest = {
