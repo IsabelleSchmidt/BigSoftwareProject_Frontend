@@ -22,7 +22,7 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     const token = jwttokens.value[0];
 
     //Fetch -> UserDetails
-    await fetch(`http://localhost:9090/api/user/newOrder/user`, {
+    await fetch(`/api/user/newOrder/user`, {
         method: 'POST',
         headers: { "Content-Type": "application/json",
                     "Authorization" : "Bearer " + token.accessToken},
@@ -49,7 +49,7 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         return false;
     }
     //Fetch -> ordered Articles
-    await fetch(`http://localhost:9090/api/order/new`, {
+    await fetch(`/api/order/new`, {
         method: 'POST',
         headers: { "Content-Type": "application/json",
                    "Authorization" : "Bearer " + token.accessToken },

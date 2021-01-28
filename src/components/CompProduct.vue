@@ -53,10 +53,10 @@ export default defineComponent({
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
-        queryObject.room.value = route.query.room;
-        queryObject.productType.value = route.query.productType;
-        queryObject.name.value = "none";
-        await update();
+            queryObject.room.value = route.query.room;
+            queryObject.productType.value = route.query.productType;
+            queryObject.name.value = "none";
+            await update();
         });
 
         const {setFilterClose, colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();

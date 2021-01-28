@@ -17,7 +17,8 @@ const state = reactive({
 
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
-    await fetch(`http://localhost:9090/api/user/login`, {
+    console.log("Es wird eingeloggt.")
+    await fetch(`/api/user/login`, {
         method: 'POST',
         headers: { "Content-Type": 'application/json' },
         body: JSON.stringify(loginRequest),
@@ -40,7 +41,9 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
 }
 
 async function sendUser(signUpRequest: SignUpRequest) {
-    await fetch(`http://localhost:9090/api/user/register`, {
+
+    console.log("Sende: " + 'User ' + JSON.stringify(signUpRequest));
+    await fetch(`/api/user/register`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signUpRequest)
@@ -60,7 +63,7 @@ async function sendUser(signUpRequest: SignUpRequest) {
 async function getAdresses(jwttoken: JwtToken): Promise<void> {
     const adresses = new Array<Adress>();
 
-    await fetch(`http://localhost:9090/api/user/getAdress`, {
+    await fetch(`/api/user/getAdress`, {
         method: 'POST',
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(jwttoken)
