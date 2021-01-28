@@ -1,8 +1,12 @@
 <template>
   <div id="app">
+    <div id="content">
     <Navbar />
-    <router-view />
-    <Footer />
+    <router-view/>
+    </div>
+    <div id="footer">
+      <Footer/>
+    </div>
   </div>
 </template>
 
@@ -27,6 +31,11 @@ export default {
 *{
   font-family: Helvetica, sans-serif !important;
 }
+
+#content{
+  min-height: calc(100vh - 80px);
+}
+
 
 input[type=submit]{
     margin: 5% 0% 0% 0%;

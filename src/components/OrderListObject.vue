@@ -136,7 +136,7 @@ ul {
   width: 5em;
 }
 #line {
-  border-bottom: 2px solid #d4d4d4;
+  border-bottom: 2px solid $color-grey2;
 }
 
 .information {
