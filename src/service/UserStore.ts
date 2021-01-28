@@ -13,8 +13,6 @@ const state = reactive({
     allAdresses: Array<Adress>()
 })
 
-
-
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
     console.log("Es wird eingeloggt.")
