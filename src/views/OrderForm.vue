@@ -253,7 +253,7 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getAdresses(token);
+      await getAdresses();
     });
 
     function adrChange(event: string) {
@@ -295,7 +295,6 @@ export default defineComponent({
           adress: adr,
           bankCard: bc,
           creditcard: cc,
-          token: token,
         };
 
         const orderList = [];
@@ -310,7 +309,6 @@ export default defineComponent({
         const order: OrderDT = {
           priceTotal: inTotal.value,
           allProductsOrdered: orderList,
-          jwtToken: token,
         };
 
         streetnameerror.value = "";
