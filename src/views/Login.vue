@@ -79,7 +79,7 @@ export default defineComponent({
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
       if (loginSuccess) {
-        router.push("/orderForm");
+        router.push("/profile");
       }
     }
 

@@ -7,9 +7,9 @@ const state = reactive({
     errormessage: "",
     check: false,
     jwttokens: Array<JwtToken>(),
-    email: "",
     errormessages: Array<MessageResponse>(),
-    allAdresses: Array<Adress>()
+    allAdresses: Array<Adress>(),
+    user : Array<User>()
 })
 
 
@@ -31,7 +31,6 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         return response.json();
     }).then((jsondata: JwtToken) => {
         state.jwttokens.push(jsondata);
-        state.email = loginRequest.email;
         console.log(state.jwttokens);
     }).catch((error) => {
         state.errormessage = "Email-Adresse oder Passwort falsch."
@@ -61,7 +60,7 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
-async function getAdresses(): Promise<void> {
+async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
     const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/getAdress`, {
@@ -70,8 +69,10 @@ async function getAdresses(): Promise<void> {
                    "Authorization" : "Bearer " + token.accessToken},
     }).then((response) => {
         if (!response.ok) {
+            console.log("ERROOOOOOOOOOOR");
             throw new Error(state.errormessage);
         }
+        console.log("RIIIIIIICHTIG");
         return response.json();
     }).then((jsondata: User) => {
 
@@ -79,6 +80,8 @@ async function getAdresses(): Promise<void> {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
         state.allAdresses = adresses;
+        console.log("UUUUUUUUSER: " + JSON.stringify(jsondata));
+        state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
     });
@@ -98,9 +101,9 @@ export function postLoginUser() {
 export function useUserStore() {
     return {
         jwttokens: computed(() => state.jwttokens),
-        email: computed(() => state.email),
         adresses: computed(() => state.allAdresses),
-        getAdresses,
+        user: computed(() => state.user),
+        getUser,
         reseterrormessage,
     }
 }

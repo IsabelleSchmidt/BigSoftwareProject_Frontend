@@ -187,8 +187,8 @@
           </li>
           <li>
             <div id="margin"  @click="closeSearch()">
-              <router-link to="/profil" id="hitbox">
-                <img src="../assets/profil.png" alt="profile" id="icon" />
+              <router-link :to="jwttokens.length > 0 ? '/profile' : '/login'">
+                <img src="../assets/profil.png" alt="profile" id="icon"/>
               </router-link>
             </div>            
           </li>
@@ -204,6 +204,7 @@
     import {useSearchStore} from "../service/SearchStore"
     import {useRouter} from 'vue-router'
     import { useCartStore } from "@/service/CartStore.ts";
+    import{useUserStore} from "../service/UserStore";
 
         export default defineComponent({
         name: "Navbar2",
@@ -211,6 +212,7 @@
             const {setFilterClose} = useFilterStore();
             const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
             const router = useRouter();
+            const{jwttokens} = useUserStore();
 
             const { getCartAmount } = useCartStore();
             const amount = computed(() => getCartAmount());
@@ -250,6 +252,7 @@
                searchinput,
                closeSearch,
                enterClicked,
+               jwttokens,
           };
         }
         
