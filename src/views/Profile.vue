@@ -8,13 +8,13 @@
         <div class="col1">
           <label for="firstname" class="left"> Vorname </label>
         </div>
-        <div class="col2">{{ firstname }}</div>
+        <div class="col2">{{ firstName }}</div>
       </div>
       <div class="row">
         <div class="col1">
           <label for="lastname" class="left"> Nachname </label>
         </div>
-        <div class="col2">{{ lastname }}</div>
+        <div class="col2">{{ lastName }}</div>
       </div>
       <div class="row">
         <div class="col1"><label for="email" class="left"> E-Mail </label></div>
@@ -26,7 +26,7 @@
         </div>
         <div class="col2">{{ birthdate }}</div>
       </div>
-      <div>
+      <div class="row">
         <div class="col1">
           <label for="adress" class="left">Adresse</label>
         </div>
@@ -48,6 +48,46 @@
           </select>
         </div>
       </div>
+      <div class="row">
+      <div class="col1">
+          <label for="bankcard" class="left">Bankkarten</label>
+        </div>
+        <div class="col2">
+          <select v-model="selectedbankcard" name="bankcard">
+            <option
+              v-for="item in bankcards"
+              :value="[
+                item.iban,
+                item.bankcardOwner,
+                item.bank,
+              ]"
+              :key="item.id"
+            >
+              {{ item.bank }}, {{ item.iban }}, {{ item.owner }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col1">
+          <label for="creditcard" class="left">Kreditkarten</label>
+        </div>
+        <div class="col2">
+          <select v-model="selectedcreditcard" name="creditcard">
+            <option
+              v-for="item in creditcards"
+              :value="[
+                item.creditcardnumber,
+                item.creditcardOwner,
+                item.dateOfExpiry,
+              ]"
+              :key="item.id"
+            >
+              {{ item.cowner }}, {{ item.creditcardnumber }}, {{ item.dateOfExpiry }}
+            </option>
+          </select>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -65,35 +105,38 @@ export default defineComponent({
 
     //user
     const email = ref("");
-    const firstname = ref("");
+    const firstName = ref("");
     const lastName = ref("");
     const birthdate = ref(new Date());
-    const gender = ref("");
 
     function userInformation() {
 
       //FirstName
-      firstname.value = user.value[0].firstName;
+      firstName.value = user.value[0].firstName;
 
       //Lastname
+      lastName.value = user.value[0].lastName;
 
       //Email
-
-      //Gender
+      email.value = user.value[0].email;
 
       //Geburtstag
-    }
+      birthdate.value = user.value[0].birthdate;
+
+}
 
     onMounted(async () => {
       await getUser();
       userInformation();
     });
 
+    console.log("item bankcard: ", JSON.stringify);
+
     return {
-      firstname,
+      firstName,
       lastName,
       birthdate,
-      gender,
+      email,
       adresses,
       userInformation,
       bankcards, 
@@ -114,13 +157,13 @@ label {
 .col1 {
   float: left;
   width: 25%;
+  font-weight: bold;
 }
 
 .col2 {
   float: left;
   width: 45%;
   padding: 12px 0px 0px 0px;
-  border: 1px solid $color-grey3;
 }
 
 .row:after {

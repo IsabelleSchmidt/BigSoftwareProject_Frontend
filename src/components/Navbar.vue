@@ -180,7 +180,7 @@
           <li>
             <div id="margin" @click="closeSearch()">
               <router-link to="/cart" id="hitbox">
-                <img src="../assets/warenkorb.png" alt="cart" id="icon" />
+                <img src="../assets/warenkorb.png" alt="cart" id="icon1" />
                 <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
               </router-link>
             </div>
@@ -188,7 +188,7 @@
           <li>
             <div id="margin"  @click="closeSearch()">
               <router-link :to="jwttokens.length > 0 ? '/profile' : '/login'">
-                <img src="../assets/profil.png" alt="profile" id="icon"/>
+                <img src="../assets/profil.png" alt="profile" id="icon2"/>
               </router-link>
             </div>            
           </li>
@@ -265,15 +265,19 @@
 #logo{
     height: 50px;
 }
-#icon{
+#icon1{
     height: 24px;
     padding: 0px 10px 0px 10px;
+}
+#icon2{
+    height: 24px;
+    padding: 0px 0px 0px 0px;
 }
 #hitbox{
     padding: 0;
 }
 #margin{
-    margin: 15px 10px 0px 10px;
+    margin: 15px 10px 0px 0px;
 }
 nav{
     width: 100%;

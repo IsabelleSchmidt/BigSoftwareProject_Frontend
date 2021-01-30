@@ -9,8 +9,8 @@ const state = reactive({
     jwttokens: Array<JwtToken>(),
     errormessages: Array<MessageResponse>(),
     allAdresses: Array<Adress>(),
-    bankcards: Array<Bankcard>(),
-    creditcards: Array<Creditcard>(),
+    bankcard: Array<Bankcard>(),
+    creditcard: Array<Creditcard>(),
     user : Array<User>()
 })
 
@@ -64,8 +64,8 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
-    const bankcard = new Array<Bankcard>();
-    const creditcard = new Array<Creditcard>();
+    const bankcards = new Array<Bankcard>();
+    const creditcards = new Array<Creditcard>();
     const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/getAdress`, {
         method: 'GET',
@@ -84,19 +84,18 @@ async function getUser(): Promise<void> {
         }
         state.allAdresses = adresses;
 
-        if(jsondata.bankcard.size > 0){
-            for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
-            bankcard.push(Array.from(jsondata.bankcard)[i] as Bankcard);
-            }
-            state.bankcards= bankcard;
-        
-        }else if(jsondata.creditcard.size > 0){
-            for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
-                creditcard.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
-            }
-            state.creditcards = creditcard;
+        for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
+            bankcards.push(Array.from(jsondata.bankcard)[i] as Bankcard);
         }
+        state.bankcard= bankcards;
+        console.log("Bancard userstore inhalt", jsondata.bankcard.values)
         
+        for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
+            creditcards.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
+        }
+        state.creditcard = creditcards;
+        console.log("creditcard userstore inhalt", state.creditcard)
+
         state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
@@ -118,8 +117,8 @@ export function useUserStore() {
     return {
         jwttokens: computed(() => state.jwttokens),
         adresses: computed(() => state.allAdresses),
-        bankcards: computed(() => state.bankcards),
-        creditcards: computed(() => state.creditcards),
+        bankcards: computed(() => state.bankcard),
+        creditcards: computed(() => state.creditcard),
         user: computed(() => state.user),
         getUser,
         reseterrormessage,
