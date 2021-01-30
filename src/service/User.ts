@@ -6,8 +6,8 @@ interface User {
     password: string;
     gender: string;
     allAdresses: Set<Adress>;
-    bankcards: Set<Bankcard>;
-    creditcards: Set<Creditcard>;
+    bankcard: Set<Bankcard>;
+    creditcard: Set<Creditcard>;
 
 }
 

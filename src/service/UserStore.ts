@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue'
+import { BaseTransitionProps, computed, reactive } from 'vue'
 import '../service/Requests'
 import '../service/Response'
 import '../service/User'
@@ -9,6 +9,8 @@ const state = reactive({
     jwttokens: Array<JwtToken>(),
     errormessages: Array<MessageResponse>(),
     allAdresses: Array<Adress>(),
+    bankcards: Array<Bankcard>(),
+    creditcards: Array<Creditcard>(),
     user : Array<User>()
 })
 
@@ -62,6 +64,8 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
+    const bankcard = new Array<Bankcard>();
+    const creditcard = new Array<Creditcard>();
     const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/getAdress`, {
         method: 'GET',
@@ -72,15 +76,33 @@ async function getUser(): Promise<void> {
             console.log("ERROOOOOOOOOOOR");
             throw new Error(state.errormessage);
         }
-        console.log("RIIIIIIICHTIG");
+        console.log();
         return response.json();
     }).then((jsondata: User) => {
+
+        console.log("HIER DER USER: " + JSON.stringify(jsondata));
 
         for (let i = 0; i < Array.from(jsondata.allAdresses).length; i++) {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
         state.allAdresses = adresses;
-        console.log("UUUUUUUUSER: " + JSON.stringify(jsondata));
+        console.log("HIER DIE BANKKARTEN: " +  JSON.stringify(jsondata.bankcard));
+        if(jsondata.bankcard.size > 0){
+            for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
+            bankcard.push(Array.from(jsondata.bankcard)[i] as Bankcard);
+            }
+            state.bankcards= bankcard;
+        
+        }else if(jsondata.creditcard.size > 0){
+            for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
+                creditcard.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
+            }
+            state.creditcards = creditcard;
+        }
+        
+
+        
+
         state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
