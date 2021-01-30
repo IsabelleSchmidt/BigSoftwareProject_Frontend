@@ -61,7 +61,7 @@ export default defineComponent({
   name: "Profile",
 
   setup() {
-    const { getUser, user, adresses } = useUserStore();
+    const { getUser, user, adresses, bankcards, creditcards } = useUserStore();
 
     //user
     const email = ref("");
@@ -69,28 +69,6 @@ export default defineComponent({
     const lastName = ref("");
     const birthdate = ref(new Date());
     const gender = ref("");
-
-    //adress
-    const adr = new Array<Adress>();
-    const streetname = ref("");
-    const housenumber = ref("");
-    const postcode = ref("");
-    const city = ref("");
-
-    //Bankcard
-    const bankcards = new Array<Bankcard>();
-
-    //Creditcards
-    const creditcards = new Array<Creditcard>();
-
-    //Creditcard
-    const creditcardOwner = ref("");
-    const creditcardnumber = ref("");
-    const dateOfExpiryMonth = ref(1);
-    const dateOfExpiryYear = ref(2021);
-    const dateOfExpiry = ref(
-      new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1)
-    );
 
     function userInformation() {
 
@@ -107,7 +85,6 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      console.log("JOJOJOJOJOJOJOJO");
       await getUser();
       userInformation();
     });
@@ -117,16 +94,10 @@ export default defineComponent({
       lastName,
       birthdate,
       gender,
-      adr,
       adresses,
-      bankcards,
-      creditcards,
       userInformation,
-      creditcardOwner,
-      creditcardnumber,
-      dateOfExpiryMonth,
-      dateOfExpiryYear,
-      dateOfExpiry,
+      bankcards, 
+      creditcards
     };
   },
 });

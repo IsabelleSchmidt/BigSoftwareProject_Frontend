@@ -73,20 +73,17 @@ async function getUser(): Promise<void> {
                    "Authorization" : "Bearer " + token.accessToken},
     }).then((response) => {
         if (!response.ok) {
-            console.log("ERROOOOOOOOOOOR");
             throw new Error(state.errormessage);
         }
         console.log();
         return response.json();
     }).then((jsondata: User) => {
 
-        console.log("HIER DER USER: " + JSON.stringify(jsondata));
-
         for (let i = 0; i < Array.from(jsondata.allAdresses).length; i++) {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
         state.allAdresses = adresses;
-        console.log("HIER DIE BANKKARTEN: " +  JSON.stringify(jsondata.bankcard));
+
         if(jsondata.bankcard.size > 0){
             for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
             bankcard.push(Array.from(jsondata.bankcard)[i] as Bankcard);
@@ -100,9 +97,6 @@ async function getUser(): Promise<void> {
             state.creditcards = creditcard;
         }
         
-
-        
-
         state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
@@ -124,6 +118,8 @@ export function useUserStore() {
     return {
         jwttokens: computed(() => state.jwttokens),
         adresses: computed(() => state.allAdresses),
+        bankcards: computed(() => state.bankcards),
+        creditcards: computed(() => state.creditcards),
         user: computed(() => state.user),
         getUser,
         reseterrormessage,
