@@ -1,7 +1,7 @@
 <template>
     <div class="compresetpw">
         <h1 align="center">Passwort zurücksetzen</h1>
-        <!-- <p id="error" align="center">{{ errormessage }}</p> -->
+        <p id="error" align="center">{{ errormessage }}</p>
         <h5 align="center">Email: {{ $route.params.email }}</h5>
         <p align="center">{{ message }}</p>
         <form @submit.prevent="resetPassword()">
@@ -13,7 +13,7 @@
                     <input
                         v-model="password1"
                         id="pw1"
-                        type="text"
+                        type="password"
                         name="pw"
                         size="30"
                         maxlenght="50"
@@ -27,9 +27,9 @@
                 </div>
                 <div class="col2">
                     <input
-                        v-model="password1"
+                        v-model="password2"
                         id="pw2"
-                        type="text"
+                        type="password"
                         name="pw"
                         size="30"
                         maxlenght="50"
@@ -45,32 +45,51 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref } from "vue";
-// import { useUserStore } from "../service/UserStore"
+import { defineComponent, computed, ref, onMounted } from "vue";
+import { useUserStore } from "../service/UserStore"
 import "@/service/Product";
 
 export default defineComponent({
   name: "CompProducts",
-  setup() {
+  props: {
+      email: String
+  },
+  setup(props) {
 
-    const email = ref("");
     const password1 = ref("");
     const password2 = ref("");
 
     const isHidden = ref(false);
-
     const COLORS = ["red", "#ccc"];
 
+    const errormessage = ref("");
     const message = ref("");
 
-    function resetPassword() {
-        message.value = "Ihr Passwort wurde erfolgreich zurückgesetzt."
-        isHidden.value =  true;
+    const { changePassword } = useUserStore();
+
+    async function resetPassword() {
+        errormessage.value = "";
+
+        if (password1.value !== password2.value) {
+            errormessage.value = "Die Passwörter stimmen nicht überein."
+        } else {
+            if (props.email) {
+                const npr: NewPasswordRequest = {
+                    email: props.email,
+                    password: password1.value,
+                };
+                if (await changePassword(npr)) {
+                    message.value = "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können das Fenster nun schließen."
+                    isHidden.value =  true;
+                } else {
+                    errormessage.value = "Das Passwort muss mindestens aus 8 Zeichen bestehen. Davon mindestens 1 Sonderzeichen und eine Zahl."
+                }
+            }
+        }
     }
     
 
     return {
-        email,
         password1,
         password2,
         colorEmail: computed(() => {
@@ -78,7 +97,8 @@ export default defineComponent({
         }),
         resetPassword,
         isHidden,
-        message
+        message,
+        errormessage
     };
   },
 });

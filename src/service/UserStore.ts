@@ -103,6 +103,32 @@ async function checkIfEmailExists(email: string): Promise<boolean> {
     return exists;
 } 
 
+async function changePassword(npr: NewPasswordRequest) {
+    let success = false;
+
+    await fetch(`/api/user/changePassword`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(npr)
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then((jsondata: MessageResponse) => {
+        
+        if (!jsondata.message)
+            success = true;
+        
+    }).catch((exception) => {
+        console.log(exception)
+    });
+    console.log("Success: " + success);
+    return success;
+
+}
+
 function reseterrormessage() {
     state.errormessage = "";
 }
@@ -121,7 +147,8 @@ export function useUserStore() {
         adresses: computed(() => state.allAdresses),
         getAdresses,
         reseterrormessage,
-        checkIfEmailExists
+        checkIfEmailExists,
+        changePassword
     }
 }
 

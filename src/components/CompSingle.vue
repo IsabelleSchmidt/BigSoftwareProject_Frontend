@@ -157,7 +157,6 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      console.log(props.productObject.roomType);
       router.push({
         path: "/product",
         query: {
@@ -170,7 +169,6 @@ export default defineComponent({
       //when back button in browser is pressed
       window.onpopstate = function (event: any) {
         openproductlist();
-        // router.go(-1);
       };
     });
 
@@ -199,6 +197,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
 .availablepoint {
   float: left;
   font-size: 2.5em;

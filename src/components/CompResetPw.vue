@@ -5,9 +5,9 @@
         <p align="center">{{ message }}</p>
         <form @submit.prevent="reset()">
             <div class="row">    
-                <a @click="back()" id="link"> &laquo; zurück</a>
+                <a @click="back()" id="link" v-if="!isHidden"> &laquo; zurück</a>
             </div>
-            <div class="row">
+            <div class="row" v-if="!isHidden">
                 <div class="col1">
                     <label for="email" class="left">E-Mail Adresse</label>
                 </div>
@@ -23,16 +23,18 @@
                     />
                 </div>
             </div>
-            <div>
+            <div v-if="!isHidden">
                 <input type="submit" name="resetPw" value="Passwort zurücksetzen" >
+            </div>
+            <div v-if="isHidden">
+                <button @click="toLogin()" > Zurück zum Login</button>
             </div>
         </form>
     </div>
 </template>
 
 <script lang = "ts">
-import emailjs from 'emailjs-com';
-import { defineComponent, onMounted, computed, ref } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useUserStore } from "../service/UserStore"
 import { useEmailStore } from "../service/EmailStore"
 import "@/service/Product";
@@ -57,18 +59,21 @@ export default defineComponent({
     const { checkIfEmailExists } = useUserStore();
     const { sendEmail } = useEmailStore();
 
+    const isHidden = ref(false);
+
     //Callback
     function back(): void {
       context.emit("toggle-comp");
     }
 
-    //when back button in browser is pressed
-    window.onpopstate = function (event: any) {
+    function toLogin() {
         back();
-        
-    };
+    }
 
     async function reset() {
+
+        isHidden.value = false;
+
         if (email.value) {
             const exists = await checkIfEmailExists(email.value);
             userExists.value = exists;
@@ -79,8 +84,8 @@ export default defineComponent({
             } else {
                 errormessage.value = "";
                 message.value = "Ihnen wurde eine Email zum Passwort zurücksetzen gesendet.";
-
-                //TODO: send Email
+                isHidden.value = true;
+                
                 sendEmail(email.value);
             }
         }
@@ -100,7 +105,9 @@ export default defineComponent({
         email,
         reset,
         errormessage,
-        message
+        message,
+        toLogin,
+        isHidden
     };
   },
 });

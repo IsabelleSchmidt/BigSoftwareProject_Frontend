@@ -7,7 +7,7 @@
 <script lang="ts">
 import CompLogin from "../components/CompLogin.vue"
 import CompResetPw from "../components/CompResetPw.vue"
-import { defineComponent, ref } from "vue"
+import { defineComponent, ref, onMounted } from "vue"
 import '../service/Product'
 
 export default defineComponent({
@@ -23,6 +23,13 @@ export default defineComponent({
         const compref = ref(component);
 
         const email = ref("");
+
+        onMounted(async () => {
+        //when back button in browser is pressed
+        window.onpopstate = function (event: any) {
+            console.log("back");
+        };
+    });
 
         function toggle(e: string): void {
             email.value = e;
