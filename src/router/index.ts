@@ -69,6 +69,11 @@ const router = createRouter({
       path: '/orderConf',
       name: 'OrderConf',
       component: () => import('../components/OrderConfirmation.vue'),
+    },
+    {
+      path: '/resetPassword/:email',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
     }
   ]
 });

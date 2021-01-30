@@ -3,7 +3,6 @@
         <h1 align="center">Passwort zurücksetzen</h1>
         <p id="error" align="center">{{ errormessage }}</p>
         <p align="center">{{ message }}</p>
-        <!--  -->
         <form @submit.prevent="reset()">
             <div class="row">    
                 <a @click="back()" id="link"> &laquo; zurück</a>
@@ -32,8 +31,10 @@
 </template>
 
 <script lang = "ts">
+import emailjs from 'emailjs-com';
 import { defineComponent, onMounted, computed, ref } from "vue";
 import { useUserStore } from "../service/UserStore"
+import { useEmailStore } from "../service/EmailStore"
 import "@/service/Product";
 
 export default defineComponent({
@@ -54,17 +55,12 @@ export default defineComponent({
     const message = ref("");
 
     const { checkIfEmailExists } = useUserStore();
+    const { sendEmail } = useEmailStore();
 
     //Callback
     function back(): void {
       context.emit("toggle-comp");
     }
-
-
-    onMounted(async () => {
-        console.log("Übergebene Email: " + props.mailadress);
-      
-    });
 
     //when back button in browser is pressed
     window.onpopstate = function (event: any) {
@@ -83,6 +79,9 @@ export default defineComponent({
             } else {
                 errormessage.value = "";
                 message.value = "Ihnen wurde eine Email zum Passwort zurücksetzen gesendet.";
+
+                //TODO: send Email
+                sendEmail(email.value);
             }
         }
     }

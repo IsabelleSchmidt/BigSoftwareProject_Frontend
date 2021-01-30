@@ -14,7 +14,7 @@
         </li>
         <li>
           <h5>E-Mail</h5>
-          email@mail.de <br />
+          pflamoehus@gmail.com <br />
           Tel.: 01234 56789
         </li>
       </ul>
