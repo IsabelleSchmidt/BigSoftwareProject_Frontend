@@ -53,6 +53,11 @@ const router = createRouter({
       component: () => import('../views/Login.vue')
     },
     {
+      path: '/logout',
+      name: 'Logout',
+      component: () => import('../views/Home.vue')
+    },
+    {
       path: '/orderform',
       name: 'OrderForm',
       component: () => import('../views/OrderForm.vue')

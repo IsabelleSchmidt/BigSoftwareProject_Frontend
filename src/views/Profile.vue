@@ -3,7 +3,10 @@
     <div class="profilhead">
       <h1>Dein Profil</h1>
     </div>
-    <form>
+    <form @submit.prevent="logoutUser()">
+      <div class="row"> 
+         <input id="logout" type="submit" name="logoutUser" value="Logout"/>
+      </div>
       <div class="row">
         <div class="col1">
           <label for="firstname" class="left"> Vorname </label>
@@ -96,6 +99,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useUserStore } from "../service/UserStore";
 import "../service/User";
+import { useRouter} from "vue-router";
 
 export default defineComponent({
   name: "Profile",
@@ -108,8 +112,9 @@ export default defineComponent({
     const firstName = ref("");
     const lastName = ref("");
     const birthdate = ref(new Date());
+    const router = useRouter();
 
-    function userInformation() {
+    function userInformation() { 
 
       //FirstName
       firstName.value = user.value[0].firstName;
@@ -123,7 +128,13 @@ export default defineComponent({
       //Geburtstag
       birthdate.value = user.value[0].birthdate;
 
-}
+    }
+
+    async function logoutUser(): Promise<void>{
+      console.log("User wird ausgeloggt.");
+      //await logoutUser();
+      router.push("/");
+    }
 
     onMounted(async () => {
       await getUser();
@@ -140,7 +151,8 @@ export default defineComponent({
       adresses,
       userInformation,
       bankcards, 
-      creditcards
+      creditcards,
+      logoutUser
     };
   },
 });
@@ -177,4 +189,11 @@ label {
 .profilhead {
   text-align: center;
 }
+
+#logout{
+  margin: -4% 10% 0% 0%;
+  float: right;
+  padding: .5% 2%;
+}
+
 </style>
