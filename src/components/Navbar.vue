@@ -187,7 +187,7 @@
           </li>
           <li>
             <div id="margin"  @click="closeSearch()">
-              <router-link :to="jwttokens.length > 0 ? '/profile' : '/login'">
+              <router-link :to="jwttokens.length > 0 ? '/profile' : '/login'" id="hitbox">
                 <img src="../assets/profil.png" alt="profile" id="icon2"/>
               </router-link>
             </div>            
