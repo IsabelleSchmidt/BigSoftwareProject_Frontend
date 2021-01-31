@@ -44,3 +44,7 @@ interface OrderDT {
     priceTotal: number;
     allProductsOrdered: Array<ProductDTO>;
 }
+
+interface LogoutRequest{
+    token: string;
+}

@@ -3,7 +3,7 @@
     <div class="profilhead">
       <h1>Dein Profil</h1>
     </div>
-    <form @submit.prevent="logoutUser()">
+    <form @submit.prevent="logout()">
       <div class="row"> 
          <input id="logout" type="submit" name="logoutUser" value="Logout"/>
       </div>
@@ -97,7 +97,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { useUserStore } from "../service/UserStore";
+import { useUserStore, getLogoutUser } from "../service/UserStore";
 import "../service/User";
 import { useRouter} from "vue-router";
 
@@ -106,6 +106,7 @@ export default defineComponent({
 
   setup() {
     const { getUser, user, adresses, bankcards, creditcards } = useUserStore();
+    const {logoutUser, jwttokens, errormessage} = getLogoutUser();
 
     //user
     const email = ref("");
@@ -113,6 +114,8 @@ export default defineComponent({
     const lastName = ref("");
     const birthdate = ref(new Date());
     const router = useRouter();
+    const token = jwttokens.value[0];
+    let accessToken = "";
 
     function userInformation() { 
 
@@ -130,18 +133,22 @@ export default defineComponent({
 
     }
 
-    async function logoutUser(): Promise<void>{
-      console.log("User wird ausgeloggt.");
-      //await logoutUser();
-      router.push("/");
+    async function logout(): Promise<void>{
+      accessToken = token.accessToken;
+      const lr: LogoutRequest = {"token" : accessToken};
+      await logoutUser(lr);
+
+      if(errormessage.value.length > 0 ){
+        console.log("Loggout not successful.");
+      }else{
+        router.push("/");
+      }
     }
 
     onMounted(async () => {
       await getUser();
       userInformation();
     });
-
-    console.log("item bankcard: ", JSON.stringify);
 
     return {
       firstName,
@@ -152,7 +159,7 @@ export default defineComponent({
       userInformation,
       bankcards, 
       creditcards,
-      logoutUser
+      logout
     };
   },
 });
