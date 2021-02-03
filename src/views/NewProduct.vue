@@ -109,6 +109,7 @@
         const picturename = ref("");
         const {sendProduct, validationerrors} = postProduct();
         let click = "";
+        // const {bild} = zeigBild(); 
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -135,12 +136,7 @@
             product.nrAvailableItems = nrAvailableItems.value;
             console.log('ProduuuukT:',product);
             click = "geclicked"
-            // producterror.value = "";
-            // priceerror.value = "";
-            // roomerror.value = "";
-            // nameerror.value = "";
-            // infoerror.value = "";
-            // descriptionerror.value = "";
+
 
             await sendProduct(product);
                 
@@ -186,7 +182,6 @@
                     }
 
                     console.log("articlnr im newProd",articlenr);
-
                     if(sendPicture(formData,articlenr)){
                         // Pop UP
                         Swal.fire({
@@ -198,6 +193,7 @@
                             }).then((result)=>{
                                 if(result.isConfirmed){
                                     // router.push("/newProducts")
+                                    // bild()
                                     location.reload();
                                 }
                         })

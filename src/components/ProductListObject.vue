@@ -2,7 +2,9 @@
         <ul class="productlistline">
             <a @click="openproduct()">
            <div class="productListObject">
-                <img v-bind:src="product.allPictures[0].path" alt="Picture" class="pic">
+                <!-- <img v-bind:src="product.allPictures[0].path" alt="Picture" class="pic"> -->
+                 <img v-bind:src="picList.get(product.allPictures[0].id).binary" alt="Picture" class="pic">
+                 <!-- <img src="/api/picture/194"> -->
                 <div class="bg">
                     <li>{{product.name}}</li>
                     <li>{{product.price}} €</li>
@@ -14,7 +16,8 @@
 
 <script lang="ts">
 import '@/service/Product'
-import { defineComponent } from 'vue'
+import { computed, defineComponent,ref } from 'vue'
+import {useProduct} from "../service/ProductStore"
 
 export default defineComponent({
     name: "ProductListObject",
@@ -22,13 +25,18 @@ export default defineComponent({
         product: Object,
     },
     setup(props, context) {
+        
+        const{pictureList} = useProduct();
+        const picList = computed(() => {
+          return pictureList.value;
+        });
 
         function openproduct(): void {
             context.emit("open-prod", props.product);
         }
 
         return {
-            openproduct
+            openproduct,picList
         };
     }
 });

@@ -18,17 +18,68 @@ import '@/service/Validationerror'
 
 const state = reactive({
     list: Array<Product>(),
-    img: String,
+    pictureList: new Map(),
     validationerrors : Array<Validationerror>(),
    
   })
 
-export let articlenr: number;
+  export let articlenr: number;
 
+
+
+  async function bild(bildId: number){
+    let base64String ='';
+    await fetch(`/api/picture/${bildId}`,{
+      method: 'GET',
+    })
+    .then((response)=>{
+      return response.arrayBuffer();
+    })
+    .then((buffer)=>{
+      // const base64String = btoa(String.fromCharCode.apply(new Uint8Array(buffer)));
+      // console.log("Gefetchtes Bild   "+"data:image/jpg;base64," + base64String)
+      // return "data:image/jpg;base64," + base64String;
+  
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      // console.log('THEN')
+      const len = bytes.byteLength;
+      for (let i = 0; i<len;i++){
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const base =btoa(binary);
+  
+      console.log("Gefetchtes Bild   ")
+      // return "data:image/jpg;base64," + base;
+      base64String= "data:image/jpeg;base64," + base;
+    })
+    .catch((fehler)=>{
+      console.log(fehler)
+    })
+   return base64String;
+  }
+
+  async function allPics() {
+    const picList = new Map();
+
+    for(let i = 0; i<state.list.length; i++){
+      for(let j=0; j<state.list[i]['allPictures'].length;j++){
+        // picList.push(state.list[i]['allPictures'][j])
+        // bild(state.list[i]['allPictures'][j].id)
+        const binaryPic = await bild(state.list[i]['allPictures'][j].id)
+        // picList.push({id:state.list[i]['allPictures'][j].id, path: state.list[i]['allPictures'][j].path, binary:binaryPic});
+        picList.set(state.list[i]['allPictures'][j].id,{id:state.list[i]['allPictures'][j].id, path: state.list[i]['allPictures'][j].path, binary:binaryPic});
+      }
+    }
+    console.log("BILDERLISTE",picList)
+    state.pictureList = picList;
+    
+  }
 
   async function update(): Promise<void> {
     const productlist = new Array<Product>();
-    fetch(`/api/products`, { //http://localhost:8080
+    // const picList = new Array<Picture>();
+    await fetch(`/api/products`, { //http://localhost:8080
         method: 'GET',
         // credentials: 'same-origin'
     })
@@ -45,17 +96,23 @@ export let articlenr: number;
         console.log(jsondata[jsondata.length-1]);
         for(let i = 0; i < jsondata.length; i++){
           productlist.push(jsondata[i]);
+
         }
-        state.list = productlist;
-  
+        state.list = productlist
+        return productlist
+   
+      }).then(()=>{
+        allPics()
       })
       .catch((fehler) => {
         //fehler.state.errormessage("Fehler bei der Serverkommunikation");
         //state.liste = alt;
-        console.log(fehler);
-      });      
-
+        console.log("LOCKFEHLER",fehler);
+      });
+     
   } 
+
+
     
   async function sendProduct(newProduct: Product): Promise<void>{
     articlenr = -1;
@@ -63,7 +120,7 @@ export let articlenr: number;
     console.log("Sende: "+'Product '+JSON.stringify(newProduct))
     await fetch(`/api/product/new`,{
       method: 'POST',
-      headers: {"Content-Type":"application/json"},
+      headers: {"Content-Type":"application/json",access:'Access-Control-Allow-Origin'},
       body: JSON.stringify(newProduct)
     }).then(function(response){
       //hier checken ob alles ok gelaufen ist -> falls nein errormessages holen?
@@ -101,7 +158,7 @@ export let articlenr: number;
   }
 
   //Liste an Bildern
-  async function sendPicture(formData: FormData, articlenr: number): Promise<boolean>{
+  async function sendPicture(formData: FormData, articlenr: number){
     console.log("Sende Bild an Backend");
     let wassuccessful = false;
     if(articlenr != -1){
@@ -127,6 +184,7 @@ export let articlenr: number;
         return {
           // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
           list: computed(() => state.list),
+          pictureList: computed(()=>  state.pictureList),
           //errormessage: computed(() => state.errormessage),
           update,
         }
@@ -146,6 +204,7 @@ export let articlenr: number;
         sendPicture
       }
     }
+
     
 
 

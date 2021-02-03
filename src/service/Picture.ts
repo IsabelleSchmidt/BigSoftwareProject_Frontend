@@ -1,6 +1,6 @@
 interface Picture{
-
-    value: string;
     id: any;
-    product: Product;
+    path: string;
+    // product: Product;
+    binary: string;
 }

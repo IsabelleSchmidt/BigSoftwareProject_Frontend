@@ -12,7 +12,7 @@ interface Product {
     productType: string;
     roomType: string;
     price: number;
-    allPictures: Array<string>;
+    allPictures: Array<Picture>;
     height: number;
     width: number;
     depth: number;
