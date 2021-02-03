@@ -5,11 +5,12 @@
     <form>
       <div class="adress">
         <h2>Versandadresse</h2>
-        <div>
+        <div v-if="!isHidden">
+          <label class="col1">Adresse auswählen: </label>
           <select v-model="selectedadr"
             name="adress"
             @change="adrChange($event.target.value)"
-            v-if="!isHidden"
+            
           >
             <option
               

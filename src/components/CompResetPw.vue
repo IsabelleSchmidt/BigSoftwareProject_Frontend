@@ -77,7 +77,6 @@ export default defineComponent({
         if (email.value) {
             const exists = await checkIfEmailExists(email.value);
             userExists.value = exists;
-            console.log("User existiert? " + userExists.value);
             if (!exists) {
                 errormessage.value = "Diese E-Mail Adresse ist nicht bei uns Registriert.";
                 message.value = "";
@@ -164,6 +163,9 @@ input[type=submit]{
     list-style: none;
     list-style-type: none;
     color: $color-green;
+    &:hover{
+        cursor: pointer;
+    } 
 }
 
 #error {

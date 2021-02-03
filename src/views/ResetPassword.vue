@@ -2,7 +2,7 @@
     <div class="compresetpw">
         <h1 align="center">Passwort zurücksetzen</h1>
         <p id="error" align="center">{{ errormessage }}</p>
-        <h5 align="center">Email: {{ $route.params.email }}</h5>
+        <h5 align="center">Ihre Email-Adresse: {{ $route.params.email }}</h5>
         <p align="center">{{ message }}</p>
         <form @submit.prevent="resetPassword()">
             <div class="row" v-if="!isHidden">
@@ -47,12 +47,14 @@
 <script lang = "ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useUserStore } from "../service/UserStore"
+import { useEmailStore } from "../service/EmailStore"
 import "@/service/Product";
 
 export default defineComponent({
   name: "CompProducts",
   props: {
-      email: String
+      email: String,
+      code: String
   },
   setup(props) {
 
@@ -65,27 +67,57 @@ export default defineComponent({
     const errormessage = ref("");
     const message = ref("");
 
-    const { changePassword } = useUserStore();
+    const { changePassword, checkIfEmailExists } = useUserStore();
+    const { getCode } = useEmailStore();
 
     async function resetPassword() {
-        errormessage.value = "";
 
-        if (password1.value !== password2.value) {
-            errormessage.value = "Die Passwörter stimmen nicht überein."
-        } else {
-            if (props.email) {
-                const npr: NewPasswordRequest = {
-                    email: props.email,
-                    password: password1.value,
-                };
-                if (await changePassword(npr)) {
-                    message.value = "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können das Fenster nun schließen."
-                    isHidden.value =  true;
-                } else {
-                    errormessage.value = "Das Passwort muss mindestens aus 8 Zeichen bestehen. Davon mindestens 1 Sonderzeichen und eine Zahl."
+        errormessage.value = "";
+        let exists = false;
+        let allowed = false;
+
+        const actualTime = new Date().getTime();
+        const alloweddelay = 600000; //10min delay
+
+        if (props.email) {
+            exists = await checkIfEmailExists(props.email);
+            const codebackend = await getCode(props.email);
+            if (props.code) {
+                const splitted = codebackend.split("$");
+                const backendcode = splitted[0];
+                const backendtimecode = Number(splitted[1]);
+                 
+                if (backendcode && (backendcode === props.code.split("$")[0])) {
+                    if (actualTime <= (backendtimecode + alloweddelay)) {
+                        allowed = true;
+                    }
                 }
             }
         }
+
+        if (!exists) {
+            errormessage.value = "Diese EmailAdresse ist ungültig."
+        } else if (!allowed) {
+            errormessage.value = "Ihr Zugang ist ungültig."
+        } else {
+            if (password1.value !== password2.value) {
+                errormessage.value = "Die Passwörter stimmen nicht überein."
+            } else {
+                if (props.email) {
+                    const npr: NewPasswordRequest = {
+                        email: props.email,
+                        password: password1.value,
+                    };
+                    if (await changePassword(npr)) {
+                        message.value = "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können das Fenster nun schließen."
+                        isHidden.value =  true;
+                    } else {
+                        errormessage.value = "Das Passwort muss mindestens aus 8 Zeichen bestehen. Davon mindestens 1 Sonderzeichen und eine Zahl."
+                    }
+                }
+            }
+        }       
+
     }
     
 

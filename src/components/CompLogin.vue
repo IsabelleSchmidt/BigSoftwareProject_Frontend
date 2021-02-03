@@ -168,5 +168,8 @@ input[type=submit]{
     list-style: none;
     list-style-type: none;
     color: $color-green;
+    &:hover{
+        cursor: pointer;
+    } 
 }
 </style>
