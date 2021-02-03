@@ -2,79 +2,15 @@
   <div class="sidebar">
     <h4>Produkte</h4>
     <ul>
-      <li>
+      <li v-for="productkey in productkeys" :key="productkey">
         <router-link
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'all', productType: 'PLANT', name: 'none' },
+            query: { room: 'all', productType: productkey, name: 'none' },
           }"
-          >Pflanzen</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'all', productType: 'TABLE', name: 'none' },
-          }"
-          >Tische</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'all', productType: 'CHAIR', name: 'none' },
-          }"
-          >Stühle</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'all', productType: 'BED', name: 'none' },
-          }"
-          >Betten</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'all', productType: 'DECORATION', name: 'none' },
-          }"
-          >Deko</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'all', productType: 'COUCH', name: 'none' },
-          }"
-          >Sofa/Couch</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: {
-              room: 'all',
-              productType: 'CLOSET',
-              name: 'none',
-            },
-          }"
-          >Schränke/Kommoden</router-link
-        >
+          >{{products[productkey]}}</router-link>
+     
       </li>
     </ul>
 
@@ -82,65 +18,15 @@
 
     <h4>Räume</h4>
     <ul>
-      <li>
+      <li v-for="roomkey in roomkeys" :key="roomkey">
         <router-link
           id="link"
           :to="{
             path: '/product',
-            query: { room: 'BATHROOM', productType: 'all', name: 'none' },
+            query: { room: roomkey, productType: 'all', name: 'none' },
           }"
-          >Bad</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'BEDROOM', productType: 'all', name: 'none' },
-          }"
-          >Schlafzimmer</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'KITCHEN', productType: 'all', name: 'none' },
-          }"
-          >Küche</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'LIVINGROOM', productType: 'all', name: 'none' },
-          }"
-          >Wohnzimmer</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'DININGROOM', productType: 'all', name: 'none' },
-          }"
-          >Esszimmer</router-link
-        >
-      </li>
-      <li>
-        <router-link
-          id="link"
-          :to="{
-            path: '/product',
-            query: { room: 'BUREAU', productType: 'all', name: 'none' },
-          }"
-          >Arbeitszimmer</router-link
-        >
+          >{{rooms[roomkey]}}</router-link>
+     
       </li>
     </ul>
   </div>
@@ -148,9 +34,29 @@
 <script lang="ts">
 import Vue from 'vue'
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
+import {useProduct} from '../service/ProductStore';
 
 export default defineComponent({
+    name: "sidebar",
+    setup(){
+      const {allproducttypes, allroomtypes, getAllProductTypes, getAllRoomTypes} = useProduct();
+      const products = ref(allproducttypes.value);
+      const rooms = ref(allroomtypes.value); //lieber mit ref arbeiten -> reagiert imo nicht direkt auf backend Änderungen
+     
+      onMounted(async ()=>{
+        await getAllProductTypes();
+        await getAllRoomTypes(); 
+
+      });
+
     
+      
+      const productkeys = Object.keys(allproducttypes.value);
+      const roomkeys = Object.keys(allroomtypes.value);
+
+
+      return{products, rooms, roomkeys, productkeys};
+    }
 });
 </script>
 
