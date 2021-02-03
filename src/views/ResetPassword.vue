@@ -94,7 +94,7 @@ export default defineComponent({
                 }
             }
         }
-
+        
         if (!exists) {
             errormessage.value = "Diese EmailAdresse ist ungültig."
         } else if (!allowed) {
