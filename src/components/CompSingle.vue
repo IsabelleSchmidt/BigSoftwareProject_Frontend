@@ -44,7 +44,7 @@
           </li>
           <li class="alert">
             <v-alert type="success" v-if="alert"
-              >Artikel ist nicht mehr verfügbar
+              >Artikel ist in dieser Menge nicht mehr verfügbar
             </v-alert>
           </li>
           <li class="available">
@@ -79,7 +79,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref, PropType, onMounted } from "vue";
+import { defineComponent, computed, ref, PropType, onMounted, reactive } from "vue";
 
 import "@/service/Product";
 import { useCartStore } from "../service/CartStore";
@@ -103,6 +103,7 @@ export default defineComponent({
     const alert = ref(false);
     const success = ref(false);
     const amount = ref(1);
+    const timer = ref();
 
     const router = useRouter();
 
@@ -121,33 +122,58 @@ export default defineComponent({
 
     function add(): void {
       const am = ref(getAmount(props.productObject.articlenr));
-
+      success.value = false
       if (
         !checkOneMoreAvailable(props.productObject.articlenr) ||
         props.productObject.available <= 0
       ) {
-        alert.value = true;
-        setTimeout(() => {
-          alert.value = false;
-        }, 1000);
+        if(timer.value){
+            clearTimeout(timer.value)
+            alert.value = false
+            success.value = false
+            timer.value = setTimeout(()=>{
+              alert.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
+            alert.value = false;
+        }, 10000) 
       } else if (am.value) {
         if (Number(am.value) + Number(amount.value) > props.productObject.available) {
-          alert.value = true;
-          setTimeout(() => {
+          if(timer.value){
+            clearTimeout(timer.value)
+            alert.value = false
+            success.value = false
+            timer.value = setTimeout(()=>{
+              alert.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
             alert.value = false;
-          }, 1000);
+        }, 10000);
         } else {
-          success.value = true;
-          setTimeout(() => {
+          if(timer.value){
+            clearTimeout(timer.value)
+            success.value = false
+            alert.value = false
+            timer.value = setTimeout(()=>{
+              success.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
             success.value = false;
-          }, 1000);
+        }, 10000)    
           addProduct(props.productObject.articlenr, amount.value);
         }
       } else {
-        success.value = true;
-        setTimeout(() => {
+        if(timer.value){
+          clearTimeout(timer.value)
           success.value = false;
-        }, 1000);
+        }
+        success.value = true;
+        timer.value = setTimeout(()=>{
+            success.value = false;
+        }, 10000)        
         addProduct(props.productObject.articlenr, amount.value);
       }
       amount.value = 1;
