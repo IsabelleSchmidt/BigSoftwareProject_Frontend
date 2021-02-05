@@ -44,13 +44,13 @@
 </template>
 
 <script lang="ts">
+  
 import { postLoginUser, useUserStore } from "../service/UserStore";
+import { useCartStore } from "../service/CartStore"
 import {
   ref,
   defineComponent,
   computed,
-  reactive,
-  watch,
   onMounted,
 } from "vue";
 import { useRouter, useRoute } from "vue-router";
@@ -66,7 +66,8 @@ export default defineComponent({
       password: password.value,
     };
     const { sendLogin, errormessage} = postLoginUser();
-    const { reseterrormessage } = useUserStore();
+    const { reseterrormessage, jwttokens } = useUserStore();
+    const help = useCartStore().getPreviousView().valueOf;
     const router = useRouter();
     const COLORS = ["red", "#ccc"];
 
@@ -78,8 +79,10 @@ export default defineComponent({
       loginRequest.email = email.value;
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
-      if (loginSuccess) {
+      if (loginSuccess && !help) {
         router.push("/profile");
+      }else{
+        router.push("/orderform");
       }
     }
 
@@ -89,6 +92,8 @@ export default defineComponent({
       email,
       password,
       errormessage,
+      jwttokens,
+      help,
       colorEmail: computed(() => {
         if (errormessage.value != "") {
           return COLORS[0];
