@@ -46,7 +46,6 @@
 <script lang="ts">
   
 import { postLoginUser, useUserStore } from "../service/UserStore";
-import { useCartStore } from "../service/CartStore"
 import {
   ref,
   defineComponent,
@@ -67,8 +66,9 @@ export default defineComponent({
     };
     const { sendLogin, errormessage} = postLoginUser();
     const { reseterrormessage, jwttokens } = useUserStore();
-    const help = useCartStore().getPreviousView().valueOf;
+    // const  help = useCartStore().getPreviousView().valueOf;
     const router = useRouter();
+    const route = useRoute();
     const COLORS = ["red", "#ccc"];
 
     onMounted(async () => {
@@ -79,10 +79,13 @@ export default defineComponent({
       loginRequest.email = email.value;
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
-      if (loginSuccess && !help) {
-        router.push("/profile");
-      }else{
+      const path = route.fullPath;
+      console.log(path);
+
+      if (loginSuccess && path.includes("cart")) {
         router.push("/orderform");
+      }else if(loginSuccess && path.includes("profile")){
+        router.push("/profile");
       }
     }
 
@@ -93,7 +96,6 @@ export default defineComponent({
       password,
       errormessage,
       jwttokens,
-      help,
       colorEmail: computed(() => {
         if (errormessage.value != "") {
           return COLORS[0];

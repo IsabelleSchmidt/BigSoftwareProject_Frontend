@@ -67,7 +67,7 @@ async function getUser(): Promise<void> {
     const bankcards = new Array<Bankcard>();
     const creditcards = new Array<Creditcard>();
     const token = state.jwttokens[0];
-    await fetch(`http://localhost:9090/api/user/getAdress`, {
+    await fetch(`http://localhost:9090/api/user/getUser`, {
         method: 'GET',
         headers: { "Content-Type": "application/json",
                    "Authorization" : "Bearer " + token.accessToken},
