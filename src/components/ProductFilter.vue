@@ -79,10 +79,12 @@ export default defineComponent({
                 }
                 return list.value
             });
-        function delFilItem(item: any){
-            console.log("Item", item.replace("-", "%"))
-            deletePriceFilter(item.replace("-","%").replace("Preis: ",""))
-            deleteColorFilter(item.replace("Color: ",""))
+
+        function delFilItem(item: string){
+            if(item[0] == 'P')
+                deletePriceFilter(item.replace("-","%").replace("Preis: ",""))
+            if(item[0] == 'C')
+                deleteColorFilter(item.replace("Color: ",""))
             if(item[0] == 'B')
                 deleteSizeFilter(item.replace("Breite: ", "w%").replace("-", "%"), 'w')
             if(item[0] == 'H')
