@@ -34,7 +34,6 @@ interface UserOrderRequest {
     adress: Adress;
     bankCard: Bankcard;
     creditcard: Creditcard;
-    token: JwtToken;
 }
 
 interface ProductDTO {
@@ -44,5 +43,4 @@ interface ProductDTO {
 interface OrderDT {
     priceTotal: number;
     allProductsOrdered: Array<ProductDTO>;
-    jwtToken: JwtToken;
 }

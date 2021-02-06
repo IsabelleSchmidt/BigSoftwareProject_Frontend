@@ -201,7 +201,7 @@ export default defineComponent({
 
     const { postOrder, errormessages, ordererrormessages } = usePostOrder();
 
-    const { jwttokens, getAdresses, adresses, email } = useUserStore();
+    const {jwttokens, getAdresses, adresses, email } = useUserStore();
     const router = useRouter();
 
     const payment = ref("");
@@ -258,7 +258,7 @@ export default defineComponent({
         if(jwttokens.value.length == 0){
           router.push("/login");
         }else{
-          await getAdresses(token);
+          await getAdresses();
         }
         
     });
@@ -302,7 +302,6 @@ export default defineComponent({
           adress: adr,
           bankCard: bc,
           creditcard: cc,
-          token: token,
         };
 
         const orderList = [];
@@ -317,7 +316,6 @@ export default defineComponent({
         const order: OrderDT = {
           priceTotal: inTotal.value,
           allProductsOrdered: orderList,
-          jwtToken: token,
         };
         console.log("USER: " + JSON.stringify(uor));
 
@@ -459,7 +457,6 @@ export default defineComponent({
       dateOfExpiryMonth,
       dateOfExpiryYear,
       dateOfExpiry,
-      token,
       payment,
       paymenterror,
       adrChange,
