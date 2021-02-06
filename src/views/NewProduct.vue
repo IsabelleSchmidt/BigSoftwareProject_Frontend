@@ -65,7 +65,7 @@
 
             <div class="row">
                 <div class="col1"><label for="picture">Bild und Name</label></div>
-                <div class="col2"><input ref="fileInput" class="file-input" type="file" name="picture" multiple accept="image/*" @change="onFileChange($event.target.files)"></div>
+                <div class="col2"><input ref="fileInput" class="file-input" type="file" name="picture" multiple accept="image/*" @change="onFileChange($event.target.files)"><div class="error" v-if="picerror.length>0"> {{picerror}} </div></div>
                 <div class="col2"><p v-for="(file,i) in filesref" :key="file.name">{{file.name}} <img src="@/assets/trash.png" id="trash" alt="trash" @click="deleteFile(i)"></p></div>
             </div>
 
@@ -108,8 +108,6 @@
         const price = ref(0);
         const picturename = ref("");
         const {sendProduct, validationerrors} = postProduct();
-        let click = "";
-        // const {bild} = zeigBild(); 
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -118,6 +116,9 @@
         const descriptionerror = ref("");
         const priceerror = ref("");
         const sizeerror = ref("");
+        const picerror = ref("");
+
+        let picSucsess = true
         
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'nrAvailableItems':nrAvailableItems.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0 };
@@ -135,71 +136,115 @@
             product.depth = depth.value;
             product.nrAvailableItems = nrAvailableItems.value;
             console.log('ProduuuukT:',product);
-            click = "geclicked"
 
+            formData.delete("picture")
+            producterror.value = "";
+            priceerror.value = "";
+            roomerror.value = "";
+            nameerror.value = "";
+            infoerror.value = "";
+            descriptionerror.value = "";
+            picerror.value = "";
+            
+            if (picSucsess == true){
 
-            await sendProduct(product);
-                
-                // Validation Messages
-                if(validationerrors.value.length > 0){
-                    for(const error of validationerrors.value){
-                        if(error.field == "price"){
-                            priceerror.value = error.message;
-                        }
-                        if(error.field == "roomType"){
-                            roomerror.value = error.message;
-                        }
-                        if(error.field == "productType"){
-                            producterror.value = error.message;
-                        }
-                        if(error.field == "name"){
-                            nameerror.value = error.message;
-                        }
-                        if(error.field == "information"){
-                            infoerror.value = error.message;
-                        }
-                        if(error.field == "description"){
-                            descriptionerror.value = error.message;
-                        }
-                        if(error.field == "width"||error.field=="height"||error.field=="depth"){
-                            sizeerror.value = error.message;
-                        }
+                await sendProduct(product);
                     
-                    }
-                }else{
-                    console.log("ohne errors")
-                    producterror.value = "";
-                    priceerror.value = "";
-                    roomerror.value = "";
-                    nameerror.value = "";
-                    infoerror.value = "";
-                    descriptionerror.value = "";
+                    // Validation Messages
+                    if(validationerrors.value.length > 0){
+                        for(const error of validationerrors.value){
+                            if(error.field == "price"){
+                                priceerror.value = error.message;
+                            }
+                            if(error.field == "roomType"){
+                                roomerror.value = error.message;
+                            }
+                            if(error.field == "productType"){
+                                producterror.value = error.message;
+                            }
+                            if(error.field == "name"){
+                                nameerror.value = error.message;
+                            }
+                            if(error.field == "information"){
+                                infoerror.value = error.message;
+                            }
+                            if(error.field == "description"){
+                                descriptionerror.value = error.message;
+                            }
+                            if(error.field == "width"||error.field=="height"||error.field=="depth"){
+                                sizeerror.value = error.message;
+                            }
+                            if(error.field == "picture"){
+                                picerror.value = error.message;
+                            }
+                        
+                        }
+                    }else{
+                        console.log("ohne errors")
 
-                    console.log("File",formData.get('pictures'))
-                    for(let i = 0; i < filesref.value.length; i++){
-                        formData.append("picture",filesref.value[i],filesref.value[i].name);
-                        console.log("File",formData.get('picture'))
-                    }
+                        for(let i = 0; i < filesref.value.length; i++){
+                            formData.append("picture",filesref.value[i],filesref.value[i].name);
+                            console.log("File1",formData.get('picture'))
+                        }
 
-                    console.log("articlnr im newProd",articlenr);
-                    if(sendPicture(formData,articlenr)){
-                        // Pop UP
-                        Swal.fire({
-                            title: 'neues Produkt angelegt!',
-                            text: 'weiteres Produkt anlegen...',
-                            icon: 'success',
-                            confirmButtonText: 'weiter',
-                            confirmButtonColor: '#3BA07C',
-                            }).then((result)=>{
-                                if(result.isConfirmed){
-                                    // router.push("/newProducts")
-                                    // bild()
-                                    location.reload();
+                        console.log("articlnr im newProd",articlenr);
+                        picSucsess = await sendPicture(formData,articlenr)
+                        if(picSucsess == true){
+                            picerror.value = "";
+                            // Pop UP
+                            Swal.fire({
+                                title: 'neues Produkt angelegt!',
+                                text: 'weiteres Produkt anlegen...',
+                                icon: 'success',
+                                confirmButtonText: 'weiter',
+                                confirmButtonColor: '#3BA07C',
+                                }).then((result)=>{
+                                    if(result.isConfirmed){
+                                        // router.push("/newProducts")
+                                        // bild()
+                                        location.reload();
+                                    }
+                            })
+
+                        }else{
+                            for(const error of validationerrors.value){
+                                if(error.field == "picture"){
+                                    picerror.value = error.message;
                                 }
-                        })
+                            }
+                        }
+                        
+                    }  
+             }else{
+
+                for(let i = 0; i < filesref.value.length; i++){
+                    formData.append("picture",filesref.value[i],filesref.value[i].name);
+                    console.log("File2",formData.get('picture'))
+                }
+                picSucsess = await sendPicture(formData,articlenr)
+                if(picSucsess==true){
+                    picerror.value = "";
+                    Swal.fire({
+                        title: 'neues Produkt angelegt!',
+                        text: 'weiteres Produkt anlegen...',
+                        icon: 'success',
+                        confirmButtonText: 'weiter',
+                        confirmButtonColor: '#3BA07C',
+                        }).then((result)=>{
+                            if(result.isConfirmed){
+                                // router.push("/newProducts")
+                                // bild()
+                                location.reload();
+                            }
+                            })
+                }else{
+                    for(const error of validationerrors.value){
+                        if(error.field == "picture"){
+                            picerror.value = error.message;
+                        }
                     }
-                    
-                }      
+                }
+             }    
         }
 
         function onFileChange(files: File[]): void{
@@ -221,10 +266,11 @@
 
         function deleteFile(index: number): void{
             filesref.value.splice(index,1);
+            picerror.value = ""
             console.log(filesref.value);
         }
 
-        return {click,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
+        return {picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,nrAvailableItems,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
