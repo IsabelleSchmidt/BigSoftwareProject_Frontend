@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CartList.vue has the expected html structur 1`] = `
+<div
+  class="cartlist"
+>
+  <ul>
+    <cart-list-object-stub />
+    <cart-list-object-stub />
+    <cart-list-object-stub />
+    <cart-list-object-stub />
+  </ul>
+</div>
+`;

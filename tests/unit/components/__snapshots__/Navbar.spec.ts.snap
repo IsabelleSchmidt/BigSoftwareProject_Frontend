@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar.vue Test Has the expected HTML structure 1`] = `
+<div class="navbar">
+  <nav>
+    <router-link to="/"><img alt="Logo" id="logo"></router-link>
+    <ul>
+      <li>
+        <router-link to="[object Object]">Produkte</router-link>
+        <ul>
+          <li id="link">
+            <router-link to="[object Object]">Pflanzen</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Tische</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Stühle</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Betten</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Deko</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Sofa/Couch</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Schränke/Kommoden</router-link>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <router-link to="/rooms">Räume</router-link>
+        <ul>
+          <li id="link">
+            <router-link to="[object Object]">Bad</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Schlafzimmer</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Küche</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Wohnzimmer</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Esszimmer</router-link>
+          </li>
+          <li id="link">
+            <router-link to="[object Object]">Arbeitszimmer</router-link>
+          </li>
+        </ul>
+      </li>
+      <div class="navright">
+        <li>
+          <div class="search-box"><input class="search-txt" placeholder="Suchen"><a class="search-btn" href="#"><img alt=""></a></div>
+        </li>
+        <li>
+          <router-link to="/cart"><img alt="cart" id="icon"></router-link>
+        </li>
+        <li>
+          <router-link to="/favorits"><img alt="wishlist" id="icon"></router-link>
+        </li>
+        <li>
+          <router-link to="/profil"><img alt="profile" id="icon"></router-link>
+        </li>
+      </div>
+    </ul>
+  </nav>
+</div>
+`;
