@@ -15,25 +15,7 @@ const { getProductByArtNr } = useProduct();
 
 function addProduct(productartnr: number, am: number): void {
 
-    let has = false;
-    const amount = ref(0);
-
-    for (let i = 0; i < state.list.size; i++) {
-
-        if (Array.from(state.list.keys())[i] == productartnr) {
-
-            const oldproductartnr = Array.from(state.list.keys())[i];
-            has = true;
-            amount.value = Array.from(state.list.values())[i];
-            amount.value = Number(amount.value) + Number(am);
-            state.list.set(oldproductartnr, amount.value);
-            break;
-        }
-    }
-
-    if (!has) {
-        state.list.set(productartnr, am);
-    }
+    state.list.has(productartnr) ? state.list.set(productartnr, Number(state.list.get(productartnr))+am) : state.list.set(productartnr,am);
 }
 function getAmount(productartnr: number) {
     return state.list.get(productartnr);
