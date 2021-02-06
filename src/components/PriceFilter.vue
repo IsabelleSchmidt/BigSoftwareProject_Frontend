@@ -50,7 +50,7 @@ export default defineComponent({
         const price8 = ref();
     
 
-        function checked(price: string): void{                                    
+        function checked(price: string): void{   
                 if(pricelist.value.has(price)){
                     deletePriceFilter(price)
                 }else{
