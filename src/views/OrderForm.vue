@@ -159,7 +159,7 @@
       </div>
     </form>
 
-    <h2>Lieferung 18.02.2021</h2>
+    <h2>Vorausichtliches Lieferdatum: {{deliveryDate}}</h2>
     <div class="error">{{ notavailableerrorempty }}</div>
     <div class="error">{{ notavailableerror }}</div>
     <div class="row">
@@ -245,6 +245,8 @@ export default defineComponent({
     const notavailableerrorempty = ref("");
     const token = jwttokens.value[0];
 
+    //delivery date
+
     const inTotal = computed(() => {
       return totalPrice();
     });
@@ -253,8 +255,15 @@ export default defineComponent({
       return Array.from(list.value.entries());
     });
 
+    const deliveryDate = computed(() => {
+      const date = new Date();
+      date.setDate(date.getDate() + 3);
+      return date.toLocaleDateString();
+    })
+
     onMounted(async () => {
       await getUser();
+      
     });
 
     function adrChange(event: string) {
@@ -473,6 +482,7 @@ export default defineComponent({
                 return false;
             } 
       }),
+      deliveryDate
     };
   },
 });

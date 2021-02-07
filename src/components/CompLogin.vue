@@ -71,6 +71,7 @@ export default defineComponent({
     const { sendLogin, errormessage} = postLoginUser();
     const { reseterrormessage } = useUserStore();
     const router = useRouter();
+    const route = useRoute();
     const COLORS = ["red", "#ccc"];
 
     onMounted(async () => {
@@ -81,8 +82,13 @@ export default defineComponent({
       loginRequest.email = email.value;
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
-      if (loginSuccess) {
-        router.push("/orderForm");
+      const path = route.fullPath;
+      console.log(path);
+
+      if (loginSuccess && path.includes("cart")) {
+        router.push("/orderform");
+      }else if(loginSuccess && path.includes("profile")){
+        router.push("/profile");
       }
     }
 

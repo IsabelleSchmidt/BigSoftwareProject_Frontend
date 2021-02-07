@@ -3,7 +3,10 @@
     <div class="profilhead">
       <h1>Dein Profil</h1>
     </div>
-    <form>
+    <form @submit.prevent="logout()">
+      <div class="row"> 
+         <input id="logout" type="submit" name="logoutUser" value="Logout"/>
+      </div>
       <div class="row">
         <div class="col1">
           <label for="firstname" class="left"> Vorname </label>
@@ -94,22 +97,27 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { useUserStore } from "../service/UserStore";
+import { useUserStore, getLogoutUser } from "../service/UserStore";
 import "../service/User";
+import { useRouter} from "vue-router";
 
 export default defineComponent({
   name: "Profile",
 
   setup() {
     const { getUser, user, adresses, bankcards, creditcards } = useUserStore();
+    const {logoutUser, jwttokens, errormessage} = getLogoutUser();
 
     //user
     const email = ref("");
     const firstName = ref("");
     const lastName = ref("");
     const birthdate = ref(new Date());
+    const router = useRouter();
+    const token = jwttokens.value[0];
+    let accessToken = "";
 
-    function userInformation() {
+    function userInformation() { 
 
       //FirstName
       firstName.value = user.value[0].firstName;
@@ -123,14 +131,24 @@ export default defineComponent({
       //Geburtstag
       birthdate.value = user.value[0].birthdate;
 
-}
+    }
+
+    async function logout(): Promise<void>{
+      accessToken = token.accessToken;
+      const lr: LogoutRequest = {"token" : accessToken};
+      await logoutUser(lr);
+
+      if(errormessage.value.length > 0 ){
+        console.log("Loggout not successful.");
+      }else{
+        router.push("/");
+      }
+    }
 
     onMounted(async () => {
       await getUser();
       userInformation();
     });
-
-    console.log("item bankcard: ", JSON.stringify);
 
     return {
       firstName,
@@ -140,7 +158,8 @@ export default defineComponent({
       adresses,
       userInformation,
       bankcards, 
-      creditcards
+      creditcards,
+      logout
     };
   },
 });
@@ -177,4 +196,11 @@ label {
 .profilhead {
   text-align: center;
 }
+
+#logout{
+  margin: -4% 10% 0% 0%;
+  float: right;
+  padding: .5% 2%;
+}
+
 </style>

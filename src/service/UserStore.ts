@@ -1,4 +1,4 @@
-import { BaseTransitionProps, computed, reactive } from 'vue'
+import {computed, reactive } from 'vue'
 import '../service/Requests'
 import '../service/Response'
 import '../service/User'
@@ -34,6 +34,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         state.jwttokens.push(jsondata);
         console.log(state.jwttokens);
     }).catch((error) => {
+        console.log(error);
         state.errormessage = "Email-Adresse oder Passwort falsch."
     })
 
@@ -56,6 +57,26 @@ async function sendUser(signUpRequest: SignUpRequest) {
         state.errormessages = jsondata;
     }).catch((error) => {
         console.log(error)
+    });
+
+}
+
+async function logoutUser(logoutRequest: LogoutRequest){
+    const token = state.jwttokens[0];
+    await fetch(`http://localhost:9090/api/user/logout`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(logoutRequest),
+    }).then((response) =>{
+        if(!response.ok){
+            state.errormessage = "Logout not successful.";
+            throw new Error(state.errormessage);
+        }
+        state.jwttokens = new Array<JwtToken>();
+        return response.json();
+        
+    }).catch((error) => {
+        console.log(JSON.stringify(error));
     });
 
 }
@@ -158,6 +179,14 @@ export function postLoginUser() {
     return {
         errormessage: computed(() => state.errormessage),
         sendLogin
+    }
+}
+
+export function getLogoutUser() {
+    return {
+        errormessage: computed(() => state.errormessage),
+        jwttokens: computed(() => state.jwttokens),
+        logoutUser
     }
 }
 
