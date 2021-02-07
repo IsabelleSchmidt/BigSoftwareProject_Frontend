@@ -12,18 +12,22 @@ exports[`Test CartList.vue has the expected html structur 1`] = `
     </h3>
   </div>
   <div
-    id="cartlist"
+    id="list"
   >
     <cart-list-stub />
   </div>
   <div
     id="order"
   >
-    <button
-      id="orderB"
+    <router-link
+      to="/login"
     >
-      Zur Kasse
-    </button>
+      <button
+        id="checkout"
+      >
+         zur Kasse
+      </button>
+    </router-link>
   </div>
 </div>
 `;

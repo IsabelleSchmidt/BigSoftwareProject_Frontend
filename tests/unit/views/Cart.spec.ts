@@ -27,7 +27,7 @@ describe('Test CartList.vue', () => {
             stubs: { CartList: CartListMock }
             }
         }) 
-        expect(wrapper.html()).toContain(`<div id=\"cartlist\">fakeCartList</div>`) 
+        expect(wrapper.html()).toContain(`<div id=\"list\">fakeCartList</div>`) 
     })
 
 
