@@ -12,13 +12,13 @@
             <div class="row">
                 <div class="col1"><label for="productType">Produktart</label></div>
                 <div class="col2"><select v-model="productType" id="productType" name="productType" placeholder="Produktart">
-                                    <option value="Plant">Pflanze</option>
-                                    <option value="Table">Tisch</option>
-                                    <option value="Chair">Stuhl</option>
-                                    <option value="Bed">Bett</option>
-                                    <option value="Decoration">Dekoration</option>
-                                    <option value="Closet">Schrank/Kommode</option>
-                                    <option value="Couch">Sofa/Couch</option>
+                                    <option value="PLANT">Pflanze</option>
+                                    <option value="TABLE">Tisch</option>
+                                    <option value="CHAIR">Stuhl</option>
+                                    <option value="BED">Bett</option>
+                                    <option value="DECORATION">Dekoration</option>
+                                    <option value="CLOSET">Schrank/Kommode</option>
+                                    <option value="COUCH">Sofa/Couch</option>
                                 </select>
                     <div class="error" v-if="producterror.length>0"> {{producterror}} </div></div>
             </div>
@@ -26,13 +26,13 @@
             <div class="row">
                 <div class="col1"><label for="roomType" >Raumart</label></div>
                 <div class="col2"><select type="text" v-model="roomType" id="roomType" placeholder="Raumart">
-                                    <option value="Bathroom">Bad</option>
-                                    <option value="Bedroom">Schlafzimmer</option>
-                                    <option value="Kitchen">Küche</option>
-                                    <option value="Livingroom">Wohnzimmer</option>
-                                    <option value="Eatingroom">Esszimmer</option>
-                                    <option value="Bureau">Arbeitszimmer</option>
-                                    <option value="null">kein passender Raum</option>
+                                    <option value="BATHROOM">Bad</option>
+                                    <option value="BEDROOM">Schlafzimmer</option>
+                                    <option value="KITCHEN">Küche</option>
+                                    <option value="LIVINGROOM">Wohnzimmer</option>
+                                    <option value="DININGROOM">Esszimmer</option>
+                                    <option value="BUREAU">Arbeitszimmer</option>
+                                    <option value="ALL">kein passender Raum</option>
                                 </select>
                     <div class="error" v-if="roomerror.length>0">{{roomType}} {{roomerror}} </div></div>
             </div>
