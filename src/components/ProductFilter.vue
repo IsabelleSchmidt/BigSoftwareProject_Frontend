@@ -75,7 +75,7 @@ export default defineComponent({
                    list.value.push("Tiefe: " + Array.from(depthlist.value.keys())[i].replace("d%", "").replace("%","-"))
                 }
                 for(let i = 0; i< colorlist.value.size; i++){
-                   list.value.push("Color: " + Array.from(colorlist.value.keys())[i])
+                   list.value.push("Farbe: " + Array.from(colorlist.value.keys())[i])
                 }
                 return list.value
             });
@@ -84,7 +84,7 @@ export default defineComponent({
             if(item[0] == 'P')
                 deletePriceFilter(item.replace("-","%").replace("Preis: ",""))
             if(item[0] == 'C')
-                deleteColorFilter(item.replace("Color: ",""))
+                deleteColorFilter(item.replace("Farbe: ",""))
             if(item[0] == 'B')
                 deleteSizeFilter(item.replace("Breite: ", "w%").replace("-", "%"), 'w')
             if(item[0] == 'H')
