@@ -5,9 +5,8 @@
     </div>
     <div class="top2">
       <div class="left">
-        <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
         <div v-for="i in productObject.allPictures" :key="i">
-          <img class="pic" v-bind:src="i.path" alt="Picture" />
+          <img class="pic" v-bind:src="'/api/picture/'+i.id" alt="Picture" />
         </div>
       </div>
       <div class="right">
