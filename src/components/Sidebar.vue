@@ -2,14 +2,14 @@
   <div class="sidebar">
     <h4>Produkte</h4>
     <ul>
-      <li v-for="productkey in productkeys" :key="productkey">
+     <li v-for="productkey in productkeys" :key="productkey">
         <router-link
           id="link"
           :to="{
             path: '/product',
             query: { room: 'all', productType: productkey, name: 'none' },
           }"
-          >{{products[productkey]}}</router-link>
+          >{{allproducttypes[productkey]}}</router-link>
      
       </li>
     </ul>
@@ -25,7 +25,7 @@
             path: '/product',
             query: { room: roomkey, productType: 'all', name: 'none' },
           }"
-          >{{rooms[roomkey]}}</router-link>
+          >{{allroomtypes[roomkey]}}</router-link>
      
       </li>
     </ul>
@@ -35,29 +35,16 @@
 import Vue from 'vue'
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useProduct} from '../service/ProductStore';
+import TypeLink from '../components/TypeLink.vue';
 
-export default defineComponent({
+export default {
     name: "sidebar",
+   
     setup(){
-      const {allproducttypes, allroomtypes, getAllProductTypes, getAllRoomTypes} = useProduct();
-      const products = ref(allproducttypes.value);
-      const rooms = ref(allroomtypes.value); //lieber mit ref arbeiten -> reagiert imo nicht direkt auf backend Änderungen
-     
-      onMounted(async ()=>{
-        await getAllProductTypes();
-        await getAllRoomTypes(); 
-
-      });
-
-    
-      
-      const productkeys = Object.keys(allproducttypes.value);
-      const roomkeys = Object.keys(allroomtypes.value);
-
-
-      return{products, rooms, roomkeys, productkeys};
+      const {allproducttypes,allroomtypes, roomkeys, productkeys} = useProduct();
+      return{allproducttypes, allroomtypes, roomkeys, productkeys};
     }
-});
+};
 </script>
 
 <style scoped lang="scss">

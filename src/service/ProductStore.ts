@@ -8,13 +8,13 @@ import '@/service/Product'
 
 const state = reactive({
   list: Array<Product>(),
-  roomtypes:new Map<string,string>(),
-  producttypes: new Map<string,string>()
+  roomtypes:  {} as Map<string,string>,
+  producttypes: {} as Map<string,string>
 })
 
 async function update(): Promise<void> {
   const productlist = new Array<Product>();
-  fetch(`/api/product/products`, {
+ await fetch(`/api/product/products`, {
     method: 'GET'
   })
     .then((response) => {
@@ -64,7 +64,7 @@ function getHightPrice(){
 
 }
 
-async function getAllProductTypes(): Promise<Map<string,string>>{
+async function getAllProductTypes(){
   console.log("GET ALL PRODUCTTYPES");
   await fetch('/api/product/all/producttypes', {method: 'GET'})
     .then((response) =>{
@@ -76,14 +76,15 @@ async function getAllProductTypes(): Promise<Map<string,string>>{
       }
 
   }).then((jsondata: Map<string,string>) =>{
-    state.producttypes = jsondata;
+   state.producttypes = jsondata;
+
+    
   }).catch((error) => {
     console.log(error);
   });
-  return state.producttypes;
 }
 
-async function getAllRoomTypes(): Promise<Map<string,string>>{
+async function getAllRoomTypes(){
   console.log("GET ALL ROOMTYPES");
  await fetch('/api/product/all/roomtypes', {method: 'GET'})
   .then((response) =>{
@@ -96,11 +97,11 @@ async function getAllRoomTypes(): Promise<Map<string,string>>{
 
 }).then((jsondata: Map<string,string>) =>{
   state.roomtypes = jsondata;
+ 
 
 }).catch((error) => {
   console.log(error);
 });
-  return state.roomtypes;
 }
     
 
@@ -116,6 +117,8 @@ export function useProduct() {
     getAllProductTypes,
     getAllRoomTypes,
     allproducttypes: computed(() => state.producttypes),
-    allroomtypes: computed(()=> state.roomtypes)
+    allroomtypes: computed(()=> state.roomtypes),
+    roomkeys: computed(()=> Object.keys(state.roomtypes)),
+    productkeys: computed(()=> Object.keys(state.producttypes))
   }
 }
