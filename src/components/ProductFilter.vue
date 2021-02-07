@@ -83,7 +83,7 @@ export default defineComponent({
         function delFilItem(item: string){
             if(item[0] == 'P')
                 deletePriceFilter(item.replace("-","%").replace("Preis: ",""))
-            if(item[0] == 'C')
+            if(item[0] == 'F')
                 deleteColorFilter(item.replace("Farbe: ",""))
             if(item[0] == 'B')
                 deleteSizeFilter(item.replace("Breite: ", "w%").replace("-", "%"), 'w')
