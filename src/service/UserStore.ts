@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue'
+import { BaseTransitionProps, computed, reactive } from 'vue'
 import '../service/Requests'
 import '../service/Response'
 import '../service/User'
@@ -7,9 +7,11 @@ const state = reactive({
     errormessage: "",
     check: false,
     jwttokens: Array<JwtToken>(),
-    email: "",
     errormessages: Array<MessageResponse>(),
-    allAdresses: Array<Adress>()
+    allAdresses: Array<Adress>(),
+    bankcard: Array<Bankcard>(),
+    creditcard: Array<Creditcard>(),
+    user : Array<User>()
 })
 
 
@@ -30,7 +32,6 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         return response.json();
     }).then((jsondata: JwtToken) => {
         state.jwttokens.push(jsondata);
-        state.email = loginRequest.email;
         console.log(state.jwttokens);
     }).catch((error) => {
         state.errormessage = "Email-Adresse oder Passwort falsch."
@@ -59,10 +60,12 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
-async function getAdresses(): Promise<void> {
+async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
+    const bankcards = new Array<Bankcard>();
+    const creditcards = new Array<Creditcard>();
     const token = state.jwttokens[0];
-    await fetch(`http://localhost:9090/api/user/getAdress`, {
+    await fetch(`http://localhost:9090/api/user/getUser`, {
         method: 'GET',
         headers: { "Content-Type": "application/json",
                    "Authorization" : "Bearer " + token.accessToken},
@@ -70,6 +73,7 @@ async function getAdresses(): Promise<void> {
         if (!response.ok) {
             throw new Error(state.errormessage);
         }
+        console.log();
         return response.json();
     }).then((jsondata: User) => {
 
@@ -77,6 +81,20 @@ async function getAdresses(): Promise<void> {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
         state.allAdresses = adresses;
+
+        for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
+            bankcards.push(Array.from(jsondata.bankcard)[i] as Bankcard);
+        }
+        state.bankcard= bankcards;
+        console.log("Bancard userstore inhalt", jsondata.bankcard.values)
+        
+        for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
+            creditcards.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
+        }
+        state.creditcard = creditcards;
+        console.log("creditcard userstore inhalt", state.creditcard)
+
+        state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
     });
@@ -146,9 +164,11 @@ export function postLoginUser() {
 export function useUserStore() {
     return {
         jwttokens: computed(() => state.jwttokens),
-        email: computed(() => state.email),
         adresses: computed(() => state.allAdresses),
-        getAdresses,
+        bankcards: computed(() => state.bankcard),
+        creditcards: computed(() => state.creditcard),
+        user: computed(() => state.user),
+        getUser,
         reseterrormessage,
         checkIfEmailExists,
         changePassword

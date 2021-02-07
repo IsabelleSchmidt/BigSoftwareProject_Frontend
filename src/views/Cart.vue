@@ -7,14 +7,13 @@
             <CartList/>
         </div>
         <div id="order">
-            <router-link  :to="jwttokens.length > 0 ? '/orderform' : '/login'"> <button id="checkout"> zur Kasse</button>  </router-link>
+            <router-link :to="jwttokens.length> 0 ? '/orderform'  : '/cart/login'" append> <button id="checkout"> zur Kasse</button>  </router-link>
         </div>
   </div>
 </template>
 <script>
 import CartList from "@/components/CartList.vue";
 import "@/service/Product";
-import { defineComponent } from "vue";
 import { useUserStore } from "../service/UserStore";
 
 export default {
@@ -23,6 +22,15 @@ export default {
   },
   setup() {
     const { jwttokens } = useUserStore();
+    // let check = useCartStore.check;
+
+
+        // if(jwttokens.value.length> 0){
+        //     check = useCartStore().setPreviousView(false);
+        // }else{
+        //     check = useCartStore().setPreviousView(true);
+        // }
+
     return { jwttokens };
   },
 };

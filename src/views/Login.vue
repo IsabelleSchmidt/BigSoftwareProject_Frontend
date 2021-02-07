@@ -11,7 +11,7 @@ import { defineComponent, ref, onMounted } from "vue"
 import '../service/Product'
 
 export default defineComponent({
-    name: "Product",
+    name: "Login",
     components:{
         CompLogin,
         CompResetPw

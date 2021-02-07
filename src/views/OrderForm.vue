@@ -202,7 +202,7 @@ export default defineComponent({
 
     const { postOrder, errormessages, ordererrormessages } = usePostOrder();
 
-    const { jwttokens, getAdresses, adresses, email } = useUserStore();
+    const { jwttokens, getUser, adresses } = useUserStore();
     const router = useRouter();
 
     const payment = ref("");
@@ -254,7 +254,7 @@ export default defineComponent({
     });
 
     onMounted(async () => {
-      await getAdresses();
+      await getUser();
     });
 
     function adrChange(event: string) {
