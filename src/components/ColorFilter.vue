@@ -3,7 +3,7 @@
         <h2>Farben</h2>
         <div class="colum1">
             <div class="onecolor">
-                <input id="grey" class="inputfields" type="checkbox" value="grey" v-model="grey" @change="checked($event.target.value)"/>
+                <input id="grey" class="inputfields" type="checkbox" value="grau" v-model="grey" @change="checked($event.target.value)"/>
                 <label for="grey" class="grey"></label>
             </div>
             <div class="onecolor">
@@ -11,35 +11,35 @@
                 <label for="beige" class="beige"></label>
             </div>
             <div class="onecolor">
-                <input id="black" class="inputfields" type="checkbox" value="black" v-model="black" @change="checked($event.target.value)"/>
+                <input id="black" class="inputfields" type="checkbox" value="schwarz" v-model="black" @change="checked($event.target.value)"/>
                 <label for="black" class="black"></label>
             </div>
             <div class="onecolor">
-                <input id="brown" class="inputfields" type="checkbox" value="brown" v-model="brown" @change="checked($event.target.value)"/>
+                <input id="brown" class="inputfields" type="checkbox" value="braun" v-model="brown" @change="checked($event.target.value)"/>
                 <label for="brown" class="brown"></label>
             </div>
         </div>
         <div class="column2">
             <div class="onecolor">
-                <input id="green" class="inputfields" type="checkbox" value="green" v-model="green" @change="checked($event.target.value)"/>
+                <input id="green" class="inputfields" type="checkbox" value="grün" v-model="green" @change="checked($event.target.value)"/>
                 <label for="green" class="green"></label>
             </div>
             <div class="onecolor">
-                <input id="white" class="inputfields" type="checkbox" value="white" v-model="white" @change="checked($event.target.value)"/>
+                <input id="white" class="inputfields" type="checkbox" value="weiss" v-model="white" @change="checked($event.target.value)"/>
                 <label for="white" class="white"></label>
             </div>
             <div class="onecolor">
-                <input id="blue" class="inputfields" type="checkbox" value="blue" v-model="blue" @change="checked($event.target.value)"/>
+                <input id="blue" class="inputfields" type="checkbox" value="blau" v-model="blue" @change="checked($event.target.value)"/>
                 <label for="blue" class="blue"></label>
             </div>
             <div class="onecolor">
-                <input id="red" class="inputfields" type="checkbox" value="red" v-model="red" @change="checked($event.target.value)"/>
+                <input id="red" class="inputfields" type="checkbox" value="rot" v-model="red" @change="checked($event.target.value)"/>
                 <label for="red" class="red"></label>
             </div>
         </div>
         <div class="colum3">
             <div class="onecolor">
-                <input id="yellow" class="inputfields" type="checkbox" value="yellow" v-model="yellow" @change="checked($event.target.value)"/>
+                <input id="yellow" class="inputfields" type="checkbox" value="gelb" v-model="yellow" @change="checked($event.target.value)"/>
                 <label for="yellow" class="yellow"></label>
             </div>
             <div class="onecolor">
@@ -51,7 +51,7 @@
                 <label for="rosa" class="rosa"></label>
             </div>
             <div class="onecolor">
-                <input id="purple" class="inputfields" type="checkbox" value="purple" v-model="purple" @change="checked($event.target.value)"/>
+                <input id="purple" class="inputfields" type="checkbox" value="lila" v-model="purple" @change="checked($event.target.value)"/>
                 <label for="purple" class="purple"></label>
             </div>
         </div>  
@@ -92,31 +92,31 @@ export default defineComponent({
          onMounted(async()=> {
             for(let i = 0; i< colorlist.value.size; i++){
                 const key = Array.from(colorlist.value.keys())[i];
-               if(key  == 'grey'){
+               if(key  == 'grau'){
                    grey.value = true; 
                }
-               if(key  == 'black'){
+               if(key  == 'schwarz'){
                    black.value = true; 
                }
                if(key  == 'beige'){
                    beige.value = true; 
                }
-               if(key  == 'brown'){
+               if(key  == 'braun'){
                    brown.value = true; 
                }
-               if(key  == 'green'){
+               if(key  == 'grün'){
                    green.value = true; 
                }
-               if(key  == 'white'){
+               if(key  == 'weiss'){
                    white.value = true; 
                }
-               if(key  == 'blue'){
+               if(key  == 'blau'){
                    blue.value = true; 
                }
-               if(key  == 'red'){
+               if(key  == 'rot'){
                    red.value = true; 
                }
-               if(key  == 'yellow'){
+               if(key  == 'gelb'){
                    yellow.value = true; 
                }
                if(key  == 'orange'){
@@ -125,7 +125,7 @@ export default defineComponent({
                if(key  == 'rosa'){
                    rosa.value = true; 
                }
-               if(key  == 'purple'){
+               if(key  == 'lila'){
                    purple.value = true; 
                }
             }
