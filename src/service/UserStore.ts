@@ -16,8 +16,7 @@ const state = reactive({
 
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
-    console.log("Es wird eingeloggt.")
-    await fetch(`http://localhost:9090/api/user/login`, {
+    await fetch(`/api/user/login`, {
         method: 'POST',
         headers: { "Content-Type": 'application/json' },
         body: JSON.stringify(loginRequest),
@@ -43,8 +42,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
 
 async function sendUser(signUpRequest: SignUpRequest) {
 
-    console.log("Sende: " + 'User ' + JSON.stringify(signUpRequest));
-    await fetch(`http://localhost:9090/api/user/register`, {
+    await fetch(`/api/user/register`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signUpRequest)
@@ -84,6 +82,56 @@ async function getAdresses(): Promise<void> {
     });
 }
 
+async function checkIfEmailExists(email: string): Promise<boolean> {
+    let exists = false;
+
+    await fetch(`/api/user/checkByEmail/${email}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json"}
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then((jsondata: MessageResponse) => {
+        
+        if (!jsondata.message)
+            exists = true;
+        
+    }).catch((exception) => {
+        console.log(exception)
+    });
+
+    return exists;
+} 
+
+async function changePassword(npr: NewPasswordRequest) {
+    let success = false;
+
+    await fetch(`/api/user/changePassword`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(npr)
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then((jsondata: MessageResponse) => {
+        
+        if (!jsondata.message)
+            success = true;
+        
+    }).catch((exception) => {
+        console.log(exception)
+    });
+    console.log("Success: " + success);
+    return success;
+
+}
+
 function reseterrormessage() {
     state.errormessage = "";
 }
@@ -102,6 +150,8 @@ export function useUserStore() {
         adresses: computed(() => state.allAdresses),
         getAdresses,
         reseterrormessage,
+        checkIfEmailExists,
+        changePassword
     }
 }
 

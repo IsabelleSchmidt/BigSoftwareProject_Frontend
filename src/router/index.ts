@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+import { useEmailStore } from '../service/EmailStore'
 
+const { code, getCode } = useEmailStore();
 const history = createWebHistory();
 
 const router = createRouter({
@@ -69,6 +71,12 @@ const router = createRouter({
       path: '/orderConf',
       name: 'OrderConf',
       component: () => import('../components/OrderConfirmation.vue'),
+    },
+    {
+      path: '/resetPassword/:email/:code',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      props: true,
     }
   ]
 });

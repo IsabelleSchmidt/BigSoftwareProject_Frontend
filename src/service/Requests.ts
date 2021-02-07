@@ -43,4 +43,10 @@ interface ProductDTO {
 interface OrderDT {
     priceTotal: number;
     allProductsOrdered: Array<ProductDTO>;
+    jwtToken: JwtToken;
+}
+
+interface NewPasswordRequest {
+    email: string;
+    password: string;
 }

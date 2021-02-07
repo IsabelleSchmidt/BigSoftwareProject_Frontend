@@ -5,10 +5,12 @@
     <form>
       <div class="adress">
         <h2>Versandadresse</h2>
-        <div>
+        <div v-if="!isHidden">
+          <label class="col1">Adresse auswählen: </label>
           <select v-model="selectedadr"
             name="adress"
             @change="adrChange($event.target.value)"
+            
           >
             <option
               
@@ -182,7 +184,7 @@ import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { useCartStore } from "../service/CartStore";
 import { usePostOrder } from "../service/OrderStore";
 import { useUserStore } from "../service/UserStore";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "OrderForm",
@@ -192,7 +194,6 @@ export default defineComponent({
   setup(context) {
     const {
       list,
-      addProduct,
       deleteProduct,
       totalPrice,
       clearCart,
@@ -463,7 +464,14 @@ export default defineComponent({
       notavailableerror,
       notavailableerrorempty,
       adresses,
-      selectedadr
+      selectedadr,
+      isHidden: computed(() => {
+            if (adresses.value.length == 0) {
+                return true;
+            } else {
+                return false;
+            } 
+      }),
     };
   },
 });

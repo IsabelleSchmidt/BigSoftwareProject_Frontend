@@ -26,13 +26,14 @@ export default defineComponent({
     setup() {
         const router = useRouter();
 
-        const component = "CompProduct";
-        const compref = ref(component);
+        const COMPONENTS = ["CompProduct", "CompSingle"];
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
                                 'width': 0, 'depth': 0, 'allTags': [], 'available': 0, 'description': "", 'information': ""};
         const prodref = ref(prod);
-        const COMPONENTS = ["CompProduct", "CompSingle"];
+        
+        const component = COMPONENTS[0];
+        const compref = ref(component);
 
 
         onMounted(async () => {
