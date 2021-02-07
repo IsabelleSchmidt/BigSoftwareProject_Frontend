@@ -99,13 +99,13 @@
             required
           />
           <div class="correct">
-            &#10047; Das Passwort muss mindestens 8 Zeichen besitzen
+            &#10047; Das Passwort muss mindestens 8 Zeichen besitzen.
           </div>
           <div class="correct">
-            &#10047; Das Passwort muss mindestens ein Sonderzeichen besitzen
+            &#10047; Das Passwort muss mindestens ein Sonderzeichen besitzen.
           </div>
           <div class="correct">
-            &#10047; Das Passwort mus mindestens eine Zahl besitzen
+            &#10047; Das Passwort muss mindestens eine Zahl besitzen.
           </div>
         </div>
       </div>

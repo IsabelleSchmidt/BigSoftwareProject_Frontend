@@ -310,6 +310,7 @@ export default defineComponent({
         const order: OrderDT = {
           priceTotal: inTotal.value,
           allProductsOrdered: orderList,
+          
         };
 
         streetnameerror.value = "";
