@@ -120,7 +120,7 @@ async function sendPicture(formData: FormData, articlenr: number) {
     }).then(function (response) {
       if (!response.ok) {
         console.log("NOT OKKKKKK")
-        state.validationerrors.push({ field: "picture", message: "Bild ist zu gross" })
+        state.validationerrors.push({ field: "picture", message: "Bild ist zu gross oder nicht vorhanden" })
         console.log("FEHLER: " + JSON.stringify(state.validationerrors))
         wassuccessful = false
         return wassuccessful;

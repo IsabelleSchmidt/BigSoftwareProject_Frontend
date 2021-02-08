@@ -126,8 +126,8 @@
         async function sendeProd(): Promise<void>{
             console.log("Naaame",name.value);
             product.name = name.value;
-            product.productType = productType.value;
-            product.roomType = roomType.value;
+            productType.value == "" ? product.productType="NULL": product.productType = productType.value;
+            roomType.value == "" ? product.roomType = "NULL" : product.roomType = roomType.value;
             product.price = price.value;
             product.information = information.value;
             product.description = description.value;
