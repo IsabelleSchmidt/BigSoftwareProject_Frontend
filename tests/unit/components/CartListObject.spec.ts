@@ -13,7 +13,7 @@ describe('CartListObject', () => {
 	
     })
     test('has the expected structur', () => {
-        expect(cmp).toMatchSnapshot()
+        expect(cmp.html()).toMatchSnapshot()
     })
 
     // test('If html contains the productobject, picture and all important informations', () => {
