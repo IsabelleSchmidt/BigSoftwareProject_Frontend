@@ -1,7 +1,7 @@
 <template>
     <div class= "colorfilter">
-        <h2>Farben</h2>
-        <div class="colum1">
+        <h3>Farben</h3>
+        <div class="row1">
             <div class="onecolor">
                 <input id="grey" class="inputfields" type="checkbox" value="grau" v-model="grey" @change="checked($event.target.value)"/>
                 <label for="grey" class="grey"></label>
@@ -19,7 +19,7 @@
                 <label for="brown" class="brown"></label>
             </div>
         </div>
-        <div class="column2">
+        <div class="row2">
             <div class="onecolor">
                 <input id="green" class="inputfields" type="checkbox" value="grün" v-model="green" @change="checked($event.target.value)"/>
                 <label for="green" class="green"></label>
@@ -37,7 +37,7 @@
                 <label for="red" class="red"></label>
             </div>
         </div>
-        <div class="colum3">
+        <div class="row3">
             <div class="onecolor">
                 <input id="yellow" class="inputfields" type="checkbox" value="gelb" v-model="yellow" @change="checked($event.target.value)"/>
                 <label for="yellow" class="yellow"></label>
@@ -153,29 +153,28 @@ export default defineComponent({
     
 });
 </script>
-<style lang="scss">
-
+<style scoped lang="scss">
 .colorfilter{
-    margin: 30px; 
+    margin-top: 3%; 
 }
-
 label{
     cursor: pointer;
 }
 .inputfields{
     display: none;
 }
-.column1{
+.row1{
     float:left;
     width: 800px;
 }
-.column2{
+.row2{
     float: left;
     width:800px;
 }
-.column3{
+.row3{
     width: 800px;
     float: left;
+    margin-bottom: 3%;
 }
 .onecolor{
     float:left;
@@ -186,7 +185,7 @@ input[type=checkbox]:checked + label.grey::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.beige::before {
@@ -194,7 +193,7 @@ input[type=checkbox]:checked + label.beige::before {
   color: black;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.black::before {
@@ -202,7 +201,7 @@ input[type=checkbox]:checked + label.black::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.brown::before {
@@ -210,7 +209,7 @@ input[type=checkbox]:checked + label.brown::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.green::before {
@@ -218,7 +217,7 @@ input[type=checkbox]:checked + label.green::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.white::before {
@@ -227,7 +226,7 @@ input[type=checkbox]:checked + label.white::before {
   color: #333;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.blue::before {
@@ -235,7 +234,7 @@ input[type=checkbox]:checked + label.blue::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.red::before {
@@ -243,7 +242,7 @@ input[type=checkbox]:checked + label.red::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.yellow::before {
@@ -251,7 +250,7 @@ input[type=checkbox]:checked + label.yellow::before {
   color: black;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.rosa::before {
@@ -259,7 +258,7 @@ input[type=checkbox]:checked + label.rosa::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.purple::before {
@@ -267,7 +266,7 @@ input[type=checkbox]:checked + label.purple::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 input[type=checkbox]:checked + label.orange::before {
@@ -275,7 +274,7 @@ input[type=checkbox]:checked + label.orange::before {
   color: white;
   content: "\2713";
   text-align: center;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -285,11 +284,9 @@ input[type=checkbox]+label.red::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.grey::before{
     border-radius: 100px;
@@ -297,11 +294,9 @@ input[type=checkbox]+label.grey::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.beige::before{
     border-radius: 100px;
@@ -309,11 +304,9 @@ input[type=checkbox]+label.beige::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.black::before{
     border-radius: 100px;
@@ -321,11 +314,9 @@ input[type=checkbox]+label.black::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.brown::before{
     border-radius: 100px;
@@ -333,11 +324,9 @@ input[type=checkbox]+label.brown::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.green::before{
     border-radius: 100px;
@@ -345,11 +334,9 @@ input[type=checkbox]+label.green::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.white::before{
     border-radius: 100px;
@@ -358,11 +345,9 @@ input[type=checkbox]+label.white::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.blue::before{
     border-radius: 100px;
@@ -370,11 +355,9 @@ input[type=checkbox]+label.blue::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.yellow::before{
     border-radius: 100px;
@@ -382,11 +365,9 @@ input[type=checkbox]+label.yellow::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.orange::before{
     border-radius: 100px;
@@ -394,11 +375,9 @@ input[type=checkbox]+label.orange::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.rosa::before{
     border-radius: 100px;
@@ -406,11 +385,9 @@ input[type=checkbox]+label.rosa::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
 input[type=checkbox]+label.purple::before{
     border-radius: 100px;
@@ -418,13 +395,8 @@ input[type=checkbox]+label.purple::before{
   content: "\00a0";
   display: inline-block;
   font: 16px/1em sans-serif;
-  height: 35px;
-  margin: 0 .25em 0 0;
-  padding: 0;
+  height: 30px;
   vertical-align: top;
-  width: 50px;
+  width: 30px;
 }
-
-
-
 </style>

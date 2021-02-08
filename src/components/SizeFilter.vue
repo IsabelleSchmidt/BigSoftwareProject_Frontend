@@ -2,7 +2,7 @@
     <div class= "sizefilter">
 
         <div class="width">
-            <h2>Breite</h2>
+            <h3>Breite</h3>
             <label>
                 <span>0 - 50cm </span>
                 <div>
@@ -41,7 +41,7 @@
             </label>   
         </div>
         <div class="height">
-            <h2>Höhe</h2>
+            <h3>Höhe</h3>
             <label>
                 <span>0 - 50cm </span>
                 <div>
@@ -80,7 +80,7 @@
             </label>   
         </div>
         <div class="depth">
-            <h2>Tiefe</h2>
+            <h3>Tiefe</h3>
             <label>
                 <span>0 - 50cm </span>
                 <div>
@@ -280,24 +280,31 @@ export default defineComponent({
     
 });
 </script>
-<style lang="scss">
+<style scoped lang="scss">
+.sizefilter{
+    margin-top: .5%;
+}
 .width{
     width: 200px;
     float: left;
-    margin: 30px; 
+    margin-bottom: 3%;
+    margin-right: 1.75em; 
 }
 .height{
     width: 200px;
     float: left;
-    margin: 30px; 
+    margin-bottom: 3%;
+    margin-right: 1.75em;
 }
 .depth{
     width: 200px;
     float: left;
-    margin: 30px; 
+    margin-bottom: 3%;
 }
 span{
     float: left; 
+    width: 95px;
+    font-size: 0.95em;
 }
 input{
     margin-left: 20px;

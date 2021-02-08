@@ -107,12 +107,12 @@ export default defineComponent({
     }
 });
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .filter{
     float:left;
     position: relative;
     left: 18%;
-    width: 800px; 
+    max-width: 800px; 
 }
 .ulFilter{
     list-style-type: none;
@@ -122,10 +122,22 @@ export default defineComponent({
     margin: 0 5px;
 }
 .buttonFilter{
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
+    background-color: transparent;
+    color: black;
+    border: 1px solid $color-grey3; 
+    border-radius: 2em;
+    outline-style: none;
+    &:hover{
+        background-color: $color-grey;
+    }
+     /*&:focus{
+            background-color: #f3f3f3;
+
+        }   */
 }
 .filteroptionsclicked{
-    margin-left: 30px;
+    margin-left: 5%;
     float: left;
     width: 800px;
     
@@ -133,19 +145,22 @@ export default defineComponent({
 .filteroptions{
     float: left; 
     width: 800px;
-    
+    margin-left: 7%;
 }
 #filoptButton{
     margin: 5px 10px;
-    padding: 1% 3%;
+    padding: 0.5rem 1.2rem;
     background-color: lightgrey;
     color: black;
     text-align: center;
     white-space: nowrap;
-
+    border-radius: 2em;
+    align-items: center;
+    display: flex;
      &:hover{
         background-color: $color-green;
         cursor: pointer;
+        //color: white;
     } 
     &:focus{
         outline: none;
@@ -153,7 +168,7 @@ export default defineComponent({
 }
 #closeFilImg{
     width: 18px;
-    padding: 0 3%
+    padding-left: .5rem;   
 }
 
 </style>
