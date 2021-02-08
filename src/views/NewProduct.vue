@@ -200,8 +200,6 @@
                                 confirmButtonColor: '#3BA07C',
                                 }).then((result)=>{
                                     if(result.isConfirmed){
-                                        // router.push("/newProducts")
-                                        // bild()
                                         location.reload();
                                     }
                             })
@@ -232,8 +230,6 @@
                         confirmButtonColor: '#3BA07C',
                         }).then((result)=>{
                             if(result.isConfirmed){
-                                // router.push("/newProducts")
-                                // bild()
                                 location.reload();
                             }
                             })

@@ -489,6 +489,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+    .error{
+        font-size: 10px;
+        color: red;
+    }
     .orderForm{
         margin: 1em 2em 2em 2em;
     } 
