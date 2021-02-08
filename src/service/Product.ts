@@ -1,5 +1,5 @@
 interface Tag {
-//     id: number;
+    id: number;
 //    version: number;
 //    allProductsWithTag: Product;
     value: string;

@@ -13,12 +13,35 @@ import '@/service/Validationerror'
 const state = reactive({
   list: Array<Product>(),
   validationerrors: Array<Validationerror>(),
+  tags: Array<Tag>()
 })
 
 export let articlenr: number;
 
+async function getAllTags() {
+  const taglist = new Array<Tag>();
+  fetch(`/api/tags`,{method:'GET'})
+  .then((response)=>{
+    if(!response.ok){
+      return taglist;
+    }
+    return response.json();
+  })
+  .then((jsondata: Array<Tag>)=>{
+    for (let i = 0; i < jsondata.length; i++) {
+      taglist.push(jsondata[i]);
+    }
+    state.tags = taglist
+    console.log("TAAAGS",state.tags)
+  })
+  .catch((fehler)=>{
+    console.log(fehler)
+  })
+}
+
 async function update(): Promise<void> {
   const productlist = new Array<Product>();
+  // const taglist = new Array<Tag>();
   fetch(`/api/products`, {
     method: 'GET'
   })
@@ -32,15 +55,22 @@ async function update(): Promise<void> {
     .then((jsondata: Array<Product>) => {
       for (let i = 0; i < jsondata.length; i++) {
         productlist.push(jsondata[i]);
+        // for(let j = 0; j <jsondata[i]['allTags'].length;j++)
+        // if(!taglist.has(jsondata[i]['allTags'][j])){
+        //   taglist.add(jsondata[i]['allTags'][j])
+        // }
+        
       }
       state.list = productlist;
+      // console.log('TAGGGGS',taglist)
 
     })
     .catch((fehler) => {
       console.log(fehler);
     });
-
 }
+
+
 
 function getProductByArtNr(nr: number) {
   for (let i = 0; i < state.list.length; i++) {
@@ -148,11 +178,13 @@ export function useProduct() {
   return {
     // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
     allproductslist: computed(() => state.list),
+    alltags: computed(()=> state.tags),
     //errormessage: computed(() => state.errormessage),
     update,
     getProductByArtNr,
     getAvailableByArtNr,
-    getHightPrice
+    getHightPrice,
+    getAllTags
   }
 }
 //macht die sendProduct Funktion von außen zugänglich

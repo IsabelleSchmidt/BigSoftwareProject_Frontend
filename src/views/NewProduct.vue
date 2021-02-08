@@ -47,6 +47,14 @@
                 <div class="col2"><input type="text" v-model="description" id="description" placeholder="Beschreibung" name="description" size="30" maxlength="50"><div class="error" v-if="descriptionerror.length>0"> {{descriptionerror}} </div></div>
             </div>
 
+            <div class="row">
+                <div class="col1"><label for="tag">Frabe</label></div>
+                <div class="col2"><select name="tag" v-model="tag" id="tag" @change="tagChange($event.target.value)">
+                                    <option v-for="item in alltags" :value="[item.id,item.value,]" :key="item.id">{{item.value}}</option>
+                                </select>
+                                <div class="error" v-if="tagerror.length>0"> {{tagerror}} </div>
+                </div>
+            </div>
         
             <div class="row">
                 <div class="col1"><label for="price">Preis</label></div>
@@ -80,8 +88,10 @@
 //auf antwort warten
 //Bild (erstmal eins nach dem anderen) nach antwort(wir brauchen die neue produkt id) an POST api/product/{articleNr}/newpicture senden und picturename: String
 //mitgeben: speicherort und dateiname zB. /chairs/chair9.jpg
-  import {postProduct,postPictures,articlenr} from '../service/ProductStore'
+  import {postProduct,postPictures,articlenr,useProduct} from '../service/ProductStore'
+  import {useFilterStore} from '../service/FilterStore'
   import '../service/Picture'
+  import '../service/Product'
   import {ref,defineComponent} from 'vue'
   import Swal from "sweetalert2"
   import router from "../router"
@@ -107,7 +117,11 @@
         const depth = ref(0);
         const price = ref(0);
         const picturename = ref("");
+        const tag = ref(Object);
         const {sendProduct, validationerrors} = postProduct();
+        const {alltags,getAllTags} = useProduct();
+        getAllTags()
+        console.log("LIST",alltags)
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -117,11 +131,21 @@
         const priceerror = ref("");
         const sizeerror = ref("");
         const picerror = ref("");
+        const tagerror = ref("");
 
         let picSucsess = true
         
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':available.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0, allTags:[] };
+
+        function tagChange(event: string){
+            const t: Tag = {
+                id: Number(event.split(",")[0]),
+                value: event.split(",")[1],
+            }
+            console.log("TAG",t)
+            product.allTags.push({id: t.id, value: t.value});
+        }
 
         async function sendeProd(): Promise<void>{
             console.log("Naaame",name.value);
@@ -135,6 +159,7 @@
             product.height = height.value;
             product.depth = depth.value;
             product.available = available.value;
+            tag.value
             console.log('ProduuuukT:',product);
 
             formData.delete("picture")
@@ -145,6 +170,7 @@
             infoerror.value = "";
             descriptionerror.value = "";
             picerror.value = "";
+            tagerror.value = "";
             
             if (picSucsess == true){
 
@@ -176,6 +202,9 @@
                             }
                             if(error.field == "picture"){
                                 picerror.value = error.message;
+                            }
+                            if(error.field == "tag"){
+                                tagerror.value = error.message
                             }
                         
                         }
@@ -266,7 +295,8 @@
             console.log(filesref.value);
         }
 
-        return {picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
+
+        return {tagerror,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
