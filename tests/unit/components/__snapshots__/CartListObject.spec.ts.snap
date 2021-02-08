@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CartListObject has the expected html structur 1`] = `undefined`;
+
+exports[`CartListObject has the expected structur 1`] = `undefined`;

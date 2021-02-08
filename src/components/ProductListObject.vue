@@ -3,7 +3,7 @@
     <a id="hitbox" @click="openproduct()" >
       <div class="productListObject">
         <img
-          v-bind:src="product.allPictures[0].path"
+          v-bind:src="'/api/picture/'+product.allPictures[0].id"
           alt="Picture"
           class="pic"
         />

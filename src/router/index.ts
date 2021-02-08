@@ -71,8 +71,8 @@ const router = createRouter({
     },
     
     { 
-    path: '/404', 
-    component: () => import('../components/NotFound.vue') 
+      path: '/404', 
+      component: () => import('../components/NotFound.vue') 
     },
     {
       path: '/:catchAll(.*)', redirect:'404'
@@ -87,7 +87,12 @@ const router = createRouter({
       name: 'ResetPassword',
       component: () => import('../views/ResetPassword.vue'),
       props: true,
-    }
+    },
+    {
+      path: '/newProduct',
+      name: 'newProduct',
+      component: () => import('../views/NewProduct.vue'),
+    },
   ]
 });
 

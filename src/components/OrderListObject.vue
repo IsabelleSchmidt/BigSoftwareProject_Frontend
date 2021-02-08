@@ -2,7 +2,7 @@
   <div id="line">
     <div class="productobject">
       <div class="picture">
-        <img v-bind:src="ppath.path" alt="Picture" id="pic" />
+        <img v-bind:src="'/api/picture/'+ppath.id" alt="Picture" id="pic" />
       </div>
       <div class="information">
         <ul>
@@ -66,7 +66,7 @@ export default defineComponent({
 
     if (props.product) {
       p = getProductByArtNr(props.product[0]) as Product;
-      ppath.value = p.allPictures[0];
+      ppath.value = p.allPictures[0].path;
       pname.value = p.name;
       pprice.value = p.price;
       particlenr.value = p.articlenr;

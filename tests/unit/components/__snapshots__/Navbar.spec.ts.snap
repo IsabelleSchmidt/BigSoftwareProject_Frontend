@@ -62,14 +62,14 @@ exports[`Navbar.vue Test Has the expected HTML structure 1`] = `
         </li>
         <li>
           <div id="margin">
-            <router-link to="/cart" id="hitbox"><img alt="cart" id="icon">
+            <router-link to="/cart" id="hitbox"><img alt="cart" id="icon1">
               <!--v-if-->
             </router-link>
           </div>
         </li>
         <li>
           <div id="margin">
-            <router-link to="/profil" id="hitbox"><img alt="profile" id="icon"></router-link>
+            <router-link to="/profile/login" id="hitbox"><img alt="profile" id="icon2"></router-link>
           </div>
         </li>
       </div>
