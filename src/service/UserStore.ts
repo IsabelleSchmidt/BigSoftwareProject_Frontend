@@ -61,12 +61,12 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
-async function logoutUser(logoutRequest: LogoutRequest){
+async function logoutUser(){
     const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/logout`, {
         method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(logoutRequest),
+        headers: {"Content-Type": "application/json",
+        "Authorization" : "Bearer " + token.accessToken},
     }).then((response) =>{
         if(!response.ok){
             state.errormessage = "Logout not successful.";
@@ -144,6 +144,7 @@ async function checkIfEmailExists(email: string): Promise<boolean> {
 
     return exists;
 } 
+
 
 async function changePassword(npr: NewPasswordRequest) {
     let success = false;

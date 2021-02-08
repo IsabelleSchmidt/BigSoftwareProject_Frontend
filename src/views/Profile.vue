@@ -106,7 +106,7 @@ export default defineComponent({
 
   setup() {
     const { getUser, user, adresses, bankcards, creditcards } = useUserStore();
-    const {logoutUser, jwttokens, errormessage} = getLogoutUser();
+    const {logoutUser, errormessage} = getLogoutUser();
 
     //user
     const email = ref("");
@@ -114,8 +114,6 @@ export default defineComponent({
     const lastName = ref("");
     const birthdate = ref(new Date());
     const router = useRouter();
-    const token = jwttokens.value[0];
-    let accessToken = "";
 
     function userInformation() { 
 
@@ -134,9 +132,7 @@ export default defineComponent({
     }
 
     async function logout(): Promise<void>{
-      accessToken = token.accessToken;
-      const lr: LogoutRequest = {"token" : accessToken};
-      await logoutUser(lr);
+      await logoutUser();
 
       if(errormessage.value.length > 0 ){
         console.log("Loggout not successful.");

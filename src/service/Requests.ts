@@ -49,6 +49,3 @@ interface NewPasswordRequest {
     email: string;
     password: string;
 }
-interface LogoutRequest{
-    token: string;
-}
