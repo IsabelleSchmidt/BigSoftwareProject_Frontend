@@ -607,7 +607,6 @@ VueWrapper {
     "sendOrder": [Function],
     "streetName": "",
     "streetnameerror": "",
-    "token": undefined,
   },
   "rootVM": Object {
     "__emitted": Object {},

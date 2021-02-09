@@ -1,4 +1,4 @@
-import { shallowMount, mount, VueWrapper } from "@vue/test-utils"
+import { shallowMount, mount, VueWrapper, RouterLinkStub } from "@vue/test-utils"
 	
 import Cart from "@/views/Cart.vue"
 import CartList from "@/views/Cart.vue"
@@ -40,4 +40,13 @@ describe('Test CartList.vue', () => {
 	
         expect(() => wrapper.getComponent('.not-there')).toThrowError()
     })
+
+    // test('routerlink check', () => {
+    //     const wrapper = mount(Cart, {
+    //         stubs: {
+    //           router: RouterLinkStub
+    //         }
+    //       })
+    //       expect(wrapper.find(RouterLinkStub).props().to).toBe('/some/path')
+    // })
 })

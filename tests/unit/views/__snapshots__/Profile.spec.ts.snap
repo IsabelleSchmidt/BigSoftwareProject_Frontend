@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile.vue test snapshots test 1`] = `
+<div class="profil">
+  <div class="profilhead">
+    <h1>Dein Profil</h1>
+  </div>
+  <form>
+    <div class="row"><input id="logout" type="submit" name="logoutUser" value="Logout"></div>
+    <div class="row">
+      <div class="col1"><label for="firstname" class="left"> Vorname </label></div>
+      <div class="col2"></div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="lastname" class="left"> Nachname </label></div>
+      <div class="col2"></div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="email" class="left"> E-Mail </label></div>
+      <div class="col2"></div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="birthdate" class="left"> Geburtsdatum </label></div>
+      <div class="col2">"2021-02-09T23:18:21.784Z"</div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="adress" class="left">Adresse</label></div>
+      <div class="col2"><select name="adress"></select></div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="bankcard" class="left">Bankkarten</label></div>
+      <div class="col2"><select name="bankcard"></select></div>
+    </div>
+    <div class="row">
+      <div class="col1"><label for="creditcard" class="left">Kreditkarten</label></div>
+      <div class="col2"><select name="creditcard"></select></div>
+    </div>
+  </form>
+</div>
+`;
