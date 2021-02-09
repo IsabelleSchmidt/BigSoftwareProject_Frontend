@@ -89,13 +89,6 @@ export default defineComponent({
             return Array.from(colorlist.value.keys());
 
         })
-        // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
-        onMounted(async () => {
-            queryObject.room.value = route.query.room;
-            queryObject.productType.value = route.query.productType;
-            queryObject.name.value = "none";
-            await update();
-        });
         
         const productlist = computed(() => {
 
@@ -146,6 +139,7 @@ export default defineComponent({
             }
             if(depthlow.value != 1000 && depthhigh.value != 0){
                  merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
+
             }
             
             return merklist;
@@ -186,7 +180,7 @@ export default defineComponent({
                     return searchproductList.value;
                 }
             }), 
-            // productlist,
+            
             openProduct,
             closeFilter, 
             searchproductList,

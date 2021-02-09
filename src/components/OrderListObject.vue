@@ -2,7 +2,7 @@
   <div id="line">
     <div class="productobject">
       <div class="picture">
-        <img v-bind:src="ppath.path" alt="Picture" id="pic" />
+        <img v-bind:src="'/api/picture/'+ppath.id" alt="Picture" id="pic" />
       </div>
       <div class="information">
         <ul>
@@ -30,7 +30,7 @@
 </template>
 <script lang="ts">
 import "@/service/Product";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useProduct } from "@/service/ProductStore";
 
 export default defineComponent({
@@ -42,7 +42,11 @@ export default defineComponent({
   setup(props, context) {
     const { getProductByArtNr } = useProduct();
 
-    const ppath = ref("");
+
+    const ppath = computed(() => {
+      if (props.product)
+        return (getProductByArtNr(props.product[0]) as Product).allPictures[0];
+    });
     const pname = ref("");
     const pprice = ref(0);
     const particlenr = ref(0);
@@ -66,7 +70,6 @@ export default defineComponent({
 
     if (props.product) {
       p = getProductByArtNr(props.product[0]) as Product;
-      ppath.value = p.allPictures[0];
       pname.value = p.name;
       pprice.value = p.price;
       particlenr.value = p.articlenr;

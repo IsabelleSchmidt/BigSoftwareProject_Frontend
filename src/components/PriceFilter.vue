@@ -1,6 +1,6 @@
 <template>
     <div class= "pricefilter">
-        <h2>Preis</h2>
+        <h3>Preis</h3>
         <label>
             <span>0,00 - 200,00€</span>
             <div>
@@ -50,7 +50,7 @@ export default defineComponent({
         const price8 = ref();
     
 
-        function checked(price: string): void{                                    
+        function checked(price: string): void{   
                 if(pricelist.value.has(price)){
                     deletePriceFilter(price)
                 }else{
@@ -92,12 +92,15 @@ export default defineComponent({
     
 });
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .pricefilter{
-    margin: 30px; 
+    margin-top: 3%;
+    margin-bottom: 3%; 
 }
 span{
     float: left;
+    width: 120px;
+    font-size: 0.95em;
 }
 input{
     margin-left: 20px;

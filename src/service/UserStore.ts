@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue'
+import {computed, reactive } from 'vue'
 import '../service/Requests'
 import '../service/Response'
 import '../service/User'
@@ -7,17 +7,18 @@ const state = reactive({
     errormessage: "",
     check: false,
     jwttokens: Array<JwtToken>(),
-    email: "",
     errormessages: Array<MessageResponse>(),
-    allAdresses: Array<Adress>()
+    allAdresses: Array<Adress>(),
+    bankcard: Array<Bankcard>(),
+    creditcard: Array<Creditcard>(),
+    user : Array<User>()
 })
 
 
 
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
-    console.log("Es wird eingeloggt.")
-    await fetch(`http://localhost:9090/api/user/login`, {
+    await fetch(`/api/user/login`, {
         method: 'POST',
         headers: { "Content-Type": 'application/json' },
         body: JSON.stringify(loginRequest),
@@ -31,9 +32,9 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         return response.json();
     }).then((jsondata: JwtToken) => {
         state.jwttokens.push(jsondata);
-        state.email = loginRequest.email;
         console.log(state.jwttokens);
     }).catch((error) => {
+        console.log(error);
         state.errormessage = "Email-Adresse oder Passwort falsch."
     })
 
@@ -43,8 +44,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
 
 async function sendUser(signUpRequest: SignUpRequest) {
 
-    console.log("Sende: " + 'User ' + JSON.stringify(signUpRequest));
-    await fetch(`http://localhost:9090/api/user/register`, {
+    await fetch(`/api/user/register`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signUpRequest)
@@ -61,10 +61,32 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
-async function getAdresses(): Promise<void> {
-    const adresses = new Array<Adress>();
+async function logoutUser(){
     const token = state.jwttokens[0];
-    await fetch(`http://localhost:9090/api/user/getAdress`, {
+    await fetch(`http://localhost:9090/api/user/logout`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json",
+        "Authorization" : "Bearer " + token.accessToken},
+    }).then((response) =>{
+        if(!response.ok){
+            state.errormessage = "Logout not successful.";
+            throw new Error(state.errormessage);
+        }
+        state.jwttokens = new Array<JwtToken>();
+        return response.json();
+        
+    }).catch((error) => {
+        console.log(JSON.stringify(error));
+    });
+
+}
+
+async function getUser(): Promise<void> {
+    const adresses = new Array<Adress>();
+    const bankcards = new Array<Bankcard>();
+    const creditcards = new Array<Creditcard>();
+    const token = state.jwttokens[0];
+    await fetch(`http://localhost:9090/api/user/getUser`, {
         method: 'GET',
         headers: { "Content-Type": "application/json",
                    "Authorization" : "Bearer " + token.accessToken},
@@ -72,6 +94,7 @@ async function getAdresses(): Promise<void> {
         if (!response.ok) {
             throw new Error(state.errormessage);
         }
+        console.log();
         return response.json();
     }).then((jsondata: User) => {
 
@@ -79,9 +102,74 @@ async function getAdresses(): Promise<void> {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
         state.allAdresses = adresses;
+
+        for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
+            bankcards.push(Array.from(jsondata.bankcard)[i] as Bankcard);
+        }
+        state.bankcard= bankcards;
+        console.log("Bancard userstore inhalt", jsondata.bankcard.values)
+        
+        for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
+            creditcards.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
+        }
+        state.creditcard = creditcards;
+        console.log("creditcard userstore inhalt", state.creditcard)
+
+        state.user.push(jsondata);
     }).catch((fehler) => {
         console.log(fehler);
     });
+}
+
+async function checkIfEmailExists(email: string): Promise<boolean> {
+    let exists = false;
+
+    await fetch(`/api/user/checkByEmail/${email}`, {
+        method: 'GET',
+        headers: { "Content-Type": "application/json"}
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then((jsondata: MessageResponse) => {
+        
+        if (!jsondata.message)
+            exists = true;
+        
+    }).catch((exception) => {
+        console.log(exception)
+    });
+
+    return exists;
+} 
+
+
+async function changePassword(npr: NewPasswordRequest) {
+    let success = false;
+
+    await fetch(`/api/user/changePassword`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify(npr)
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        return response.json();
+    }).then((jsondata: MessageResponse) => {
+        
+        if (!jsondata.message)
+            success = true;
+        
+    }).catch((exception) => {
+        console.log(exception)
+    });
+    console.log("Success: " + success);
+    return success;
+
 }
 
 function reseterrormessage() {
@@ -95,13 +183,25 @@ export function postLoginUser() {
     }
 }
 
+export function getLogoutUser() {
+    return {
+        errormessage: computed(() => state.errormessage),
+        jwttokens: computed(() => state.jwttokens),
+        logoutUser
+    }
+}
+
 export function useUserStore() {
     return {
         jwttokens: computed(() => state.jwttokens),
-        email: computed(() => state.email),
         adresses: computed(() => state.allAdresses),
-        getAdresses,
+        bankcards: computed(() => state.bankcard),
+        creditcards: computed(() => state.creditcard),
+        user: computed(() => state.user),
+        getUser,
         reseterrormessage,
+        checkIfEmailExists,
+        changePassword
     }
 }
 

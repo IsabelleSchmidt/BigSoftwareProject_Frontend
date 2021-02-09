@@ -44,3 +44,8 @@ interface OrderDT {
     priceTotal: number;
     allProductsOrdered: Array<ProductDTO>;
 }
+
+interface NewPasswordRequest {
+    email: string;
+    password: string;
+}

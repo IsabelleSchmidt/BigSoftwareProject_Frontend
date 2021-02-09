@@ -5,10 +5,12 @@
     <form>
       <div class="adress">
         <h2>Versandadresse</h2>
-        <div>
+        <div v-if="!isHidden">
+          <label class="col1">Adresse auswählen: </label>
           <select v-model="selectedadr"
             name="adress"
             @change="adrChange($event.target.value)"
+            
           >
             <option
               
@@ -157,7 +159,7 @@
       </div>
     </form>
 
-    <h2>Lieferung 18.02.2021</h2>
+    <h2>Vorausichtliches Lieferdatum: {{deliveryDate}}</h2>
     <div class="error">{{ notavailableerrorempty }}</div>
     <div class="error">{{ notavailableerror }}</div>
     <div class="row">
@@ -182,7 +184,7 @@ import { defineComponent, computed, ref, onMounted, watch } from "vue";
 import { useCartStore } from "../service/CartStore";
 import { usePostOrder } from "../service/OrderStore";
 import { useUserStore } from "../service/UserStore";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "OrderForm",
@@ -192,7 +194,6 @@ export default defineComponent({
   setup(context) {
     const {
       list,
-      addProduct,
       deleteProduct,
       totalPrice,
       clearCart,
@@ -201,7 +202,7 @@ export default defineComponent({
 
     const { postOrder, errormessages, ordererrormessages } = usePostOrder();
 
-    const { jwttokens, getAdresses, adresses, email } = useUserStore();
+    const { jwttokens, getUser, adresses } = useUserStore();
     const router = useRouter();
 
     const payment = ref("");
@@ -244,6 +245,8 @@ export default defineComponent({
     const notavailableerrorempty = ref("");
     const token = jwttokens.value[0];
 
+    //delivery date
+
     const inTotal = computed(() => {
       return totalPrice();
     });
@@ -252,8 +255,15 @@ export default defineComponent({
       return Array.from(list.value.entries());
     });
 
+    const deliveryDate = computed(() => {
+      const date = new Date();
+      date.setDate(date.getDate() + 3);
+      return date.toLocaleDateString();
+    })
+
     onMounted(async () => {
-      await getAdresses();
+      await getUser();
+      
     });
 
     function adrChange(event: string) {
@@ -309,6 +319,7 @@ export default defineComponent({
         const order: OrderDT = {
           priceTotal: inTotal.value,
           allProductsOrdered: orderList,
+          
         };
 
         streetnameerror.value = "";
@@ -463,13 +474,25 @@ export default defineComponent({
       notavailableerror,
       notavailableerrorempty,
       adresses,
-      selectedadr
+      selectedadr,
+      isHidden: computed(() => {
+            if (adresses.value.length == 0) {
+                return true;
+            } else {
+                return false;
+            } 
+      }),
+      deliveryDate
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+    .error{
+        font-size: 10px;
+        color: red;
+    }
     .orderForm{
         margin: 1em 2em 2em 2em;
     } 

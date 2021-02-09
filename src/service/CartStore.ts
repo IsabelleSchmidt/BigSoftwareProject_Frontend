@@ -7,6 +7,7 @@ import { useProduct } from '@/service/ProductStore'
 
 const state = reactive({
     list: new Map<number, number>(),
+    // check : new Boolean(),
 })
 
 const total = ref(0);
@@ -38,6 +39,15 @@ function calcTotal(value: number, key: number, map: any): void {
     }
 
 }
+
+// function setPreviousView(cartCheck: boolean): any{
+//     state.check = cartCheck;
+
+// }
+
+// function getPreviousView(){
+//     return state.check;
+// }
 
 function clearCart() {
     state.list.clear();
@@ -92,6 +102,7 @@ export function useCartStore() {
     return {
         // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
         list: computed(() => state.list),
+        // check: computed(() => state.check),
         addProduct,
         getAmount,
         getCartAmount,
@@ -99,7 +110,10 @@ export function useCartStore() {
         deleteProduct,
         totalPrice,
         checkOneMoreAvailable,
-        clearCart
+        clearCart,
+        // setPreviousView,
+        // getPreviousView,
+        
     }
 }
 

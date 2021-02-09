@@ -51,7 +51,7 @@ export default {
   text-align: left;
   color: black;
   float: left;
-  background-color: #f3f3f3;
+  background-color: $color-grey;
   padding: 1.5%;
   max-width: 15%;
   margin-left: 20px;
@@ -71,7 +71,11 @@ ul {
   list-style-type: none;
 }
 #link:hover {
-  color: #6f492d;
+  color: $color-brown;
+  text-decoration: none;
+}
+#link:focus{
+  color: $color-green;
   text-decoration: none;
 }
 li {

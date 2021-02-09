@@ -55,15 +55,15 @@
           <li>
             <div id="margin" @click="closeSearch()">
               <router-link to="/cart" id="hitbox">
-                <img src="../assets/warenkorb.png" alt="cart" id="icon" />
+                <img src="../assets/warenkorb.png" alt="cart" id="icon1" />
                 <span v-if="amount > 0" class="total-amount">{{ amount }}</span>
               </router-link>
             </div>
           </li>
           <li>
             <div id="margin"  @click="closeSearch()">
-              <router-link to="/profil" id="hitbox">
-                <img src="../assets/profil.png" alt="profile" id="icon" />
+              <router-link :to="jwttokens.length > 0 ? '/profile' : '/profile/login'" id="hitbox">
+                <img src="../assets/profil.png" alt="profile" id="icon2"/>
               </router-link>
             </div>            
           </li>
@@ -80,6 +80,7 @@
     import {useRouter} from 'vue-router';
     import { useCartStore } from "../service/CartStore";
     import{useProduct} from '../service/ProductStore';
+    import{useUserStore} from "../service/UserStore";
 
         export default defineComponent({
         name: "Navbar2",
@@ -88,6 +89,8 @@
             const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
             const router = useRouter();
             const {allproducttypes,allroomtypes, roomkeys, productkeys} = useProduct();
+            const{jwttokens} = useUserStore();
+
             const { getCartAmount } = useCartStore();
             const amount = computed(() => getCartAmount());
             console.log("Raumtypen navbar: "+roomkeys);
@@ -129,7 +132,8 @@
                roomkeys,
                productkeys,
                allroomtypes,
-               allproducttypes
+               allproducttypes,
+               jwttokens
           };
         }
         
@@ -142,15 +146,19 @@
 #logo{
     height: 50px;
 }
-#icon{
+#icon1{
     height: 24px;
     padding: 0px 10px 0px 10px;
+}
+#icon2{
+    height: 24px;
+    padding: 0px 0px 0px 0px;
 }
 #hitbox{
     padding: 0;
 }
 #margin{
-    margin: 15px 10px 0px 10px;
+    margin: 15px 10px 0px 0px;
 }
 nav{
     width: 100%;

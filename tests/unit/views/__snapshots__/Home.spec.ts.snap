@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for the Homepage If HTML structur is right 1`] = `
+<div class="home">
+  <h1>Herzlich Wilkommen im PflaMoeHus</h1>
+  <room-list-stub></room-list-stub>
+</div>
+`;

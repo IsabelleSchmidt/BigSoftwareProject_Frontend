@@ -75,7 +75,7 @@
           <label for="gender" class="left">Geschlecht&lowast;</label>
         </div>
         <div class="col2">
-          <select v-model="gender" name="gender" class="right" required>
+          <select v-model="gender" name="gender" required>
             <option value="FEMALE">weiblich</option>
             <option value="MALE">männlich</option>
             <option value="DIVERSE">divers</option>
@@ -99,13 +99,13 @@
             required
           />
           <div class="correct">
-            &#10047; Das Passwort muss mindestens 8 Zeichen besitzen
+            &#10047; Das Passwort muss mindestens 8 Zeichen besitzen.
           </div>
           <div class="correct">
-            &#10047; Das Passwort muss mindestens ein Sonderzeichen besitzen
+            &#10047; Das Passwort muss mindestens ein Sonderzeichen besitzen.
           </div>
           <div class="correct">
-            &#10047; Das Passwort mus mindestens eine Zahl besitzen
+            &#10047; Das Passwort muss mindestens eine Zahl besitzen.
           </div>
         </div>
       </div>
@@ -263,6 +263,7 @@ label {
 .col2 {
   float: left;
   width: 75%;
+  padding: 12px 0px 0px 0px;
 }
 
 .row:after {
@@ -324,6 +325,12 @@ input[type=submit]{
     list-style: none;
     list-style-type: none;
     color: $color-green;
+}
+
+.correct{
+    color: black;
+    margin-bottom: 0.15em;
+    font-size: 0.55em;
 }
 
 </style>

@@ -5,9 +5,8 @@
     </div>
     <div class="top2">
       <div class="left">
-        <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
         <div v-for="i in productObject.allPictures" :key="i">
-          <img class="pic" v-bind:src="i.path" alt="Picture" />
+          <img class="pic" v-bind:src="'/api/picture/'+i.id" alt="Picture" />
         </div>
       </div>
       <div class="right">
@@ -183,7 +182,6 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      console.log(props.productObject.roomType);
       router.push({
         path: "/product",
         query: {
@@ -196,7 +194,6 @@ export default defineComponent({
       //when back button in browser is pressed
       window.onpopstate = function (event: any) {
         openproductlist();
-        // router.go(-1);
       };
     });
 
@@ -225,6 +222,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
 .availablepoint {
   float: left;
   font-size: 2.5em;

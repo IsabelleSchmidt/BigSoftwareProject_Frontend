@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+import { useEmailStore } from '../service/EmailStore'
 
+const { code, getCode } = useEmailStore();
 const history = createWebHistory();
 
 const router = createRouter({
@@ -26,9 +28,9 @@ const router = createRouter({
       component: () => import('../views/Cart.vue')
     },
     {
-      path: '/profil',
-      name: 'Profil',
-      component: () => import('../views/Profil.vue')
+      path: '/profile',
+      name: 'Profile',
+      component: () => import('../views/Profile.vue')
     }
     ,
     {
@@ -48,9 +50,19 @@ const router = createRouter({
       component: () => import('../views/Register.vue')
     },
     {
-      path: '/login',
-      name: 'Login',
+      path: '/profile/login',
+      name: 'PLogin',
       component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/cart/login',
+      name: 'CLogin',
+      component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: () => import('../views/Home.vue')
     },
     {
       path: '/orderform',
@@ -59,8 +71,8 @@ const router = createRouter({
     },
     
     { 
-    path: '/404', 
-    component: () => import('../components/NotFound.vue') 
+      path: '/404', 
+      component: () => import('../components/NotFound.vue') 
     },
     {
       path: '/:catchAll(.*)', redirect:'404'
@@ -69,7 +81,18 @@ const router = createRouter({
       path: '/orderConf',
       name: 'OrderConf',
       component: () => import('../components/OrderConfirmation.vue'),
-    }
+    },
+    {
+      path: '/resetPassword/:email/:code',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      props: true,
+    },
+    {
+      path: '/newProduct',
+      name: 'newProduct',
+      component: () => import('../views/NewProduct.vue'),
+    },
   ]
 });
 
