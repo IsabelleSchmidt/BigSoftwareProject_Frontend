@@ -2,7 +2,7 @@
   <div id="line">
     <div class="productobject">
       <div class="picture">
-        <img v-bind:src="'/api/picture/'+ppath.id" alt="Picture" id="pic" />
+        <img v-bind:src="'/api/product/picture/'+ppath.id" alt="Picture" id="pic" />
       </div>
       <div class="information">
         <ul>

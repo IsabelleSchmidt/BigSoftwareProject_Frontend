@@ -6,7 +6,7 @@
     <div class="top2">
       <div class="left">
         <div v-for="i in productObject.allPictures" :key="i">
-          <img class="pic" v-bind:src="'/api/picture/'+i.id" alt="Picture" />
+          <img class="pic" v-bind:src="'/api/product/picture/'+i.id" alt="Picture" />
         </div>
       </div>
       <div class="right">

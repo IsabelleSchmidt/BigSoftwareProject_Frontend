@@ -144,7 +144,7 @@ async function sendProduct(newProduct: Product): Promise<void> {
   articlenr = -1;
   console.log(" Sende Produkt mit Namen: " + newProduct.name + " an backend.")
   console.log("Sende: " + 'Product ' + JSON.stringify(newProduct))
-  await fetch(`/api/product/new`, {
+  await fetch(`/api/product/product/new`, {
     method: 'POST',
     headers: { "Content-Type": "application/json", access: 'Access-Control-Allow-Origin' },
     body: JSON.stringify(newProduct)
@@ -184,7 +184,7 @@ async function sendPicture(formData: FormData, articlenr: number) {
   console.log("Sende Bild an Backend");
   let wassuccessful = false;
   if (articlenr != -1) {
-    await fetch(`/api/product/${articlenr}/newpicture`, {
+    await fetch(`/api/product/product/${articlenr}/newpicture`, {
       method: 'POST',
       headers: { access: 'Access-Control-Allow-Origin' },
       body: formData
