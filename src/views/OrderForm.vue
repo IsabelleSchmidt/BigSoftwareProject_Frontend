@@ -243,6 +243,8 @@ export default defineComponent({
     const dateofexpiryerror = ref("");
     const notavailableerror = ref("");
     const notavailableerrorempty = ref("");
+
+    //token
     const token = jwttokens.value[0];
 
     //delivery date
@@ -457,7 +459,6 @@ export default defineComponent({
       dateOfExpiryMonth,
       dateOfExpiryYear,
       dateOfExpiry,
-      token,
       payment,
       paymenterror,
       adrChange,
