@@ -148,10 +148,19 @@
         }
 
         async function sendeProd(): Promise<void>{
+
+            producterror.value = "";
+            priceerror.value = "";
+            roomerror.value = "";
+            nameerror.value = "";
+            infoerror.value = "";
+            descriptionerror.value = "";
+            picerror.value = "";
+            tagerror.value = "";
             console.log("Naaame",name.value);
             product.name = name.value;
-            productType.value == "" ? product.productType="NULL": product.productType = productType.value;
-            roomType.value == "" ? product.roomType = "NULL" : product.roomType = roomType.value;
+            productType.value == "" ? producterror.value = "Bitte wähle einen Produkttypen aus.": product.productType = productType.value;
+            roomType.value == "" ? roomerror.value = "Bitte Raumart auswählen." : product.roomType = roomType.value;
             product.price = price.value;
             product.information = information.value;
             product.description = description.value;
@@ -163,18 +172,13 @@
             console.log('ProduuuukT:',product);
 
             formData.delete("picture")
-            producterror.value = "";
-            priceerror.value = "";
-            roomerror.value = "";
-            nameerror.value = "";
-            infoerror.value = "";
-            descriptionerror.value = "";
-            picerror.value = "";
-            tagerror.value = "";
+            
             
             if (picSucsess == true){
+                if(producterror.value.length == 0 && roomerror.value.length == 0){
 
-                await sendProduct(product);
+                    await sendProduct(product);
+                
                     
                     // Validation Messages
                     if(validationerrors.value.length > 0){
@@ -242,6 +246,7 @@
                         }
                         
                     }  
+                }
              }else{
 
                 for(let i = 0; i < filesref.value.length; i++){
