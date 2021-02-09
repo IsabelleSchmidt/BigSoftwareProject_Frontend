@@ -8,21 +8,23 @@ import '@/service/Product'
 
 const state = reactive({
   list: Array<Product>(),
+  roomtypes:  {} as Map<string,string>,
+  producttypes: {} as Map<string,string>
 })
 
 async function update(): Promise<void> {
   const productlist = new Array<Product>();
-  fetch(`/api/products`, {
+ await fetch(`/api/product/products`, {
     method: 'GET'
   })
     .then((response) => {
       if (!response.ok) {
         return productlist;
       }
-
+     
       return response.json();
     })
-    .then((jsondata: Array<Product>) => {
+    .then((jsondata: Array<Product>) => { 
       for (let i = 0; i < jsondata.length; i++) {
         productlist.push(jsondata[i]);
       }
@@ -61,6 +63,46 @@ function getHightPrice(){
   return highest.value;
 
 }
+
+async function getAllProductTypes(){
+  console.log("GET ALL PRODUCTTYPES");
+  await fetch('/api/product/all/producttypes', {method: 'GET'})
+    .then((response) =>{
+      if(!response.ok){
+        console.log("FEHLER BEIM HOLEN DER PRODUKTTYPEN");
+      }
+      else{
+        return response.json();
+      }
+
+  }).then((jsondata: Map<string,string>) =>{
+   state.producttypes = jsondata;
+
+    
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+async function getAllRoomTypes(){
+  console.log("GET ALL ROOMTYPES");
+ await fetch('/api/product/all/roomtypes', {method: 'GET'})
+  .then((response) =>{
+    if(!response.ok){
+      console.log("FEHLER BEIM HOLEN DER RAUMTYPEN");
+    }
+    else{
+      return response.json();
+    }
+
+}).then((jsondata: Map<string,string>) =>{
+  state.roomtypes = jsondata;
+ 
+
+}).catch((error) => {
+  console.log(error);
+});
+}
     
 
 export function useProduct() {
@@ -71,6 +113,12 @@ export function useProduct() {
     update,
     getProductByArtNr,
     getAvailableByArtNr,
-    getHightPrice
+    getHightPrice,
+    getAllProductTypes,
+    getAllRoomTypes,
+    allproducttypes: computed(() => state.producttypes),
+    allroomtypes: computed(()=> state.roomtypes),
+    roomkeys: computed(()=> Object.keys(state.roomtypes)),
+    productkeys: computed(()=> Object.keys(state.producttypes))
   }
 }

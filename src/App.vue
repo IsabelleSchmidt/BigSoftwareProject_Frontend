@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="content">
-    <Navbar />
+    <Navbar  />
     <router-view/>
     </div>
     <div id="footer">
@@ -15,12 +15,20 @@
 <script>
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
+import {useProduct} from './service/ProductStore'
+import {onMounted} from 'vue';
 
 export default {
   components: {
     Navbar,
     Footer,
-  },
+  },setup(){
+    const {getAllProductTypes, allproducttypes, allroomtypes ,getAllRoomTypes} = useProduct();
+     onMounted(async ()=>{
+        await getAllProductTypes();
+        await getAllRoomTypes(); 
+      });
+  }
 };
 </script>
 
