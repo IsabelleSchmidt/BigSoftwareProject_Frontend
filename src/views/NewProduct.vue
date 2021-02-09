@@ -48,7 +48,7 @@
             </div>
 
             <div class="row">
-                <div class="col1"><label for="tag">Frabe</label></div>
+                <div class="col1"><label for="tag">Schlagwort/Tag</label></div>
                 <div class="col2"><select name="tag" v-model="tag" id="tag" @change="tagChange($event.target.value)">
                                     <option v-for="item in alltags" :value="[item.id,item.value,]" :key="item.id">{{item.value}}</option>
                                 </select>

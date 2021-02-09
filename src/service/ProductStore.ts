@@ -22,7 +22,7 @@ export let articlenr: number;
 
 async function getAllTags() {
   const taglist = new Array<Tag>();
-  fetch(`/api/tags`,{method:'GET'})
+  fetch(`/api/product/tags`,{method:'GET'})
   .then((response)=>{
     if(!response.ok){
       return taglist;
