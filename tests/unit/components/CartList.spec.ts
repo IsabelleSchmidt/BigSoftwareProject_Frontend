@@ -20,7 +20,7 @@ describe('Test CartList.vue', () => {
     test('find out if Component CartListobject exists ', () => {
 	
         const wrapper = shallowMount(CartList)
-       // wrapper.findComponent({ components: 'CartListObject' }) // returns a VueWrapper
+        wrapper.findComponent({ name: 'CartListObject' }) // returns a VueWrapper
         wrapper.findComponent(CartListObject) // returns a VueWrapper
 	
         expect(() => wrapper.getComponent('.not-there')).toThrowError()

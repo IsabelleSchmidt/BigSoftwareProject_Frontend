@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product.vue test Snapshot test 1`] = `
+<div class="product">
+  <!-- <button @click="toggle()">Toggle</button> -->
+  <comp-products-stub productobject="[object Object]"></comp-products-stub>
+</div>
+`;
+
+exports[`Product.vue test Snapshot test 2`] = `
+VueWrapper {
+  "__app": Object {
+    "_component": Object {
+      "__emits": Object {},
+      "__props": Array [
+        Object {},
+        Array [],
+      ],
+      "name": "VTU_ROOT",
+      "render": [Function],
+    },
+    "_container": <div
+      data-v-app=""
+    >
+      <div
+        class="product"
+      >
+        <!-- &lt;button @click="toggle()"&gt;Toggle&lt;/button&gt; -->
+        <comp-products-stub
+          productobject="[object Object]"
+        />
+      </div>
+    </div>,
+    "_context": Object {
+      "app": [Circular],
+      "components": Object {
+        "transition": Object {
+          "name": "transition",
+          "props": Object {},
+          "render": [Function],
+        },
+        "transition-group": Object {
+          "name": "transition-group",
+          "props": Object {},
+          "render": [Function],
+        },
+      },
+      "config": Object {
+        "errorHandler": undefined,
+        "globalProperties": Object {},
+        "isCustomElement": [Function],
+        "isNativeTag": [Function],
+        "optionMergeStrategies": Object {},
+        "performance": false,
+        "warnHandler": undefined,
+      },
+      "directives": Object {},
+      "mixins": Array [
+        Object {
+          "__emits": null,
+          "__props": Array [],
+          "beforeCreate": [Function],
+        },
+        Object {
+          "__emits": null,
+          "__props": Array [],
+          "beforeCreate": [Function],
+        },
+      ],
+      "provides": Object {},
+      "reload": [Function],
+    },
+    "_props": null,
+    "_uid": 0,
+    "component": [Function],
+    "config": Object {
+      "errorHandler": undefined,
+      "globalProperties": Object {},
+      "isCustomElement": [Function],
+      "isNativeTag": [Function],
+      "optionMergeStrategies": Object {},
+      "performance": false,
+      "warnHandler": undefined,
+    },
+    "directive": [Function],
+    "mixin": [Function],
+    "mount": [Function],
+    "provide": [Function],
+    "unmount": [Function],
+    "use": [Function],
+    "version": "3.0.5",
+  },
+  "__setProps": [Function],
+  "componentVM": Object {
+    "__emitted": Object {},
+    "changeComp": [Function],
+    "component": "CompProduct",
+    "compref": "CompProduct",
+    "prodref": Object {
+      "allPictures": Array [],
+      "allTags": Array [],
+      "articlenr": 0,
+      "available": 0,
+      "depth": 0,
+      "description": "",
+      "height": 0,
+      "information": "",
+      "name": "",
+      "price": 0,
+      "productType": "",
+      "roomType": "",
+      "version": 0,
+      "width": 0,
+    },
+    "toggle": [Function],
+  },
+  "rootVM": Object {
+    "__emitted": Object {},
+  },
+}
+`;

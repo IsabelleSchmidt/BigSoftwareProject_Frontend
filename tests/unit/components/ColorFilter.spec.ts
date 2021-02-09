@@ -6,37 +6,19 @@ import { shallowMount } from "@vue/test-utils"
 
 import ColorFilter from "@/components/ColorFilter.vue"
 
-
 describe('Colorfilter test', () => {
-
+    
     const cmp = shallowMount(ColorFilter)
-
-    beforeEach(() => {
-        
-    })
-
-    test('', () => {
-        const $event = {
-
-            target: {
-                value : () => { 'grey' }
-            }
-        }
-        
-    })
-
+    
     
     test('trigger demo', async () => {
+        
         const checked = cmp.find('checked')
-        checked.element. = "grey"
+        checked.element.textContent = "grey"
         checked.trigger('change')
 
   
         await cmp.trigger('change')
-  
-        // await cmp.trigger('change', {
-        //     value: "grey"
-        // })
 
         expect(checked).toBeCalledWith('grey')
     })

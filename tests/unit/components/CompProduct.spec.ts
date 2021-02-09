@@ -1,24 +1,27 @@
-import CompProduct from "@/components/CompProduct.vue"
 import { shallowMount, mount } from "@vue/test-utils"
+
+import CompProduct from "@/components/CompProduct.vue"
 
 describe('CompProduct.vue test', () => {
 
-    const cmp = mount(CompProduct)
+    const cmp = CompProduct
 
-    test('test messagempty',() => {
-        const messageEmpty = "Empty"
-        const wrapper = mount(CompProduct,{
-        props: {
-            msg: messageEmpty
-        }
-        })
-
-        expect(wrapper.find("h4").text()).toBe("Empty")
+    test('if expected html structur', () => {
+        expect(cmp.element).toMatchSnapshot()
     })
 
+    // test('stubs a component using a custom component, component CartList is mentioned right in html', () => {
 
-    // test('Snapshot test', () => {
-    //     expect(cmp.html()).toMatchSnapshot()
-    //     //expect(cmp).toMatchSnapshot()
+    //     const ProductFilterMock = {	
+    //         name: 'ProductFilter',
+    //         template: 'fakeProductFilter'
+    //     }
+    //     const wrapper = mount(CompProduct, {
+    //         global: {
+    //         stubs: { CartList: ProductFilterMock }
+    //         }
+    //     }) 
+    //     expect(wrapper.html()).toContain(`<div class="productFilter"><fakeProductFilter/></div>`) 
     // })
+      
 })

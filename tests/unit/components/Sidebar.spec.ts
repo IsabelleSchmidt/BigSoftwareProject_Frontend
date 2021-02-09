@@ -8,7 +8,7 @@ describe('Sidebar.vue Test', () => {
 
     test('If the HTML structur is right (snapshot test)', () => {
         expect(cmp.html()).toMatchSnapshot()
-        expect(cmp).toMatchSnapshot()
+        // expect(cmp).toMatchSnapshot()
     })
 
     test('If HTML contains product and rooms', () => {
