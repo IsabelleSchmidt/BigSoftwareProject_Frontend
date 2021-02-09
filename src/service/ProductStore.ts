@@ -20,27 +20,6 @@ const state = reactive({
 
 export let articlenr: number;
 
-async function getAllTags() {
-  const taglist = new Array<Tag>();
-  fetch(`/api/product/tags`,{method:'GET'})
-  .then((response)=>{
-    if(!response.ok){
-      return taglist;
-    }
-    return response.json();
-  })
-  .then((jsondata: Array<Tag>)=>{
-    for (let i = 0; i < jsondata.length; i++) {
-      taglist.push(jsondata[i]);
-    }
-    state.tags = taglist
-    console.log("TAAAGS",state.tags)
-  })
-  .catch((fehler)=>{
-    console.log(fehler)
-  })
-}
-
 async function update(): Promise<void> {
   const productlist = new Array<Product>();
  await fetch(`/api/product/products`, {
@@ -56,15 +35,8 @@ async function update(): Promise<void> {
     .then((jsondata: Array<Product>) => { 
       for (let i = 0; i < jsondata.length; i++) {
         productlist.push(jsondata[i]);
-        // for(let j = 0; j <jsondata[i]['allTags'].length;j++)
-        // if(!taglist.has(jsondata[i]['allTags'][j])){
-        //   taglist.add(jsondata[i]['allTags'][j])
-        // }
-        
       }
       state.list = productlist;
-      // console.log('TAGGGGS',taglist)
-
     })
     .catch((fehler) => {
       console.log(fehler);
@@ -112,7 +84,7 @@ async function getAllProductTypes(){
       }
 
   }).then((jsondata: Map<string,string>) =>{
-   state.producttypes = jsondata;
+    state.producttypes = jsondata;
 
     
   }).catch((error) => {
@@ -140,6 +112,27 @@ async function getAllRoomTypes(){
 });
 }
     
+async function getAllTags() {
+  const taglist = new Array<Tag>();
+  fetch(`/api/product/tags`,{method:'GET'})
+  .then((response)=>{
+    if(!response.ok){
+      return taglist;
+    }
+    return response.json();
+  })
+  .then((jsondata: Array<Tag>)=>{
+    for (let i = 0; i < jsondata.length; i++) {
+      taglist.push(jsondata[i]);
+    }
+    state.tags = taglist
+  })
+  .catch((fehler)=>{
+    console.log(fehler)
+  })
+}
+
+
 async function sendProduct(newProduct: Product): Promise<void> {
   articlenr = -1;
   console.log(" Sende Produkt mit Namen: " + newProduct.name + " an backend.")
@@ -210,7 +203,6 @@ async function sendPicture(formData: FormData, articlenr: number) {
       .catch((fehler) => {
         console.log(fehler);
       });
-    //Bilderliste abschicken
   }
   return wassuccessful;
 }
