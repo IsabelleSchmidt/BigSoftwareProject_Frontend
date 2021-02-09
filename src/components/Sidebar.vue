@@ -35,7 +35,6 @@
 import Vue from 'vue'
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useProduct} from '../service/ProductStore';
-import TypeLink from '../components/TypeLink.vue';
 
 export default {
     name: "sidebar",
