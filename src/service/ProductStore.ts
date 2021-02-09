@@ -46,26 +46,25 @@ async function update(): Promise<void> {
 
 
 function getProductByArtNr(nr: number) {
-  for (let i = 0; i < state.list.length; i++) {
-    if (state.list[i].articlenr == nr) {
-      return state.list[i];
+  for(const product of state.list){
+    if (product.articlenr == nr) {
+      return product;
     }
   }
 }
 
 function getAvailableByArtNr(nr: number) {
-  for (let i = 0; i < state.list.length; i++) {
-    if (state.list[i].articlenr == nr) {
-      return state.list[i].available;
+  for(const product of state.list){
+    if (product.articlenr == nr) {
+      return product.available;
     }
   }
 }
 function getHightPrice() {
   const highest = ref(0);
-  for (let i = 0; i < state.list.length; i++) {
-    if (highest.value < state.list[i].price) {
-      highest.value = state.list[i].price;
-
+  for(const product of state.list){
+    if (highest.value < product.price) {
+      highest.value = product.price;
     }
   }
   return highest.value;
