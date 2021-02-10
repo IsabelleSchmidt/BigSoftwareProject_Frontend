@@ -40,6 +40,7 @@
                 <div class="col2"><select name="tag" v-model="tag" id="tag" @change="tagChange($event.target.value)">
                                     <option v-for="item in alltags" :value="[item.id,item.value,]" :key="item.id">{{item.value}}</option>
                                 </select>
+                                <div class="col2"><p v-for="(tag,i) in allSelectTagsRef" :key="tag.value">{{tag.value}} <img src="@/assets/trash.png" id="trash" alt="trash" @click="deleteTag(i)"></p></div>
                 </div>
             </div>
         
@@ -103,6 +104,8 @@
         const {sendProduct, validationerrors} = postProduct();
         const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys} = useProduct();
         getAllTags()
+        const allSelectTags = Array<Tag>();
+        const allSelectTagsRef = ref(allSelectTags);
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -124,8 +127,13 @@
                 id: Number(event.split(",")[0]),
                 value: event.split(",")[1],
             }
-            console.log("TAG",t)
-            product.allTags.push({id: t.id, value: t.value});
+            // if(allSelectTagsRef.value.length == 0){
+            //     allSelectTagsRef.value.push(t);
+            // }else{
+
+            // }
+            allSelectTagsRef.value.push({id: t.id, value: t.value});
+            console.log(allSelectTagsRef.value)
         }
 
         async function sendeProd(): Promise<void>{
@@ -149,6 +157,7 @@
             product.height = height.value;
             product.depth = depth.value;
             product.available = available.value;
+            product.allTags = allSelectTagsRef.value;
             console.log('ProduuuukT:',product);
 
             formData.delete("picture")
@@ -276,8 +285,13 @@
             console.log(filesref.value);
         }
 
+        function deleteTag(index: number): void{
+            allSelectTagsRef.value.splice(index,1);
+            console.log(allSelectTagsRef.value)
+        }
 
-        return {roomkeys,productkeys,allroomtypes,allproducttypes,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
+
+        return {allSelectTagsRef,deleteTag,roomkeys,productkeys,allroomtypes,allproducttypes,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
