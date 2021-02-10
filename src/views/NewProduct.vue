@@ -12,13 +12,7 @@
             <div class="row">
                 <div class="col1"><label for="productType">Produktart</label></div>
                 <div class="col2"><select v-model="productType" id="productType" name="productType" placeholder="Produktart">
-                                    <option value="PLANT">Pflanze</option>
-                                    <option value="TABLE">Tisch</option>
-                                    <option value="CHAIR">Stuhl</option>
-                                    <option value="BED">Bett</option>
-                                    <option value="DECORATION">Dekoration</option>
-                                    <option value="CLOSET">Schrank/Kommode</option>
-                                    <option value="COUCH">Sofa/Couch</option>
+                                    <option v-for="productkey in productkeys" :value="productkey" :key="productkey">{{allproducttypes[productkey]}}</option>
                                 </select>
                     <div class="error" v-if="producterror.length>0"> {{producterror}} </div></div>
             </div>
@@ -26,15 +20,9 @@
             <div class="row">
                 <div class="col1"><label for="roomType" >Raumart</label></div>
                 <div class="col2"><select type="text" v-model="roomType" id="roomType" placeholder="Raumart">
-                                    <option value="BATHROOM">Bad</option>
-                                    <option value="BEDROOM">Schlafzimmer</option>
-                                    <option value="KITCHEN">Küche</option>
-                                    <option value="LIVINGROOM">Wohnzimmer</option>
-                                    <option value="DININGROOM">Esszimmer</option>
-                                    <option value="BUREAU">Arbeitszimmer</option>
-                                    <option value="ALL">kein passender Raum</option>
+                                    <option v-for="roomkey in roomkeys" :value="roomkey" :key="roomkey">{{allroomtypes[roomkey]}}</option>
                                 </select>
-                    <div class="error" v-if="roomerror.length>0">{{roomType}} {{roomerror}} </div></div>
+                    <div class="error" v-if="roomerror.length>0">{{roomerror}} </div></div>
             </div>
 
             <div class="row">
@@ -83,11 +71,6 @@
 </template>
 
 <script lang="ts">
-//Bilder als Liste von Picture uebergeben, Product ohne Bilder -> wird im Backend zsmgefuegt 
-//Produktinfos auslesen, store ans backend uebergeben
-//auf antwort warten
-//Bild (erstmal eins nach dem anderen) nach antwort(wir brauchen die neue produkt id) an POST api/product/{articleNr}/newpicture senden und picturename: String
-//mitgeben: speicherort und dateiname zB. /chairs/chair9.jpg
   import {postProduct,postPictures,articlenr,useProduct} from '../service/ProductStore'
   import {useFilterStore} from '../service/FilterStore'
   import '../service/Picture'
@@ -119,9 +102,8 @@
         const picturename = ref("");
         const tag = ref(Object);
         const {sendProduct, validationerrors} = postProduct();
-        const {alltags,getAllTags} = useProduct();
+        const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys} = useProduct();
         getAllTags()
-        console.log("LIST",alltags)
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -168,7 +150,6 @@
             product.height = height.value;
             product.depth = depth.value;
             product.available = available.value;
-            tag.value
             console.log('ProduuuukT:',product);
 
             formData.delete("picture")
@@ -301,7 +282,7 @@
         }
 
 
-        return {tagerror,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
+        return {roomkeys,productkeys,allroomtypes,allproducttypes,tagerror,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>

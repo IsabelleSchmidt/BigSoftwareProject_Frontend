@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sidebar.vue Test If the HTML structur is right 1`] = `
+exports[`Sidebar.vue Test If the HTML structur is right (snapshot test) 1`] = `
 <div class="sidebar">
   <h4>Produkte</h4>
   <ul>
