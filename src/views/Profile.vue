@@ -129,8 +129,8 @@ export default defineComponent({
     }
 
     function logout(){
-      console.log("USER: " + JSON.stringify(jwttokens.value));
       if (jwttokens.value.length > 0) {
+          logoutUser();
           loggoutmessage.value = "";
           router.push("/");
       } else {
