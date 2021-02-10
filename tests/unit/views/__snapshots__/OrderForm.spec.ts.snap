@@ -74,7 +74,7 @@ exports[`Orderform.vue test HTML + structur snapshot test 1`] = `
       </div>
     </div>
   </form>
-  <h2>Vorausichtliches Lieferdatum: 12.2.2021</h2>
+  <h2>Vorausichtliches Lieferdatum: 13.2.2021</h2>
   <div class="error"></div>
   <div class="error"></div>
   <div class="row"></div>
@@ -472,7 +472,7 @@ VueWrapper {
           </div>
         </form>
         <h2>
-          Vorausichtliches Lieferdatum: 12.2.2021
+          Vorausichtliches Lieferdatum: 13.2.2021
         </h2>
         <div
           class="error"
@@ -589,7 +589,7 @@ VueWrapper {
     "dateOfExpiryMonth": 1,
     "dateOfExpiryYear": 2021,
     "dateofexpiryerror": "",
-    "deliveryDate": "12.2.2021",
+    "deliveryDate": "13.2.2021",
     "houseNumber": "",
     "housenumbererror": "",
     "iban": "",
