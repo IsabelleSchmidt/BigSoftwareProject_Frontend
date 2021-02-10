@@ -89,6 +89,9 @@
           </select>
         </div>
       </div>
+      <div class="row" id="but" v-if="edit.length>0">
+        <router-link to="/newProduct"><button id="newProduct">Neus Produkt anlegen</button></router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -104,7 +107,7 @@ export default defineComponent({
 
   setup() {
     const { getUser, user, adresses, bankcards, creditcards, jwttokens } = useUserStore();
-    const { logoutUser, errormessage } = getLogoutUser();
+    const { logoutUser, errormessages } = getLogoutUser();
 
     //user
     const email = ref("");
@@ -113,6 +116,7 @@ export default defineComponent({
     const birthdate = ref(new Date());
     const router = useRouter();
     const loggoutmessage = ref("");
+    const edit = ref("");
 
     function userInformation() {
       //FirstName
@@ -126,15 +130,23 @@ export default defineComponent({
 
       //Geburtstag
       birthdate.value = user.value[0].birthdate;
+
+      for(const role in user.value[0].roles){
+        if(user.value[0].roles[role].name === "WAREHOUSE"|| user.value[0].roles[role].name ==="ADMIN"||user.value[0].roles[role].name==="STUFF"){
+          edit.value = "true";
+        }
+      }
     }
 
-    function logout(){
-      console.log("USER: " + JSON.stringify(jwttokens.value));
-      if (jwttokens.value.length > 0) {
+
+    async function logout(){
+      await logoutUser();
+      console.log("FEHLER: " + errormessages.value);
+      if (errormessages.value.length <= 0) {
           loggoutmessage.value = "";
           router.push("/");
       } else {
-        loggoutmessage.value = "Bitte vor dem Ausloggen einloggen!";
+        loggoutmessage.value = "Fehler beim Ausloggen. Bitte loggen Sie sich zunächst ein.";
       }
     }
 
@@ -158,13 +170,20 @@ export default defineComponent({
       bankcards,
       creditcards,
       logout,
-      loggoutmessage
+      loggoutmessage,
+      edit
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+#but{
+  margin-top: 4%;
+}
+#newProduct{
+   padding: 1% 5%;
+}
 form {
   margin: 5% 0% 15% 35%;
 }

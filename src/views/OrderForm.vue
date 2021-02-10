@@ -224,11 +224,9 @@ export default defineComponent({
     //creditcard
     const creditcardOwner = ref("");
     const creditcardnumber = ref("");
-    const dateOfExpiryMonth = ref(1);
-    const dateOfExpiryYear = ref(2021);
-    const dateOfExpiry = ref(
-      new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1)
-    );
+    const dateOfExpiryMonth = ref(Number(1))
+    const dateOfExpiryYear = ref(Number(2021));
+    let dateOfExpiry;
 
     //errors
     const streetnameerror = ref("");
@@ -298,11 +296,15 @@ export default defineComponent({
           owner: bankcardOwner.value,
           bank: bank.value,
         };
+
+        dateOfExpiry = new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1);
+        
         const cc: Creditcard = {
           cowner: creditcardOwner.value,
           creditcardnumber: creditcardnumber.value,
-          dateOfExpiry: dateOfExpiry.value,
+          dateOfExpiry: dateOfExpiry,
         };
+
         const uor: UserOrderRequest = {
           adress: adr,
           bankCard: bc,

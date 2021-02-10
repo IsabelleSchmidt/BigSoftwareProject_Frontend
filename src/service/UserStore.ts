@@ -69,12 +69,13 @@ async function logoutUser(){
         "Authorization" : "Bearer " + token.accessToken},
     }).then((response) =>{
         if(!response.ok){
-            state.errormessage = "Logout not successful.";
             throw new Error(state.errormessage);
         }
         state.jwttokens = new Array<JwtToken>();
         return response.json();
-        
+    }).then((jsondata: Array<MessageResponse>) => {
+        console.log("ERRORMESSAGES: " + JSON.stringify(jsondata));
+        state.errormessages = jsondata;
     }).catch((error) => {
         console.log(JSON.stringify(error));
     });
@@ -185,7 +186,7 @@ export function postLoginUser() {
 
 export function getLogoutUser() {
     return {
-        errormessage: computed(() => state.errormessage),
+        errormessages: computed(() => state.errormessage),
         jwttokens: computed(() => state.jwttokens),
         logoutUser
     }
