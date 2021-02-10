@@ -104,7 +104,7 @@ export default defineComponent({
 
   setup() {
     const { getUser, user, adresses, bankcards, creditcards, jwttokens } = useUserStore();
-    const { logoutUser, errormessage } = getLogoutUser();
+    const { logoutUser, errormessages } = getLogoutUser();
 
     //user
     const email = ref("");
@@ -128,13 +128,14 @@ export default defineComponent({
       birthdate.value = user.value[0].birthdate;
     }
 
-    function logout(){
-      if (jwttokens.value.length > 0) {
-          logoutUser();
+    async function logout(){
+      await logoutUser();
+      console.log("FEHLER: " + errormessages.value);
+      if (errormessages.value.length <= 0) {
           loggoutmessage.value = "";
           router.push("/");
       } else {
-        loggoutmessage.value = "Bitte vor dem Ausloggen einloggen!";
+        loggoutmessage.value = "Fehler beim Ausloggen. Bitte loggen Sie sich zunächst ein.";
       }
     }
 

@@ -74,7 +74,8 @@ async function logoutUser(){
         }
         state.jwttokens = new Array<JwtToken>();
         return response.json();
-        
+    }).then((jsondata: Array<MessageResponse>) => {
+        state.errormessages = jsondata;
     }).catch((error) => {
         console.log(JSON.stringify(error));
     });
@@ -185,7 +186,7 @@ export function postLoginUser() {
 
 export function getLogoutUser() {
     return {
-        errormessage: computed(() => state.errormessage),
+        errormessages: computed(() => state.errormessage),
         jwttokens: computed(() => state.jwttokens),
         logoutUser
     }
