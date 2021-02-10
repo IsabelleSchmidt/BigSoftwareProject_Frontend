@@ -4,8 +4,9 @@
       <h1>Dein Profil</h1>
     </div>
     <form @submit.prevent="logout()">
-      <div class="row"> 
-         <input id="logout" type="submit" name="logoutUser" value="Logout"/>
+      <div class="row">
+        <input id="logout" type="submit" name="logoutUser" value="Logout" />
+        <div v-if="loggoutmessage.length > 0">{{loggoutmessage}} </div>
       </div>
       <div class="row">
         <div class="col1">
@@ -52,18 +53,14 @@
         </div>
       </div>
       <div class="row">
-      <div class="col1">
+        <div class="col1">
           <label for="bankcard" class="left">Bankkarten</label>
         </div>
         <div class="col2">
           <select v-model="selectedbankcard" name="bankcard">
             <option
               v-for="item in bankcards"
-              :value="[
-                item.iban,
-                item.bankcardOwner,
-                item.bank,
-              ]"
+              :value="[item.iban, item.bankcardOwner, item.bank]"
               :key="item.id"
             >
               {{ item.bank }}, {{ item.iban }}, {{ item.owner }}
@@ -86,7 +83,8 @@
               ]"
               :key="item.id"
             >
-              {{ item.cowner }}, {{ item.creditcardnumber }}, {{ item.dateOfExpiry }}
+              {{ item.cowner }}, {{ item.creditcardnumber }},
+              {{ item.dateOfExpiry }}
             </option>
           </select>
         </div>
@@ -96,17 +94,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import { useUserStore, getLogoutUser } from "../service/UserStore";
 import "../service/User";
-import { useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Profile",
 
   setup() {
-    const { getUser, user, adresses, bankcards, creditcards } = useUserStore();
-    const {logoutUser, errormessage} = getLogoutUser();
+    const { getUser, user, adresses, bankcards, creditcards, jwttokens } = useUserStore();
+    const { logoutUser, errormessage } = getLogoutUser();
 
     //user
     const email = ref("");
@@ -114,9 +112,9 @@ export default defineComponent({
     const lastName = ref("");
     const birthdate = ref(new Date());
     const router = useRouter();
+    const loggoutmessage = ref("");
 
-    function userInformation() { 
-
+    function userInformation() {
       //FirstName
       firstName.value = user.value[0].firstName;
 
@@ -128,22 +126,26 @@ export default defineComponent({
 
       //Geburtstag
       birthdate.value = user.value[0].birthdate;
-
     }
 
-    async function logout(): Promise<void>{
-      await logoutUser();
-
-      if(errormessage.value.length > 0 ){
-        console.log("Loggout not successful.");
-      }else{
-        router.push("/");
+    function logout(){
+      console.log("USER: " + JSON.stringify(jwttokens.value));
+      if (jwttokens.value.length > 0) {
+          loggoutmessage.value = "";
+          router.push("/");
+      } else {
+        loggoutmessage.value = "Bitte vor dem Ausloggen einloggen!";
       }
     }
 
     onMounted(async () => {
-      await getUser();
-      userInformation();
+      if(jwttokens.value.length > 0){
+        await getUser();
+        userInformation();
+      }else{
+        router.push("/profile/login");
+      }
+      
     });
 
     return {
@@ -153,9 +155,10 @@ export default defineComponent({
       email,
       adresses,
       userInformation,
-      bankcards, 
+      bankcards,
       creditcards,
-      logout
+      logout,
+      loggoutmessage
     };
   },
 });
@@ -193,10 +196,9 @@ label {
   text-align: center;
 }
 
-#logout{
+#logout {
   margin: -4% 10% 0% 0%;
   float: right;
-  padding: .5% 2%;
+  padding: 0.5% 2%;
 }
-
 </style>
