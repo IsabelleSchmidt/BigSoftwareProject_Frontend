@@ -40,7 +40,6 @@
                 <div class="col2"><select name="tag" v-model="tag" id="tag" @change="tagChange($event.target.value)">
                                     <option v-for="item in alltags" :value="[item.id,item.value,]" :key="item.id">{{item.value}}</option>
                                 </select>
-                                <div class="error" v-if="tagerror.length>0"> {{tagerror}} </div>
                 </div>
             </div>
         
@@ -113,7 +112,7 @@
         const priceerror = ref("");
         const sizeerror = ref("");
         const picerror = ref("");
-        const tagerror = ref("");
+
 
         let picSucsess = true
         
@@ -138,7 +137,7 @@
             infoerror.value = "";
             descriptionerror.value = "";
             picerror.value = "";
-            tagerror.value = "";
+
             console.log("Naaame",name.value);
             product.name = name.value;
             productType.value == "" ? producterror.value = "Bitte wähle einen Produkttypen aus.": product.productType = productType.value;
@@ -188,10 +187,6 @@
                             if(error.field == "picture"){
                                 picerror.value = error.message;
                             }
-                            if(error.field == "tag"){
-                                tagerror.value = error.message
-                            }
-                        
                         }
                     }else{
                         console.log("ohne errors")
@@ -282,7 +277,7 @@
         }
 
 
-        return {roomkeys,productkeys,allroomtypes,allproducttypes,tagerror,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
+        return {roomkeys,productkeys,allroomtypes,allproducttypes,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>
