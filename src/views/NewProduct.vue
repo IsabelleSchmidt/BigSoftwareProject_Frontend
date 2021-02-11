@@ -40,7 +40,7 @@
                 <div class="col2"><select name="tag" v-model="tag" id="tag" @change="tagChange($event.target.value)">
                                     <option v-for="item in alltags" :value="[item.id,item.value,]" :key="item.id">{{item.value}}</option>
                                 </select>
-                                <div class="error" v-if="tagerror.length>0"> {{tagerror}} </div>
+                                <div class="col2"><p v-for="(tag,i) in allSelectTagsRef" :key="tag.value">{{tag.value}} <img src="@/assets/trash.png" id="trash" alt="trash" @click="deleteTag(i)"></p></div>
                 </div>
             </div>
         
@@ -104,6 +104,8 @@
         const {sendProduct, validationerrors} = postProduct();
         const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys} = useProduct();
         getAllTags()
+        const allSelectTags = Array<Tag>();
+        const allSelectTagsRef = ref(allSelectTags);
         
         const nameerror = ref("");
         const producterror = ref("");
@@ -113,7 +115,7 @@
         const priceerror = ref("");
         const sizeerror = ref("");
         const picerror = ref("");
-        const tagerror = ref("");
+
 
         let picSucsess = true
         
@@ -125,8 +127,13 @@
                 id: Number(event.split(",")[0]),
                 value: event.split(",")[1],
             }
-            console.log("TAG",t)
-            product.allTags.push({id: t.id, value: t.value});
+            // if(allSelectTagsRef.value.length == 0){
+            //     allSelectTagsRef.value.push(t);
+            // }else{
+
+            // }
+            allSelectTagsRef.value.push({id: t.id, value: t.value});
+            console.log(allSelectTagsRef.value)
         }
 
         async function sendeProd(): Promise<void>{
@@ -138,7 +145,7 @@
             infoerror.value = "";
             descriptionerror.value = "";
             picerror.value = "";
-            tagerror.value = "";
+
             console.log("Naaame",name.value);
             product.name = name.value;
             productType.value == "" ? producterror.value = "Bitte wähle einen Produkttypen aus.": product.productType = productType.value;
@@ -150,6 +157,7 @@
             product.height = height.value;
             product.depth = depth.value;
             product.available = available.value;
+            product.allTags = allSelectTagsRef.value;
             console.log('ProduuuukT:',product);
 
             formData.delete("picture")
@@ -188,10 +196,6 @@
                             if(error.field == "picture"){
                                 picerror.value = error.message;
                             }
-                            if(error.field == "tag"){
-                                tagerror.value = error.message
-                            }
-                        
                         }
                     }else{
                         console.log("ohne errors")
@@ -281,8 +285,13 @@
             console.log(filesref.value);
         }
 
+        function deleteTag(index: number): void{
+            allSelectTagsRef.value.splice(index,1);
+            console.log(allSelectTagsRef.value)
+        }
 
-        return {roomkeys,productkeys,allroomtypes,allproducttypes,tagerror,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
+
+        return {allSelectTagsRef,deleteTag,roomkeys,productkeys,allroomtypes,allproducttypes,tagChange,alltags,tag,picerror,deleteFile,sizeerror,nameerror,producterror,roomerror,infoerror,descriptionerror,priceerror,sendPicture,validationerrors,sendeProd,product,name,roomType,productType,information,description,available,width,height,depth,price,picturename,onFileChange,filesref};
         }
    });
 </script>

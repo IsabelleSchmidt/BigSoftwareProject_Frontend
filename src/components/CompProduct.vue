@@ -128,7 +128,7 @@ export default defineComponent({
                 const zwlist = ref(merklist);
                 const zw = ref(Array<Product>());
                 for(let i = 0; i< colorArray.value.length; i++){
-                    zwlist.value = gesamt.filter(p=> p.allTags[0].value === colorArray.value[i]);
+                    zwlist.value = gesamt.filter(p=> p.allTags[0] && p.allTags[0].value === colorArray.value[i]);
                     for(let x = 0; x<zwlist.value.length; x++){
                         zw.value.push(zwlist.value[x]);
                     

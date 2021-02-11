@@ -1,4 +1,4 @@
-import { shallowMount, mount, VueWrapper } from "@vue/test-utils"
+import { shallowMount, mount, VueWrapper, RouterLinkStub } from "@vue/test-utils"
 	
 import Cart from "@/views/Cart.vue"
 import CartList from "@/views/Cart.vue"
@@ -35,7 +35,6 @@ describe('Test CartList.vue', () => {
 	
         const wrapper = shallowMount(Cart)
 	
-        wrapper.findComponent({ name: 'CartList' }) // returns a VueWrapper
         wrapper.findComponent(CartList) // returns a VueWrapper
 	
         expect(() => wrapper.getComponent('.not-there')).toThrowError()

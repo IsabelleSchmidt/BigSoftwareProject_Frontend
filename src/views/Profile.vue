@@ -89,6 +89,9 @@
           </select>
         </div>
       </div>
+      <div class="row" id="but" v-if="edit.length>0">
+        <router-link to="/newProduct"><button id="newProduct">Neus Produkt anlegen</button></router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -113,6 +116,7 @@ export default defineComponent({
     const birthdate = ref(new Date());
     const router = useRouter();
     const loggoutmessage = ref("");
+    const edit = ref("");
 
     function userInformation() {
       //FirstName
@@ -126,7 +130,14 @@ export default defineComponent({
 
       //Geburtstag
       birthdate.value = user.value[0].birthdate;
+
+      for(const role in user.value[0].roles){
+        if(user.value[0].roles[role].name === "WAREHOUSE"|| user.value[0].roles[role].name ==="ADMIN"||user.value[0].roles[role].name==="STUFF"){
+          edit.value = "true";
+        }
+      }
     }
+
 
     async function logout(){
       await logoutUser();
@@ -159,13 +170,20 @@ export default defineComponent({
       bankcards,
       creditcards,
       logout,
-      loggoutmessage
+      loggoutmessage,
+      edit
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+#but{
+  margin-top: 4%;
+}
+#newProduct{
+   padding: 1% 5%;
+}
 form {
   margin: 5% 0% 15% 35%;
 }

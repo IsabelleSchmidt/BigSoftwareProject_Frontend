@@ -9,52 +9,11 @@ exports[`Navbar.vue Test Has the expected HTML structure 1`] = `
     <ul>
       <li>
         <router-link to="[object Object]">Produkte</router-link>
-        <ul>
-          <li id="link">
-            <router-link to="[object Object]">Pflanzen</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Tische</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Stühle</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Betten</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Deko</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Sofa/Couch</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Schränke/Kommoden</router-link>
-          </li>
-        </ul>
+        <ul></ul>
       </li>
       <li>
         <router-link to="/rooms">Räume</router-link>
-        <ul>
-          <li id="link">
-            <router-link to="[object Object]">Bad</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Schlafzimmer</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Küche</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Wohnzimmer</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Esszimmer</router-link>
-          </li>
-          <li id="link">
-            <router-link to="[object Object]">Arbeitszimmer</router-link>
-          </li>
-        </ul>
+        <ul></ul>
       </li>
       <div class="navright">
         <li>
