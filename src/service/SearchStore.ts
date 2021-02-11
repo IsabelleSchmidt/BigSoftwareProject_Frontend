@@ -17,7 +17,6 @@ function setSearchactive(value: boolean){
 function clearSearch() {
     state.searchword = "";
     state.searchaktive = false;
-    console.log("clear");
 }
 
 export function useSearchStore() {
