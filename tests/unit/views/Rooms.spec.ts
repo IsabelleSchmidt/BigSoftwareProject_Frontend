@@ -19,9 +19,4 @@ describe('Rooms.vue test',() => {
         expect(wrapper.html()).toContain(`<div class=\"rooms\">fakeRoomList</div>`)
     })
 
-    test('if component roomlist exists',() => {
-        cmp.findComponent(RoomList) 
-	
-        expect(() => cmp.getComponent('.not-there')).toThrowError()
-    })
 })
