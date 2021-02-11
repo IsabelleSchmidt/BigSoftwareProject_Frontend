@@ -93,7 +93,6 @@
 
             const { getCartAmount } = useCartStore();
             const amount = computed(() => getCartAmount());
-            console.log("Raumtypen navbar: "+roomkeys);
 
             const searchinput = ref("");
 

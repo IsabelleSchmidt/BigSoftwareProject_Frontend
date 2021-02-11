@@ -1,7 +1,7 @@
 <template>
   <div class="compSingle">
     <div class="top">
-      <a @click="openproductlist()"> &laquo; zurück zur Übersicht</a>
+      <a id="link" @click="openproductlist()"> &laquo; zurück zur Übersicht</a>
     </div>
     <div class="top2">
       <div class="left">
@@ -82,7 +82,7 @@ import { defineComponent, computed, ref, PropType, onMounted, reactive } from "v
 
 import "@/service/Product";
 import { useCartStore } from "../service/CartStore";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
   name: "CompProducts",
@@ -105,6 +105,7 @@ export default defineComponent({
     const timer = ref();
 
     const router = useRouter();
+    const route = useRoute();
 
     const pavailable = computed(() => {
       return props.productObject.available;
@@ -118,6 +119,22 @@ export default defineComponent({
     function openproductlist(): void {
       context.emit("open-all");
     }
+
+    onMounted(async () => {
+      router.push({
+        path: "/product",
+        query: {
+          room: route.query.room,
+          productType: route.query.productType,
+          name: props.productObject.name,
+        },
+      });
+
+      //when back button in browser is pressed
+      window.onpopstate = function (event: any) {
+        openproductlist();
+      };
+    });
 
     function add(): void {
       const am = ref(getAmount(props.productObject.articlenr));
@@ -180,22 +197,6 @@ export default defineComponent({
     function amChange(am: number): void {
       amount.value = am;
     }
-
-    onMounted(async () => {
-      router.push({
-        path: "/product",
-        query: {
-          room: props.productObject.roomType,
-          productType: props.productObject.productType,
-          name: props.productObject.name,
-        },
-      });
-
-      //when back button in browser is pressed
-      window.onpopstate = function (event: any) {
-        openproductlist();
-      };
-    });
 
     const COLORS = ["red", "#FFBF00", "green"];
 
@@ -355,5 +356,14 @@ ul {
 }
 #am {
   margin-left: 10px;
+}
+#link {
+    text-decoration: none;
+    list-style: none;
+    list-style-type: none;
+    color: $color-green;
+    &:hover{
+        cursor: pointer;
+    } 
 }
 </style>

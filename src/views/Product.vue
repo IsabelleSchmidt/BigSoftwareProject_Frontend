@@ -37,13 +37,11 @@ export default defineComponent({
 
 
         onMounted(async () => {
-
             router.afterEach((to) => {
-                if (to.query.name === "none" && to.query.room === "all") {
+                if (to.query.name === "none") {
                     compref.value = COMPONENTS[0];
                 }
             })
-
         });
 
         function toggle(): void {

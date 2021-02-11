@@ -16,12 +16,10 @@ async function getCode(email: string){
         }
         return response.text();
     }).then((jsontext: string) => {
-        console.log("jsontext" + jsontext)
         code = jsontext;
     }).catch((fehler) => {
         console.log(fehler);
     });
-    console.log("CODE in fetch" + code);
     return code;
 }
 

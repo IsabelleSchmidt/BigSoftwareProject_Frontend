@@ -24,9 +24,8 @@ import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import { useFilterStore } from "../service/FilterStore";
 import { useSearchStore } from "../service/SearchStore"
-import { useLanguage } from "../service/Language";
 import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import '../service/Product'
 
 export default defineComponent({
@@ -41,6 +40,7 @@ export default defineComponent({
     setup(props, context){
         
         const route = useRoute();
+        const router = useRouter();
         const roomQuery = ref(route.query.room);
         const productTypeQuery = ref(route.query.productType);
         const nameQuery = ref(route.query.name);
@@ -48,14 +48,23 @@ export default defineComponent({
         const filter = reactive(queryObject);
 
         const { searchword, clearSearch } = useSearchStore();
-        const { allproductslist, update } = useProduct();
-        const { germanTranslation } = useLanguage();
+        const { allproductslist, update, state } = useProduct();
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
+
+            router.push({
+                path: "/product",
+                query: {
+                room: route.query.room,
+                productType: route.query.productType,
+                name: "none",
+                },
+            });
+            
             queryObject.room.value = route.query.room;
             queryObject.productType.value = route.query.productType;
-            queryObject.name.value = "none";
+            queryObject.name.value = route.query.name;
             await update();
         });
 
@@ -107,7 +116,7 @@ export default defineComponent({
             else if (filter.room === "all" && filter.productType !== "all") {
                 merklist = merklist.filter(p => p.productType === filter.productType?.toString());
             }
-           else{
+            else{
                 queryObject.room.value = route.query.room;
                 queryObject.productType.value = route.query.productType;
                 merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
@@ -150,13 +159,14 @@ export default defineComponent({
         }); 
 
         const searchproductList = computed(() => {
+
             if (sw.value != "") {
                 return productlist.value.filter(p => 
                                 p.name.toLowerCase().includes(sw.value.toLowerCase()) ||
                                 p.productType.toLowerCase() === (sw.value.toLowerCase()) ||
-                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.productType.toLowerCase()) ||
+                                sw.value.toLowerCase() === (state.producttypes as any)[p.productType]?.toLowerCase() ||
                                 p.roomType.toLowerCase() === (sw.value.toLowerCase()) ||
-                                germanTranslation.value.get(sw.value.toLowerCase())?.toLowerCase() === (p.roomType.toLowerCase())
+                                sw.value.toLowerCase() === (state.roomtypes as any)[p.roomType]?.toLowerCase()
                         );
             }
         });

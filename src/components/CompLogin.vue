@@ -83,7 +83,6 @@ export default defineComponent({
       loginRequest.password = password.value;
       const loginSuccess = await sendLogin(loginRequest);
       const path = route.fullPath;
-      console.log(path);
 
       if (loginSuccess && path.includes("cart")) {
         router.push("/orderform");

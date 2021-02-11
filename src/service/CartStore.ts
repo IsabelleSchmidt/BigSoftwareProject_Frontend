@@ -7,7 +7,6 @@ import { useProduct } from '@/service/ProductStore'
 
 const state = reactive({
     list: new Map<number, number>(),
-    // check : new Boolean(),
 })
 
 const total = ref(0);

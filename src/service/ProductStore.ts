@@ -1,5 +1,5 @@
 //import {Client} from '@stomp/stompjs'; //Message
-import { reactive, computed, ref } from 'vue'
+import { reactive, computed, ref, readonly } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
 import '@/service/Product'
@@ -12,8 +12,8 @@ import '@/service/Validationerror'
 
 const state = reactive({
   list: Array<Product>(),
-  roomtypes:  {} as Map<string,string>,
-  producttypes: {} as Map<string,string>,
+  roomtypes:  {},
+  producttypes: {},
   validationerrors: Array<Validationerror>(),
   tags: Array<Tag>()
 })
@@ -72,19 +72,18 @@ function getHightPrice() {
 }
 
 async function getAllProductTypes(){
-  console.log("GET ALL PRODUCTTYPES");
   await fetch('/api/product/all/producttypes', {method: 'GET'})
-    .then((response) =>{
-      if(!response.ok){
-        console.log("FEHLER BEIM HOLEN DER PRODUKTTYPEN");
-      }
-      else{
-        return response.json();
-      }
+  .then((response) =>{
+    if(!response.ok){
+      console.log("FEHLER BEIM HOLEN DER PRODUKTTYPEN");
+    }
+    else{
+      return response.json();
+    }
 
-  }).then((jsondata: Map<string,string>) =>{
+  }).then((jsondata: object) =>{
+
     state.producttypes = jsondata;
-
     
   }).catch((error) => {
     console.log(error);
@@ -92,7 +91,6 @@ async function getAllProductTypes(){
 }
 
 async function getAllRoomTypes(){
-  console.log("GET ALL ROOMTYPES");
  await fetch('/api/product/all/roomtypes', {method: 'GET'})
   .then((response) =>{
     if(!response.ok){
@@ -102,13 +100,13 @@ async function getAllRoomTypes(){
       return response.json();
     }
 
-}).then((jsondata: Map<string,string>) =>{
-  state.roomtypes = jsondata;
- 
+  }).then((jsondata: object) =>{
 
-}).catch((error) => {
-  console.log(error);
-});
+    state.roomtypes = jsondata;
+
+  }).catch((error) => {
+    console.log(error);
+  });
 }
     
 async function getAllTags() {
@@ -182,7 +180,6 @@ async function sendPicture(formData: FormData, articlenr: number) {
       body: formData
     }).then(function (response) {
       if (!response.ok) {
-        console.log("NOT OKKKKKK")
         state.validationerrors.push({ field: "picture", message: "Bild ist zu gross oder nicht vorhanden" })
         console.log("FEHLER: " + JSON.stringify(state.validationerrors))
         wassuccessful = false
@@ -206,6 +203,8 @@ async function sendPicture(formData: FormData, articlenr: number) {
   return wassuccessful;
 }
 
+
+
 export function useProduct() {
   return {
     // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
@@ -222,7 +221,8 @@ export function useProduct() {
     allroomtypes: computed(()=> state.roomtypes),
     roomkeys: computed(()=> Object.keys(state.roomtypes)),
     productkeys: computed(()=> Object.keys(state.producttypes)),
-    getAllTags
+    getAllTags,
+    state: readonly(state)
   }
 }
 //macht die sendProduct Funktion von außen zugänglich
