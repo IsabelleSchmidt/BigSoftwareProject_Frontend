@@ -3,8 +3,13 @@ import Home from '../views/Home.vue'
 import { useEmailStore } from '../service/EmailStore'
 
 const { code, getCode } = useEmailStore();
+/**
+ * HTML5 history
+ */
 const history = createWebHistory();
-
+/**
+ * creates a router and sets possible routes
+ */
 const router = createRouter({
   history,
    routes: 

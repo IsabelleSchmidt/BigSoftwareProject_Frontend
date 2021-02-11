@@ -6,6 +6,10 @@ const state = reactive({
     email: "",
 });
 
+/**
+ * fetches an encoded string from the backend
+ * @param email a user's email adress
+ */
 async function getCode(email: string){
     let code = "";
     await fetch(`/api/email/getCode/${email}`, {
@@ -23,7 +27,11 @@ async function getCode(email: string){
     return code;
 }
 
-
+/**
+ * sends a request to the backend where
+ * an email will be sent, so that a user can reset their password for login
+ * @param email a user's email adress
+ */
 async function sendEmail(email: string): Promise<boolean> {
 
     state.send = false;
@@ -48,7 +56,9 @@ async function sendEmail(email: string): Promise<boolean> {
     return state.send;
 }
 
-
+/**
+ * exports important functions and attributes
+ */
 export function useEmailStore() {
     return {
         code: computed(() => getCode(state.email)),

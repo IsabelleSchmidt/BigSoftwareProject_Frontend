@@ -20,11 +20,15 @@ export default {
   },
   setup() {
     const { list, totalPrice } = useCartStore();
-
+    /**
+     * the total price of all products in cart
+     */
     const inTotal = computed(() => {
       return totalPrice();
     });
-
+    /**
+     * all products in cart
+     */
     const productList = computed(() => {
       return Array.from(list.value.entries());
     });

@@ -4,18 +4,45 @@ import '../service/Response'
 import '../service/User'
 
 const state = reactive({
+    /**
+     * the message that's placed when a login was unsuccessful
+     */
     errormessage: "",
+    /**
+     * describes whether a login was successful
+     */
     check: false,
+    /**
+     * Array of authentification tokens
+     */
     jwttokens: Array<JwtToken>(),
+    /**
+     * Array of messages describing (validation)errors
+     */
     errormessages: Array<MessageResponse>(),
+    /**
+     * a user's saved adresses
+     */
     allAdresses: Array<Adress>(),
+    /**
+     * a user's saved bankcards
+     */
     bankcard: Array<Bankcard>(),
+    /**
+     * a user's saved creditcards
+     */
     creditcard: Array<Creditcard>(),
+    /**
+     * a user
+     */
     user : Array<User>()
 })
 
 
-
+/**
+ * Sends a request to the server to login an existing user
+ * @param loginRequest information needed to login
+ */
 async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     state.check = false;
     await fetch(`/api/user/login`, {
@@ -42,6 +69,10 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
     return state.check;
 }
 
+/**
+ * sends a request to the server to signup a new user
+ * @param signUpRequest information needed to sign up
+ */
 async function sendUser(signUpRequest: SignUpRequest) {
 
     await fetch(`/api/user/register`, {
@@ -61,6 +92,9 @@ async function sendUser(signUpRequest: SignUpRequest) {
 
 }
 
+/**
+ * sends a request to the server to logout a user that's logged in
+ */
 async function logoutUser(){
     const token = state.jwttokens[0];
     await fetch(`http://localhost:9090/api/user/logout`, {
@@ -82,6 +116,9 @@ async function logoutUser(){
 
 }
 
+/**
+ * fetches a user's information from the server
+ */
 async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
     const bankcards = new Array<Bankcard>();
@@ -102,6 +139,7 @@ async function getUser(): Promise<void> {
         for (let i = 0; i < Array.from(jsondata.allAdresses).length; i++) {
             adresses.push(Array.from(jsondata.allAdresses)[i] as Adress);
         }
+
         state.allAdresses = adresses;
 
         for (let i = 0; i < Array.from(jsondata.bankcard).length; i++) {
@@ -122,6 +160,10 @@ async function getUser(): Promise<void> {
     });
 }
 
+/**
+ * checks whether a given email is linked to an existing user
+ * @param email email to be checked
+ */
 async function checkIfEmailExists(email: string): Promise<boolean> {
     let exists = false;
 
@@ -146,7 +188,10 @@ async function checkIfEmailExists(email: string): Promise<boolean> {
     return exists;
 } 
 
-
+/**
+ * sends a request to the server to change an existing user's password
+ * @param npr password request that's sent to the server
+ */
 async function changePassword(npr: NewPasswordRequest) {
     let success = false;
 
@@ -173,6 +218,9 @@ async function changePassword(npr: NewPasswordRequest) {
 
 }
 
+/**
+ * sets the value of the errormessage to an empty string
+ */
 function reseterrormessage() {
     state.errormessage = "";
 }

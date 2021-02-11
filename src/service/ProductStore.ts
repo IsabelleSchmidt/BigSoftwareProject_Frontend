@@ -11,15 +11,35 @@ import '@/service/Validationerror'
 /**************************************************/
 
 const state = reactive({
-  list: Array<Product>(),
+  /**
+   * all existing products 
+   */
+  list: Array<Product>(), 
+  /**
+   * all existing roomtypes
+   */
   roomtypes:  {},
+  /**
+   * all existing producttypes
+   */
   producttypes: {},
+  /**
+   * validation errors that are caused when an invalid order is placed
+   */
   validationerrors: Array<Validationerror>(),
+  /**
+   * all existing tags
+   */
   tags: Array<Tag>()
 })
-
+/**
+ * articlenr/identifier of a product
+ */
 export let articlenr: number;
 
+/**
+ * updates the available products
+ */
 async function update(): Promise<void> {
   const productlist = new Array<Product>();
  await fetch(`/api/product/products`, {
@@ -44,7 +64,10 @@ async function update(): Promise<void> {
 }
 
 
-
+/**
+ * Finds and returns a product with a given articlenr
+ * @param nr articlenumber of the product 
+ */
 function getProductByArtNr(nr: number) {
   for(const product of state.list){
     if (product.articlenr == nr) {
@@ -53,6 +76,10 @@ function getProductByArtNr(nr: number) {
   }
 }
 
+/**
+ * Returns the amount of times a product is available
+ * @param nr Articlenumber of the product
+ */
 function getAvailableByArtNr(nr: number) {
   for(const product of state.list){
     if (product.articlenr == nr) {
@@ -60,6 +87,10 @@ function getAvailableByArtNr(nr: number) {
     }
   }
 }
+
+/**
+ * Finds the highest price of all available products
+ */
 function getHightPrice() {
   const highest = ref(0);
   for(const product of state.list){
@@ -71,6 +102,9 @@ function getHightPrice() {
 
 }
 
+/**
+ * Fetches all existing Producttypes from the server
+ */
 async function getAllProductTypes(){
   await fetch('/api/product/all/producttypes', {method: 'GET'})
   .then((response) =>{
@@ -90,6 +124,9 @@ async function getAllProductTypes(){
   });
 }
 
+/**
+ * Fetches all existing Roomtypes from the server
+ */
 async function getAllRoomTypes(){
  await fetch('/api/product/all/roomtypes', {method: 'GET'})
   .then((response) =>{
@@ -108,7 +145,10 @@ async function getAllRoomTypes(){
     console.log(error);
   });
 }
-    
+
+/**
+ * Fetches all existing tags from the server
+ */
 async function getAllTags() {
   const taglist = new Array<Tag>();
   fetch(`/api/product/tags`,{method:'GET'})
@@ -129,7 +169,11 @@ async function getAllTags() {
   })
 }
 
-
+/**
+ * Sends a newly created product to the server.
+ * The new product will be saved into the database.
+ * @param newProduct the product that's to be saved into the database
+ */
 async function sendProduct(newProduct: Product): Promise<void> {
   articlenr = -1;
   console.log(" Sende Produkt mit Namen: " + newProduct.name + " an backend.")
@@ -169,7 +213,11 @@ async function sendProduct(newProduct: Product): Promise<void> {
 
 }
 
-//Liste an Bildern
+/**
+ * Sends a Picture to the server, the picture will be saved in the database
+ * @param formData picture information
+ * @param articlenr articlenumber of the product to which the picture belongs
+ */
 async function sendPicture(formData: FormData, articlenr: number) {
   console.log("Sende Bild an Backend");
   let wassuccessful = false;
@@ -204,7 +252,9 @@ async function sendPicture(formData: FormData, articlenr: number) {
 }
 
 
-
+/**
+ * exports important functions and attributes
+ */
 export function useProduct() {
   return {
     // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
@@ -225,7 +275,10 @@ export function useProduct() {
     state: readonly(state)
   }
 }
-//macht die sendProduct Funktion von außen zugänglich
+/**
+ * exports a function to send a product to the server
+ * exports the list of errors that might have been thrown during the saving process
+ */
 export function postProduct() {
   return {
     sendProduct,
@@ -233,7 +286,9 @@ export function postProduct() {
   }
 }
 
-//sendPicture funktion nach außen anbieten
+/**
+ * exports a function to send pictures to the server
+ */
 export function postPictures() {
   return {
     sendPicture
