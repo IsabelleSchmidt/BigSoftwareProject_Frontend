@@ -3,49 +3,8 @@
 exports[`Sidebar.vue Test If the HTML structur is right (snapshot test) 1`] = `
 <div class="sidebar">
   <h4>Produkte</h4>
-  <ul>
-    <li>
-      <router-link id="link" to="[object Object]">Pflanzen</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Tische</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Stühle</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Betten</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Deko</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Sofa/Couch</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Schränke/Kommoden</router-link>
-    </li>
-  </ul><br>
+  <ul></ul><br>
   <h4>Räume</h4>
-  <ul>
-    <li>
-      <router-link id="link" to="[object Object]">Bad</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Schlafzimmer</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Küche</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Wohnzimmer</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Esszimmer</router-link>
-    </li>
-    <li>
-      <router-link id="link" to="[object Object]">Arbeitszimmer</router-link>
-    </li>
-  </ul>
+  <ul></ul>
 </div>
 `;
