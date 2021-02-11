@@ -1,101 +1,67 @@
 <template>
     <div class= "pricefilter">
         <h3>Preis</h3>
-        <label>
-            <span>0,00 - 200,00€</span>
-            <div>
-                <input type="checkbox" value="0%200" v-model="price02" @change="checked($event.target.value)"/>
-            </div>
-        </label>
-        <label>
-            <span>200,00 - 400,00€</span>
-            <div>
-                <input type="checkbox" value="200%400" v-model="price24" @change="checked($event.target.value)" />
-            </div>
-        </label>
-        <label>
-            <span>400,00 - 600,00€</span>
-            <div>
-                <input type="checkbox" value="400%600" v-model="price46" @change="checked($event.target.value)" />
-            </div>
-        </label>
-        <label>
-            <span>600,00 - 800,00€</span>
-            <div>
-                <input type="checkbox" value="600%800" v-model="price68" @change="checked($event.target.value)" />
-            </div>
-        </label>
-        <label>
-            <span>800,00+ €</span>
-            <div>
-                <input type="checkbox" value="800%+" v-model="price8" @change="checked($event.target.value)" />
-            </div>
-        </label>
+          <vue-slider class="priceSlider" :max="pricemax" v-model="price" @drag-end="changePrice(price)" @click="changePrice(price)"/>
+          <label class="pricezero"> 0 </label>
+          <label class="pricethausend">1000+</label>
     </div>
 </template>
 <script lang = "ts">
-import { defineComponent, ref, onMounted} from 'vue';
+import { defineComponent, ref, onMounted, computed} from 'vue';
 import {useFilterStore} from '@/service/FilterStore'
+import {useProduct} from '@/service/ProductStore'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
 export default defineComponent({
     name: "PriceFilter",
+    components:{
+        VueSlider
+    },
     
     setup(){
-        const {pricelist, addPiceFilter, deletePriceFilter} = useFilterStore();
+        const {pricelow, pricehigh, setPriceHigh, setPriceLow} = useFilterStore();
+        const pricemax = 1000;
 
-        const price02 = ref();
-        const price24 = ref();
-        const price46 = ref();
-        const price68 = ref();
-        const price8 = ref();
-    
+        const price = ref(Array<number>())
+        price.value = [setPriceLow(pricelow.value), setPriceHigh(pricehigh.value)]
+        
+        function changePrice(p: any){
+            console.log("ch", p)
+            price.value = [setPriceLow(p[0]), setPriceHigh(p[1])]
 
-        function checked(price: string): void{   
-                if(pricelist.value.has(price)){
-                    deletePriceFilter(price)
-                }else{
-                    addPiceFilter(price)
-                }
         }
-        onMounted(async()=> {
-            for(let i = 0; i< pricelist.value.size; i++){
-                const key = Array.from(pricelist.value.keys())[i];
-               if(key  == '0%200'){
-                   price02.value = true; 
-               }
-               if(key  == '200%400'){
-                   price24.value = true; 
-               }
-               if(key  == '400%600'){
-                   price46.value = true; 
-               }
-               if(key  == '600%800'){
-                   price68.value = true; 
-               }
-               if(key  == '800%+'){
-                   price8.value = true; 
-               }
-            }
-                    
-            
-        });
      
         return{
-            price02,
-            price24,
-            price46,
-            price68,
-            price8,
-            checked  
+            price,
+            pricemax,
+            changePrice
         }
     }
     
 });
 </script>
 <style scoped lang="scss">
+.vue-slider{
+    width: 200px !important;
+    &:hover .vue-slider-process{
+            background-color: red !important;
+
+        }
+}
+.vue-slider-process{
+    background-color: red !important;
+}
+.vue-slider-dot-handle{
+    border: 2px solid red !important;
+}
+.pricethausend{
+    float: right;
+}
 .pricefilter{
     margin-top: 3%;
     margin-bottom: 3%; 
+    width: 200px;
 }
 span{
     float: left;

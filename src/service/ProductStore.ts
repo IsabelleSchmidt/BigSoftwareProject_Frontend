@@ -43,8 +43,6 @@ async function update(): Promise<void> {
     });
 }
 
-
-
 function getProductByArtNr(nr: number) {
   for(const product of state.list){
     if (product.articlenr == nr) {
@@ -68,7 +66,35 @@ function getHightPrice() {
     }
   }
   return highest.value;
+}
+function getHightWidth() {
+  const highest = ref(0);
+  for(const product of state.list){
+    if (highest.value < product.width) {
+      highest.value = product.width;
+    }
+  }
+  return highest.value;
+}
 
+function getHightHeigh() {
+  const highest = ref(0);
+  for(const product of state.list){
+    if (highest.value < product.height) {
+      highest.value = product.height;
+    }
+  }
+  return highest.value;
+}
+
+function getHightDepth() {
+  const highest = ref(0);
+  for(const product of state.list){
+    if (highest.value < product.depth) {
+      highest.value = product.depth;
+    }
+  }
+  return highest.value;
 }
 
 async function getAllProductTypes(){
@@ -216,6 +242,9 @@ export function useProduct() {
     getProductByArtNr,
     getAvailableByArtNr,
     getHightPrice,
+    getHightDepth,
+    getHightHeigh,
+    getHightWidth,
     getAllProductTypes,
     getAllRoomTypes,
     allproducttypes: computed(() => state.producttypes),

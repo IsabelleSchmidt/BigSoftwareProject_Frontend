@@ -1,154 +1,70 @@
-import {reactive, ref } from 'vue'
+import {reactive } from 'vue'
 
 import { computed } from 'vue'
-import {useProduct} from '../service/ProductStore'
 
 const state = reactive({
-    pricelist: new Map<string, boolean>(),
-    widthlist: new Map<string, boolean>(),
-    heightlist: new Map<string, boolean>(),
-    depthlist: new Map<string, boolean>(),
     colorlist: new Map<string, boolean>(),
     filterclose: false,
+    pricelow: 0,
+    pricehigh: 1000,
+    widthlow: 0,
+    widthhigh: 250,
+    heightlow: 0,
+    heighthigh: 250,
+    depthlow: 0,
+    depthhigh: 250,
 });
-const {getHightPrice} = useProduct();
 
 function setFilterClose(close: boolean){
     state.filterclose = close;
 }
-function addPiceFilter(price: string): void{
-    state.pricelist.set(price, true)
+function setPriceLow(close: number){
+    state.pricelow = close;
+    return state.pricelow
 }
-function deletePriceFilter(price: string): void{
-    state.pricelist.delete(price);
+function setPriceHigh(close: number){
+    state.pricehigh = close;
+    return state.pricehigh
 }
-function getLowestPrice(){
-    const lowest = ref(1000);
-    for(let i = 0; i < state.pricelist.size; i++){
-        const priceValues = Array.from(state.pricelist.keys())[i].split('%');
-        if(parseInt(priceValues[0]) < lowest.value){
-            lowest.value = parseInt(priceValues[0]);
-        }
-    }
-    return lowest.value; 
-
+function deletePriceFilter(): void{
+    state.pricelow = 0; 
+    state.pricehigh  = 1000;
 }
-function getHighestPrice(){
-    const highest = ref(0);
-    for(let i = 0; i < state.pricelist.size; i++){
-        const priceValues = Array.from(state.pricelist.keys())[i].split('%');
-        if(priceValues[1] == '+'){
-            const is = getHightPrice();
-            if(is)
-            highest.value = is; 
-        }
-        if(parseInt(priceValues[1]) > highest.value){
-            highest.value = parseInt(priceValues[1]);
-        }
-    }
-    return highest.value; 
-
+function setWidthLow(close: number){
+    state.widthlow = close;
+    return state.widthlow
 }
-
-function addSizeFilter(size: string, list: string): void{
-    const w = 'w'
-    const h = 'h'
-    const d = 'd'
-
-    if(list == w){
-        state.widthlist.set(size, true)
-    }
-    if(list == h){
-        state.heightlist.set(size, true)
-    }
-    if(list == d){
-        state.depthlist.set(size, true)
-    }
-
+function setWidthHigh(close: number){
+    state.widthhigh = close;
+    return state.widthhigh
 }
-function deleteSizeFilter(size: string, list: string): void{
-    const w = 'w'
-    const h = 'h'
-    const d = 'd'
-
-    if(list == w){
-        state.widthlist.delete(size)
-    }
-    if(list == h){
-        state.heightlist.delete(size)
-    }
-    if(list == d){
-        state.depthlist.delete(size)
-    }
+function deleteWidthFilter(): void{
+    state.widthlow = 0; 
+    state.widthhigh  = 250;
 }
-function getWidthLow(){
-        const widthlow = ref(1000);
-        for(let i = 0; i < state.widthlist.size; i++){
-            const widthValues = Array.from(state.widthlist.keys())[i].split('%');
-            if(parseInt(widthValues[1]) < widthlow.value){
-                widthlow.value = parseInt(widthValues[1]);
-            }
-        }
-        return widthlow.value; 
+function setHeightLow(close: number){
+    state.heightlow = close;
+    return state.heightlow
 }
-function getWidthHigh(){
-    const widthhigh = ref(0)
-        for(let i = 0; i < state.widthlist.size; i++){
-            const widthValues = Array.from(state.widthlist.keys())[i].split('%'); 
-            if(widthValues[2] == '+'){
-                widthhigh.value = 1000;
-            }
-            if(parseInt(widthValues[2]) > widthhigh.value){
-                widthhigh.value = parseInt(widthValues[2]);
-            }
-        }
-        return widthhigh.value; 
+function setHeightHigh(close: number){
+    state.heighthigh = close;
+    return state.heighthigh
 }
-function getHeightLow(){
-    const low = ref(1000);
-    for(let i = 0; i < state.heightlist.size; i++){
-        const values = Array.from(state.heightlist.keys())[i].split('%');
-        if(parseInt(values[1]) < low.value){
-            low.value = parseInt(values[1]);
-        }
-    }
-    return low.value; 
+function deleteHighFilter(): void{
+    state.heightlow = 0; 
+    state.heighthigh  = 250;
 }
-function getHeightHigh(){
-const high = ref(0)
-    for(let i = 0; i < state.heightlist.size; i++){
-        const values = Array.from(state.heightlist.keys())[i].split('%');
-        if(values[2] == '+'){
-            high.value = 1000;
-        }
-        if(parseInt(values[2]) > high.value){
-            high.value = parseInt(values[2]);
-        }
-    }
-    return high.value; 
+function setDepthLow(close: number){
+    state.depthlow = close;
+    return state.depthlow
 }
-function getDepthLow(){
-    const low = ref(1000);
-    for(let i = 0; i < state.depthlist.size; i++){
-        const values = Array.from(state.depthlist.keys())[i].split('%');
-        if(parseInt(values[1]) < low.value){
-            low.value = parseInt(values[1]);
-        }
-    }
-    return low.value; 
+function setDepthHigh(close: number){
+    state.depthhigh = close;
+    return state.depthhigh
 }
-function getDepthHigh(){
-const high = ref(0)
-    for(let i = 0; i < state.depthlist.size; i++){
-        const values = Array.from(state.depthlist.keys())[i].split('%');     
-        if(values[2] == '+'){
-            high.value = 1000;
-        }   
-        if(parseInt(values[2]) > high.value){
-            high.value = parseInt(values[2]);
-        }
-    }
-    return high.value; 
+function deleteDepthFilter(): void{
+    state.depthlow = 0; 
+    state.depthhigh  = 250;
 }
 function addColorFilter(color: string): void{
     state.colorlist.set(color, true)
@@ -157,38 +73,42 @@ function deleteColorFilter(color: string): void{
     state.colorlist.delete(color)
 }
 function deleteFilter(): void{
-    state.pricelist.clear();
-    state.widthlist.clear(); 
-    state.heightlist.clear(); 
-    state.depthlist.clear();
+    deleteDepthFilter();
+    deleteHighFilter();
+    deleteWidthFilter();
+    deletePriceFilter();
     state.colorlist.clear();
 }
 
 export function useFilterStore() {
     return {
       // computed(): reactive but read-only-Version
-      pricelist: computed(() => state.pricelist),
-      widthlist: computed(() => state.widthlist),
-      heightlist: computed(() => state.heightlist),
-      depthlist: computed(() => state.depthlist),
       colorlist: computed(() => state.colorlist),
       filterclose: computed(() => state.filterclose),
+      pricelow: computed(() => state.pricelow),
+      pricehigh: computed(() => state.pricehigh),
+      widthlow: computed(() => state.widthlow),
+      widthhigh: computed(() => state.widthhigh),
+      depthlow: computed(() => state.depthlow),
+      depthhigh: computed(() => state.depthhigh),
+      heighthigh: computed(() => state.heighthigh),
+      heightlow: computed(() => state.heightlow),
 
-      addPiceFilter,
       deletePriceFilter,
-      getLowestPrice,
-      getHighestPrice,
-      addSizeFilter,
-      deleteSizeFilter,
-      getWidthLow,
-      getWidthHigh,
-      getHeightLow,
-      getHeightHigh,
-      getDepthHigh,
-      getDepthLow,
       deleteFilter,
       addColorFilter,
       deleteColorFilter,
-      setFilterClose
+      setFilterClose,
+      setPriceHigh, 
+      setPriceLow,
+      setWidthHigh, 
+      setWidthLow,
+      deleteWidthFilter,
+      setHeightHigh, 
+      setHeightLow,
+      deleteHighFilter,
+      setDepthLow, 
+      setDepthHigh,
+      deleteDepthFilter,
     }
   }

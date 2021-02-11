@@ -35,7 +35,8 @@ export default defineComponent({
         ColorFilter
     },
     setup() {        
-        const {deleteFilter, filterclose, setFilterClose, pricelist, deletePriceFilter, colorlist, widthlist, heightlist, depthlist, deleteColorFilter, deleteSizeFilter} = useFilterStore();
+        const {deleteFilter, filterclose, setFilterClose, deletePriceFilter, colorlist, deleteColorFilter, pricelow, pricehigh} = useFilterStore();
+        const {widthlow, widthhigh, heighthigh, heightlow, depthlow, depthhigh, deleteWidthFilter, deleteHighFilter, deleteDepthFilter} = useFilterStore();
         const component = ref('');
 
         const compref = computed(() => {
@@ -62,35 +63,33 @@ export default defineComponent({
             })
             const filterlist = computed(() => {
                 const list = ref(Array<string>());
-                for(let i = 0; i< pricelist.value.size; i++){
-                   list.value.push("Preis: " + Array.from(pricelist.value.keys())[i].replace("%", "-"))
-                }
-                for(let i = 0; i< widthlist.value.size; i++){
-                   list.value.push("Breite: " + Array.from(widthlist.value.keys())[i].replace("w%", "").replace("%","-"))
-                }
-                for(let i = 0; i< heightlist.value.size; i++){
-                   list.value.push("Höhe: " + Array.from(heightlist.value.keys())[i].replace("h%", "").replace("%","-"))
-                }
-                for(let i = 0; i< depthlist.value.size; i++){
-                   list.value.push("Tiefe: " + Array.from(depthlist.value.keys())[i].replace("d%", "").replace("%","-"))
-                }
+
                 for(let i = 0; i< colorlist.value.size; i++){
                    list.value.push("Farbe: " + Array.from(colorlist.value.keys())[i])
                 }
+                if(pricelow.value != 0 || pricehigh.value != 1000)
+                    list.value.push("Preis: " + pricelow.value + " - "+ pricehigh.value )
+                if(widthlow.value != 0 || widthhigh.value != 250)
+                    list.value.push("Breite: " + widthlow.value + " - "+ widthhigh.value )
+                if(heightlow.value != 0 || heighthigh.value != 250)
+                    list.value.push("Höhe: " + heightlow.value + " - "+ heighthigh.value )
+                if(depthlow.value != 0 || depthhigh.value != 250)
+                    list.value.push("Tiefe: " + depthlow.value + " - "+ depthhigh.value )
+
                 return list.value
             });
 
         function delFilItem(item: string){
             if(item[0] == 'P')
-                deletePriceFilter(item.replace("-","%").replace("Preis: ",""))
+                deletePriceFilter()
             if(item[0] == 'F')
                 deleteColorFilter(item.replace("Farbe: ",""))
             if(item[0] == 'B')
-                deleteSizeFilter(item.replace("Breite: ", "w%").replace("-", "%"), 'w')
+                deleteWidthFilter();
             if(item[0] == 'H')
-                deleteSizeFilter(item.replace("Höhe: ", "h%").replace("-", "%"), 'h')
+                deleteHighFilter();
             if(item[0] == 'T')
-                deleteSizeFilter(item.replace("Tiefe: ", "d%").replace("-", "%"), 'd')
+                deleteDepthFilter();
             changeComp('')
         }
         
@@ -156,11 +155,10 @@ export default defineComponent({
     white-space: nowrap;
     border-radius: 2em;
     align-items: center;
-    display: flex;
      &:hover{
         background-color: $color-green;
         cursor: pointer;
-        //color: white;
+        color: white;
     } 
     &:focus{
         outline: none;
