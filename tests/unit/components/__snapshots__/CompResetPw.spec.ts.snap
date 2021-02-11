@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompResetPw.vue test snapshot test 1`] = `
+<div class="compresetpw">
+  <h1 align="center">Passwort zurücksetzen</h1>
+  <p id="error" align="center"></p>
+  <p align="center"></p>
+  <form>
+    <div class="row"><a id="link"> « zurück</a></div>
+    <div class="row">
+      <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
+      <div class="col2"><input id="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
+    </div>
+    <div><input type="submit" name="resetPw" value="Passwort zurücksetzen"></div>
+    <!--v-if-->
+  </form>
+</div>
+`;

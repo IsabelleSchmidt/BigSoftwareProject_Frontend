@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductList.vue Test  has the expected html structur 1`] = `
+<div id="productList">
+  <ul>
+    <!-- v-for="product in products"-->
+    <!--Platzhalter 
+                <ProductListObject id="listOrder"/> 
+                <ProductListObject id="listOrder"/>
+                <ProductListObject id="listOrder"/>-->
+  </ul>
+</div>
+`;
