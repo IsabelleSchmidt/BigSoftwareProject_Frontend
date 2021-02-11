@@ -35,18 +35,8 @@ describe('Test CartList.vue', () => {
 	
         const wrapper = shallowMount(Cart)
 	
-        wrapper.findComponent({ name: 'CartList' }) // returns a VueWrapper
         wrapper.findComponent(CartList) // returns a VueWrapper
 	
         expect(() => wrapper.getComponent('.not-there')).toThrowError()
     })
-
-    // test('routerlink check', () => {
-    //     const wrapper = mount(Cart, {
-    //         stubs: {
-    //           router: RouterLinkStub
-    //         }
-    //       })
-    //       expect(wrapper.find(RouterLinkStub).props().to).toBe('/some/path')
-    // })
 })
