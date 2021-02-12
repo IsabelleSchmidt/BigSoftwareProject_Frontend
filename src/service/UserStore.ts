@@ -38,6 +38,17 @@ const state = reactive({
     user : Array<User>()
 })
 
+/**
+ * Resets everything in context with the user.
+ */
+function resetUser(){
+    state.jwttokens = [];
+    state.allAdresses = [];
+    state.bankcard = [];
+    state.creditcard = [];
+    state.user = [];
+    console.log("RESET TOKENS: " + JSON.stringify(state.jwttokens));
+}
 
 /**
  * Sends a request to the server to login an existing user
@@ -97,6 +108,8 @@ async function sendUser(signUpRequest: SignUpRequest) {
  */
 async function logoutUser(){
     const token = state.jwttokens[0];
+    state.errormessage = "";
+    console.log("LOGOUT TOKEN: " + JSON.stringify(state.jwttokens[0]));
     await fetch(`http://localhost:9090/api/user/logout`, {
         method: 'POST',
         headers: {"Content-Type": "application/json",
@@ -105,7 +118,6 @@ async function logoutUser(){
         if(!response.ok){
             throw new Error(state.errormessage);
         }
-        state.jwttokens = new Array<JwtToken>();
         return response.json();
     }).then((jsondata: Array<MessageResponse>) => {
         console.log("ERRORMESSAGES: " + JSON.stringify(jsondata));
@@ -124,6 +136,7 @@ async function getUser(): Promise<void> {
     const bankcards = new Array<Bankcard>();
     const creditcards = new Array<Creditcard>();
     const token = state.jwttokens[0];
+    console.log("GET USER TOKEN: " + JSON.stringify(state.jwttokens[0]));
     await fetch(`http://localhost:9090/api/user/getUser`, {
         method: 'GET',
         headers: { "Content-Type": "application/json",
@@ -225,6 +238,8 @@ function reseterrormessage() {
     state.errormessage = "";
 }
 
+
+
 export function postLoginUser() {
     return {
         errormessage: computed(() => state.errormessage),
@@ -250,7 +265,8 @@ export function useUserStore() {
         getUser,
         reseterrormessage,
         checkIfEmailExists,
-        changePassword
+        changePassword,
+        resetUser
     }
 }
 

@@ -106,7 +106,7 @@ export default defineComponent({
   name: "Profile",
 
   setup() {
-    const { getUser, user, adresses, bankcards, creditcards, jwttokens } = useUserStore();
+    const { getUser, user, adresses, bankcards, creditcards, jwttokens, resetUser } = useUserStore();
     const { logoutUser, errormessages } = getLogoutUser();
 
     //user
@@ -119,8 +119,20 @@ export default defineComponent({
     const edit = ref("");
 
     function userInformation() {
+      console.log("TOKEN IN PROFILE: " + JSON.stringify(jwttokens.value));
+      console.log("FIRST NAME ANFANG: " + firstName.value);
+      //Clear first
+      firstName.value = "";
+      lastName.value = "";
+      email.value = "";
+      birthdate.value = new Date();
+
+      console.log("FIRST NAME NACH CLEAREN: " + firstName.value);
+
       //FirstName
       firstName.value = user.value[0].firstName;
+
+      console.log("FIRST NAME NACH ZUWEISEN: " + firstName.value);
 
       //Lastname
       lastName.value = user.value[0].lastName;
@@ -132,7 +144,7 @@ export default defineComponent({
       birthdate.value = user.value[0].birthdate;
 
       for(const role in user.value[0].roles){
-        if(user.value[0].roles[role].name === "WAREHOUSE"|| user.value[0].roles[role].name ==="ADMIN"||user.value[0].roles[role].name==="STUFF"){
+        if(user.value[0].roles[role].name === "WAREHOUSE"|| user.value[0].roles[role].name ==="ADMIN"||user.value[0].roles[role].name==="STAFF"){
           edit.value = "true";
         }
       }
@@ -143,6 +155,7 @@ export default defineComponent({
       await logoutUser();
       console.log("FEHLER: " + errormessages.value);
       if (errormessages.value.length <= 0) {
+        resetUser();
           loggoutmessage.value = "";
           router.push("/");
       } else {
