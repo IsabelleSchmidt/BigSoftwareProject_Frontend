@@ -23,7 +23,7 @@ export default {
     Navbar,
     Footer,
   },setup(){
-    const {getAllProductTypes, allproducttypes, allroomtypes ,getAllRoomTypes} = useProduct();
+    const {getAllProductTypes, getAllRoomTypes} = useProduct();
      onMounted(async ()=>{
         await getAllProductTypes();
         await getAllRoomTypes(); 

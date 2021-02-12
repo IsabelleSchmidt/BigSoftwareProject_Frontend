@@ -78,7 +78,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref, PropType, onMounted, reactive } from "vue";
+import { defineComponent, computed, ref, PropType, onMounted } from "vue";
 
 import "@/service/Product";
 import { useCartStore } from "../service/CartStore";

@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useUserStore, getLogoutUser } from "../service/UserStore";
 import "../service/User";
 import { useRouter } from "vue-router";

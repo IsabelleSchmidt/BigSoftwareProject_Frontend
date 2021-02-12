@@ -39,7 +39,7 @@ export default defineComponent({
     product: Object,
   },
 
-  setup(props, context) {
+  setup(props) {
     const { getProductByArtNr } = useProduct();
 
 

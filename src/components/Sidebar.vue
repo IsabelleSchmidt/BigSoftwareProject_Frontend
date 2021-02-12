@@ -32,8 +32,6 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { defineComponent, computed, onMounted, ref, reactive } from 'vue';
 import {useProduct} from '../service/ProductStore';
 
 export default {

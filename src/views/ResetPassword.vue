@@ -45,7 +45,7 @@
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useUserStore } from "../service/UserStore"
 import { useEmailStore } from "../service/EmailStore"
 import "@/service/Product";
