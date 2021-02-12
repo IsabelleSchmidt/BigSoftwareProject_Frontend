@@ -13,6 +13,9 @@ const state = reactive({
      * whether the filters are being used
      */
     filterclose: false,
+    /**
+     * current values of the filter
+     */
     pricelow: 0,
     pricehigh: 1000,
     widthlow: 0,
@@ -29,50 +32,101 @@ const state = reactive({
 function setFilterClose(close: boolean){
     state.filterclose = close;
 }
-function setPriceLow(close: number){
-    state.pricelow = close;
+/**
+ * sets and return the value of pricelow
+ * @param value whether the slider are being used 
+ */
+function setPriceLow(value: number){
+    state.pricelow = value;
     return state.pricelow
 }
-function setPriceHigh(close: number){
-    state.pricehigh = close;
+/**
+ * sets and return the value of pricehigh
+ * @param value whether the slider are being used 
+ */
+function setPriceHigh(value: number){
+    state.pricehigh = value;
     return state.pricehigh
 }
+/**
+ * sets the value of pricelow and pricehigh
+ * to the default/start values
+ * whether the filteroptions are deleted 
+ */
 function deletePriceFilter(): void{
     state.pricelow = 0; 
     state.pricehigh  = 1000;
-}
-function setWidthLow(close: number){
-    state.widthlow = close;
+}/**
+ * sets and return the value of widthlow
+ * @param value whether the slider are being used 
+ */
+function setWidthLow(value: number){
+    state.widthlow = value;
     return state.widthlow
 }
-function setWidthHigh(close: number){
-    state.widthhigh = close;
+/**
+ * sets and return the value of widthhigh
+ * @param value whether the slider are being used 
+ */
+function setWidthHigh(value: number){
+    state.widthhigh = value;
     return state.widthhigh
 }
+/**
+ * sets the value of widthlow and widthhigh
+ * to the default/start values
+ * whether the filteroptions are deleted 
+ */
 function deleteWidthFilter(): void{
     state.widthlow = 0; 
     state.widthhigh  = 250;
 }
-function setHeightLow(close: number){
-    state.heightlow = close;
+/**
+ * sets and return the value of heightlow
+ * @param value whether the slider are being used 
+ */
+function setHeightLow(value: number){
+    state.heightlow = value;
     return state.heightlow
 }
-function setHeightHigh(close: number){
-    state.heighthigh = close;
+/**
+ * sets and return the value of heighthigh
+ * @param value whether the slider are being used 
+ */
+function setHeightHigh(value: number){
+    state.heighthigh = value;
     return state.heighthigh
 }
+/**
+ * sets the value of heightlow and heighthigh
+ * to the default/start values
+ * whether the filteroptions are deleted 
+ */
 function deleteHighFilter(): void{
     state.heightlow = 0; 
     state.heighthigh  = 250;
 }
-function setDepthLow(close: number){
-    state.depthlow = close;
+/**
+ * sets and return the value of depthlow
+ * @param value whether the slider are being used 
+ */
+function setDepthLow(value: number){
+    state.depthlow = value;
     return state.depthlow
 }
-function setDepthHigh(close: number){
-    state.depthhigh = close;
+/**
+ * sets and return the value of depthhigh
+ * @param value whether the slider are being used 
+ */
+function setDepthHigh(value: number){
+    state.depthhigh = value;
     return state.depthhigh
 }
+/**
+ * sets the value of depthlow and depthhigh
+ * to the default/start values
+ * whether the filteroptions are deleted 
+ */
 function deleteDepthFilter(): void{
     state.depthlow = 0; 
     state.depthhigh  = 250;

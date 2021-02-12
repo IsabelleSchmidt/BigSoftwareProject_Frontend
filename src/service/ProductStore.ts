@@ -94,14 +94,21 @@ function getAvailableByArtNr(nr: number) {
 function getHightPrice() {
   return Math.max(...state.list.map(function(product){return product.price}))
 }
+/**
+ * Finds the highest width of all available products
+ */
 function getHightWidth() {
   return Math.max(...state.list.map(function(product){return product.width}))
 }
-
+/**
+ * Finds the highest height of all available products
+ */
 function getHightHeigh() {
   return Math.max(...state.list.map(function(product){return product.height}))
 }
-
+/**
+ * Finds the highest depth of all available products
+ */
 function getHightDepth() {
   return Math.max(...state.list.map(function(product){return product.depth}))
 }
