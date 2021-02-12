@@ -1,5 +1,5 @@
 //import {Client} from '@stomp/stompjs'; //Message
-import { reactive, computed, ref, readonly } from 'vue'
+import { reactive, computed, readonly } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
 import '@/service/Product'
@@ -92,14 +92,18 @@ function getAvailableByArtNr(nr: number) {
  * Finds the highest price of all available products
  */
 function getHightPrice() {
-  const highest = ref(0);
-  for(const product of state.list){
-    if (highest.value < product.price) {
-      highest.value = product.price;
-    }
-  }
-  return highest.value;
+  return Math.max(...state.list.map(function(product){return product.price}))
+}
+function getHightWidth() {
+  return Math.max(...state.list.map(function(product){return product.width}))
+}
 
+function getHightHeigh() {
+  return Math.max(...state.list.map(function(product){return product.height}))
+}
+
+function getHightDepth() {
+  return Math.max(...state.list.map(function(product){return product.depth}))
 }
 
 /**
@@ -265,6 +269,9 @@ export function useProduct() {
     getProductByArtNr,
     getAvailableByArtNr,
     getHightPrice,
+    getHightDepth,
+    getHightHeigh,
+    getHightWidth,
     getAllProductTypes,
     getAllRoomTypes,
     allproducttypes: computed(() => state.producttypes),

@@ -48,7 +48,7 @@ export default defineComponent({
         const filter = reactive(queryObject);
 
         const { searchword, clearSearch } = useSearchStore();
-        const { allproductslist, update, state } = useProduct();
+        const { allproductslist, update, getHightPrice, getHightHeigh, getHightWidth, getHightDepth, state } = useProduct();
 
         // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
         onMounted(async () => {
@@ -68,35 +68,10 @@ export default defineComponent({
             await update();
         });
 
-        const {setFilterClose, colorlist, getLowestPrice, getHighestPrice, getWidthLow, getWidthHigh, getHeightLow, getHeightHigh, getDepthLow, getDepthHigh} = useFilterStore();
+        const {setFilterClose, colorlist, pricelow, pricehigh, widthlow, widthhigh, heighthigh, heightlow, depthlow, depthhigh} = useFilterStore();
 
-        const lowestPrice = computed(() => {
-            return getLowestPrice();
-        })
-        const highestPrice = computed(() => {
-             return getHighestPrice();
-        })
-        const widthlow = computed(() => {
-             return getWidthLow();
-        })
-        const widthhigh = computed(() => {
-             return getWidthHigh();
-        })
-        const heightlow = computed(() => {
-             return getHeightLow();
-        })
-        const heighthigh = computed(() => {
-             return getHeightHigh();
-        })
-        const depthlow = computed(() => {
-             return getDepthLow();
-        })
-        const depthhigh = computed(() => {
-             return getDepthHigh();
-        })
         const colorArray = computed(()=>{
             return Array.from(colorlist.value.keys());
-
         })
         
         const productlist = computed(() => {
@@ -137,22 +112,29 @@ export default defineComponent({
                 }
                 merklist = zw.value;
             }
-            if(lowestPrice.value != 1000 && highestPrice.value != 0){
-                 merklist = merklist.filter(p => p.price >= lowestPrice.value && p.price <= highestPrice.value);
-            }
-            if(widthlow.value != 1000 && widthhigh.value != 0){
-                 merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
-            }
-            if(heightlow.value != 1000 && heighthigh.value != 0){
-                 merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
-            }
-            if(depthlow.value != 1000 && depthhigh.value != 0){
-                 merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
-
-            }
+              if(pricehigh.value == 1000)
+                merklist = merklist.filter(p => p.price >= pricelow.value && p.price <= getHightPrice());
+                else
+                merklist = merklist.filter(p => p.price >= pricelow.value && p.price <= pricehigh.value);
+                
+              if(widthhigh.value == 250)
+                merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= getHightWidth());
+                else
+                merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
+                
+              if(heighthigh.value == 250)
+                merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= getHightHeigh());
+                else
+                merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
+                
+              if(depthhigh.value == 250)
+                merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= getHightDepth());
+                else
+                merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
             
             return merklist;
         });
+
 
         const sw = computed(() => {
                 return searchword.value;
