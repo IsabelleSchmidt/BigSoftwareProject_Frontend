@@ -47,7 +47,6 @@ function resetUser(){
     state.bankcard = [];
     state.creditcard = [];
     state.user = [];
-    console.log("RESET TOKENS: " + JSON.stringify(state.jwttokens));
 }
 
 /**
@@ -109,7 +108,7 @@ async function sendUser(signUpRequest: SignUpRequest) {
 async function logoutUser(){
     const token = state.jwttokens[0];
     state.errormessage = "";
-    console.log("LOGOUT TOKEN: " + JSON.stringify(state.jwttokens[0]));
+    state.errormessages = [];
     await fetch(`http://localhost:9090/api/user/logout`, {
         method: 'POST',
         headers: {"Content-Type": "application/json",
@@ -120,7 +119,6 @@ async function logoutUser(){
         }
         return response.json();
     }).then((jsondata: Array<MessageResponse>) => {
-        console.log("ERRORMESSAGES: " + JSON.stringify(jsondata));
         state.errormessages = jsondata;
     }).catch((error) => {
         console.log(JSON.stringify(error));

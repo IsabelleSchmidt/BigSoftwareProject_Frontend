@@ -119,20 +119,14 @@ export default defineComponent({
     const edit = ref("");
 
     function userInformation() {
-      console.log("TOKEN IN PROFILE: " + JSON.stringify(jwttokens.value));
-      console.log("FIRST NAME ANFANG: " + firstName.value);
       //Clear first
       firstName.value = "";
       lastName.value = "";
       email.value = "";
       birthdate.value = new Date();
 
-      console.log("FIRST NAME NACH CLEAREN: " + firstName.value);
-
       //FirstName
       firstName.value = user.value[0].firstName;
-
-      console.log("FIRST NAME NACH ZUWEISEN: " + firstName.value);
 
       //Lastname
       lastName.value = user.value[0].lastName;
@@ -153,7 +147,6 @@ export default defineComponent({
 
     async function logout(){
       await logoutUser();
-      console.log("FEHLER: " + errormessages.value);
       if (errormessages.value.length <= 0) {
         resetUser();
           loggoutmessage.value = "";
