@@ -1,15 +1,14 @@
 <template>
     <div class= "pricefilter">
         <h3>Preis</h3>
-          <vue-slider class="priceSlider" :max="pricemax" v-model="price" @drag-end="changePrice(price)" @click="changePrice(price)"/>
+          <vue-slider :max="pricemax" v-model="price" @drag-end="changePrice(price)" @click="changePrice(price)"/>
           <label class="pricezero"> 0 </label>
           <label class="pricethausend">1000+</label>
     </div>
 </template>
 <script lang = "ts">
-import { defineComponent, ref, onMounted, computed} from 'vue';
+import { defineComponent, ref} from 'vue';
 import {useFilterStore} from '@/service/FilterStore'
-import {useProduct} from '@/service/ProductStore'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 
@@ -26,10 +25,8 @@ export default defineComponent({
         const price = ref(Array<number>())
         price.value = [setPriceLow(pricelow.value), setPriceHigh(pricehigh.value)]
         
-        function changePrice(p: any){
-            console.log("ch", p)
+        function changePrice(p: Array<number>){
             price.value = [setPriceLow(p[0]), setPriceHigh(p[1])]
-
         }
      
         return{
@@ -42,19 +39,6 @@ export default defineComponent({
 });
 </script>
 <style scoped lang="scss">
-.vue-slider{
-    width: 200px !important;
-    &:hover .vue-slider-process{
-            background-color: red !important;
-
-        }
-}
-.vue-slider-process{
-    background-color: red !important;
-}
-.vue-slider-dot-handle{
-    border: 2px solid red !important;
-}
 .pricethausend{
     float: right;
 }

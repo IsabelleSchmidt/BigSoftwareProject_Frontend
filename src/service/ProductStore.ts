@@ -1,5 +1,5 @@
 //import {Client} from '@stomp/stompjs'; //Message
-import { reactive, computed, ref } from 'vue'
+import { reactive, computed } from 'vue'
 //////////////////////////////////////////////////////////////////////////////
 
 import '@/service/Product'
@@ -59,42 +59,18 @@ function getAvailableByArtNr(nr: number) {
   }
 }
 function getHightPrice() {
-  const highest = ref(0);
-  for(const product of state.list){
-    if (highest.value < product.price) {
-      highest.value = product.price;
-    }
-  }
-  return highest.value;
+  return Math.max(...state.list.map(function(product){return product.price}))
 }
 function getHightWidth() {
-  const highest = ref(0);
-  for(const product of state.list){
-    if (highest.value < product.width) {
-      highest.value = product.width;
-    }
-  }
-  return highest.value;
+  return Math.max(...state.list.map(function(product){return product.width}))
 }
 
 function getHightHeigh() {
-  const highest = ref(0);
-  for(const product of state.list){
-    if (highest.value < product.height) {
-      highest.value = product.height;
-    }
-  }
-  return highest.value;
+  return Math.max(...state.list.map(function(product){return product.height}))
 }
 
 function getHightDepth() {
-  const highest = ref(0);
-  for(const product of state.list){
-    if (highest.value < product.depth) {
-      highest.value = product.depth;
-    }
-  }
-  return highest.value;
+  return Math.max(...state.list.map(function(product){return product.depth}))
 }
 
 async function getAllProductTypes(){

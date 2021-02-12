@@ -22,7 +22,7 @@
     </div>
 </template>
 <script lang = "ts">
-import { onMounted, defineComponent, ref} from 'vue';
+import {defineComponent, ref} from 'vue';
 import {useFilterStore} from '../service/FilterStore'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
@@ -44,26 +44,20 @@ export default defineComponent({
         const width = ref(Array<number>())
         width.value = [setWidthLow(widthlow.value), setWidthHigh(widthhigh.value)]
         
-        function changeWidth(w: any){
-            console.log("ch", w)
+        function changeWidth(w: Array<number>){
             width.value = [setWidthLow(w[0]), setWidthHigh(w[1])]
-
         }
         const height = ref(Array<number>())
         height.value = [setHeightLow(heightlow.value), setHeightHigh(heighthigh.value)]
         
-        function changeHeight(h: any){
-            console.log("ch", h)
+        function changeHeight(h: Array<number>){
             height.value = [setHeightLow(h[0]), setHeightHigh(h[1])]
-
         }
         const depth = ref(Array<number>())
         depth.value = [setDepthLow(depthlow.value), setDepthHigh(depthhigh.value)]
         
-        function changeDepth(d: any){
-            console.log("ch", d)
+        function changeDepth(d: Array<number>){
             depth.value = [setDepthLow(d[0]), setDepthHigh(d[1])]
-
         }
         return{
             sizemax,
