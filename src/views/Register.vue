@@ -149,26 +149,75 @@ export default defineComponent({
   name: "register",
 
   setup() {
-    const firstname = ref("");
-    const lastname = ref("");
+     //user
+    /**
+     * a user's email adress
+     */
     const email = ref("");
+    /**
+     * a user's firstname
+     */
+    const firstname = ref("");
+    /**
+     * a user's surname
+     */
+    const lastname = ref("");
+    /**
+     * a user's birthdate
+     */
     const birthdate = ref(new Date());
+    /**
+     * the user's gender
+     */
     const gender = ref("");
+    /**
+     * the user's new password
+     */
     const password1 = ref("");
+    /**
+     * confirmation of the new password
+     */
     const password2 = ref("");
+    /**
+     * error that might've occured while trying to register
+     */
     const message = ref("");
 
     const { sendUser, errormessages, check } = postUser();
     const router = useRouter();
-
+    /**
+     * error that occured in the firstname field of the form
+     */
     const firstnameerror = ref("");
+     /**
+     * error that occured in the lastname field of the form
+     */
     const lastnameerror = ref("");
+     /**
+     * error that occured in the email field of the form
+     */
     const emailerror = ref("");
+     /**
+     * error that occured in the birthdate field of the form
+     */
     const birthdateerror = ref("");
+     /**
+     * error that occured in the gender field of the form
+     */
     const gendererror = ref("");
+     /**
+     * error that occured in the new password field of the form
+     */
     const password1error = ref("");
+     /**
+     * error that occured in the password confirmation field of the form
+     */
     const password2error = ref("");
 
+  /**
+   * sends a registrationrequest to the server
+   * and fills out the errorfields with errors if they occured
+   */
     async function newUser(): Promise<void> {
 
       if (password1.value == password2.value) {

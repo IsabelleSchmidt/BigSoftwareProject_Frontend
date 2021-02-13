@@ -25,7 +25,9 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
-
+        /**
+         * possible components
+         */
         const COMPONENTS = ["CompProduct", "CompSingle"];
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,

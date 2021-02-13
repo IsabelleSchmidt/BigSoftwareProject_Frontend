@@ -204,13 +204,16 @@ export default defineComponent({
 
     const { jwttokens, getUser, adresses } = useUserStore();
     const router = useRouter();
-
+    /**
+     * the value of the form field payment
+     */
     const payment = ref("");
-    const paymenterror = ref("");
-
+   
+    
     const selectedadr = ref("");
 
     //adress
+
     const streetName = ref("");
     const houseNumber = ref("");
     const postCode = ref("");
@@ -229,43 +232,98 @@ export default defineComponent({
     let dateOfExpiry;
 
     //errors
+    
+    /**
+     * holds the error that occured in the payment field during the placement of an order
+     */
+    const paymenterror = ref("");
+    /**
+     * holds the error that occured in the street field during the placement of an order
+     */
     const streetnameerror = ref("");
+    /**
+     * holds the error that occured in the house number field during the placement of an order
+     */
     const housenumbererror = ref("");
+    /**
+     * holds the error that occured in the zipcode field during the placement of an order
+     */
     const postcodeerror = ref("");
+    /**
+     * holds the error that occured in the city field during the placement of an order
+     */
     const cityerror = ref("");
+    /**
+     * holds the error that occured in the iban field during the placement of an order
+     */
     const ibanerror = ref("");
+    /**
+     * holds the error that occured in the bankcard field during the placement of an order
+     */
     const bankcardownererror = ref("");
+    /**
+     * holds the error that occured in the bankname field during the placement of an order
+     */
     const bankerror = ref("");
+    /**
+     * holds the error that occured in the creditcardowner field during the placement of an order
+     */
     const creditcardownererror = ref("");
+    /**
+     * holds the error that occured in the creditcardnumber field during the placement of an order
+     */
     const creditcardnumbererror = ref("");
+    /**
+     * holds the error that occured in the date of expiry field during the placement of an order
+     */
     const dateofexpiryerror = ref("");
+    /**
+     * holds the error that occured during the placement of an order, if an item is not available anymore
+     */
     const notavailableerror = ref("");
+    /**
+     * holds the error that occures if an item is not available anymore
+     */
     const notavailableerrorempty = ref("");
 
     //token
+    /**
+     * access token
+     */
     const token = jwttokens.value[0];
 
     //delivery date
-
+    /**
+     * computes the total price of the order
+     */
     const inTotal = computed(() => {
       return totalPrice();
     });
-
+    /**
+     * computes the list of all products of the order
+     */
     const productList = computed(() => {
       return Array.from(list.value.entries());
     });
-
+    /**
+     * calculates the estimate delivery date
+     */
     const deliveryDate = computed(() => {
       const date = new Date();
       date.setDate(date.getDate() + 3);
       return date.toLocaleDateString();
     })
 
+    /**
+     * gets the user's information upon initialization of the component
+     */
     onMounted(async () => {
       await getUser();
       
     });
-
+    /**
+     * changes the values of the adress form fields
+     */
     function adrChange(event: string) {
       const a: Adress = {
         streetName: event.split(",")[0],
@@ -278,7 +336,9 @@ export default defineComponent({
       postCode.value = a.postCode;
       city.value = a.city;
     }
-
+    /**
+     * sends a new order to the server
+     */
     async function sendOrder(): Promise<void> {
       notavailableerror.value = "";
       notavailableerrorempty.value = "";
@@ -429,7 +489,10 @@ export default defineComponent({
         paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
       }
     }
-
+    /**
+     * listenes, whether the payment method is changed
+     * clears the previous filled-out paymentmethod form inputs
+     */
     watch(payment, (payment) => {
         if(payment === "creditcard") {
           //delete bankcard input

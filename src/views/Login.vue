@@ -17,11 +17,22 @@ export default defineComponent({
         CompResetPw
     },
     setup() {
-
+        /**
+         * options of visible components
+         */
         const COMPONENTS = ["CompLogin", "CompResetPw"];
+        /**
+         * default component is login
+         */
         const component = COMPONENTS[0];
+        /**
+         * currently visible component
+         */
         const compref = ref(component);
 
+        /**
+         * a user's email adress
+         */
         const email = ref("");
 
         onMounted(async () => {
@@ -30,7 +41,10 @@ export default defineComponent({
             console.log("back");
         };
     });
-
+        /**
+         * changes the currently visible component between login and password reset
+         * @param e a user's entered email adress
+         */
         function toggle(e: string): void {
             email.value = e;
             if (compref.value === COMPONENTS[0]) {

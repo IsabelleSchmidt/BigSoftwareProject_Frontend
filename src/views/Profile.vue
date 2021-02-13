@@ -110,14 +110,32 @@ export default defineComponent({
     const { logoutUser, errormessages } = getLogoutUser();
 
     //user
+    /**
+     * a user's email adress
+     */
     const email = ref("");
+    /**
+     * a user's firstname
+     */
     const firstName = ref("");
+    /**
+     * a user's surname
+     */
     const lastName = ref("");
+    /**
+     * a user's birthdate
+     */
     const birthdate = ref(new Date());
     const router = useRouter();
+    /**
+     * error that occured while logging out
+     */
     const loggoutmessage = ref("");
     const edit = ref("");
 
+  /**
+   * sets the user's information
+   */
     function userInformation() {
       //Clear first
       firstName.value = "";
@@ -144,7 +162,9 @@ export default defineComponent({
       }
     }
 
-
+  /**
+   * logs out the user
+   */
     async function logout(){
       await logoutUser();
       if (errormessages.value.length <= 0) {
@@ -155,7 +175,9 @@ export default defineComponent({
         loggoutmessage.value = "Fehler beim Ausloggen. Bitte loggen Sie sich zunächst ein.";
       }
     }
-
+  /**
+   * fills out the profile info with the user's information upon initialization of the component
+   */
     onMounted(async () => {
       if(jwttokens.value.length > 0){
         await getUser();
