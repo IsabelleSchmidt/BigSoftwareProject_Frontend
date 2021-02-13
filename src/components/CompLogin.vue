@@ -98,7 +98,7 @@ export default defineComponent({
         router.push("/orderform");
       }else if(loginSuccess && path.includes("profile")){
         router.push("/profile");
-      }else if (loginSuccess){
+      }else if (loginSuccess&& !path.includes("cart") && !path.includes("profile")){
         router.push("/");
       }
     }
