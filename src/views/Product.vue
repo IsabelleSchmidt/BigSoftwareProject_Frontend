@@ -37,15 +37,6 @@ export default defineComponent({
         const component = COMPONENTS[0];
         const compref = ref(component);
 
-
-        onMounted(async () => {
-            router.afterEach((to) => {
-                if (to.query.name === "none") {
-                    compref.value = COMPONENTS[0];
-                }
-            })
-        });
-
         function toggle(): void {
             if (compref.value === COMPONENTS[0]) {
                 compref.value = COMPONENTS[1];
