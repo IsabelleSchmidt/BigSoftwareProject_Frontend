@@ -372,10 +372,10 @@ export default defineComponent({
         };
 
         const orderList = [];
-        for (let i = 0; i < productList.value.length; i++) {
+        for (const product of productList.value) {
           const p: ProductDTO = {
-            articleNR: productList.value[i][0],
-            amount: productList.value[i][1],
+            articleNR: product[0],
+            amount: product[1],
           };
           orderList.push(p);
         }
