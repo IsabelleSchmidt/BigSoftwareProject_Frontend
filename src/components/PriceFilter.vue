@@ -7,15 +7,16 @@
     </div>
 </template>
 <script lang = "ts">
-import { defineComponent, ref} from 'vue';
-import {useFilterStore} from '../service/FilterStore'
+import { defineComponent, ref, defineAsyncComponent} from 'vue';
+import {useFilterStore} from '@/service/FilterStore'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 
 export default defineComponent({
     name: "PriceFilter",
     components:{
-        VueSlider
+          VueSlider: defineAsyncComponent(() => Promise.resolve(VueSlider))
+
     },
     
     setup(){

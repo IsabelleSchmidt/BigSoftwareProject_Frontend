@@ -62,6 +62,7 @@
             v-model="birthdate"
             type="date"
             name="birthdate"
+            :min="minDate"
             size="30"
             maxlenght="50"
             class="right"
@@ -182,6 +183,7 @@ export default defineComponent({
      * error that might've occured while trying to register
      */
     const message = ref("");
+    const minDate = "1921-02-12"
 
     const { sendUser, errormessages, check } = postUser();
     const router = useRouter();
@@ -219,6 +221,7 @@ export default defineComponent({
    * and fills out the errorfields with errors if they occured
    */
     async function newUser(): Promise<void> {
+
 
       if (password1.value == password2.value) {
         const signUpRequest: SignUpRequest = {
@@ -263,7 +266,7 @@ export default defineComponent({
             }
           }
         } else {
-          router.push("/login");
+         // router.push("/login");
         }
       } else {
         password2error.value = "Die Passwörter stimmen nicht überein";
@@ -291,6 +294,7 @@ export default defineComponent({
       password1error,
       password2error,
       check,
+      minDate
     };
   },
 });
