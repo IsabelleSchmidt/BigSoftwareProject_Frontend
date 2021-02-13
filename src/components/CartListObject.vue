@@ -61,30 +61,50 @@ export default defineComponent({
     } = useCartStore();
 
     const { getProductByArtNr } = useProduct();
-
+    /**
+     * picture of a product
+     */
     const ppath = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).allPictures[0];
     });
+    /**
+     * name of a product
+     */
     const pname = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).name;
     });
+    /**
+     * price of a product
+     */
     const pprice = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).price;
     });
+    /**
+     * articlenumber of a product
+     */
     const particlenr = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).articlenr;
     });
+    /**
+     * number of times a product is still available
+     */
     const pavailable = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).available;
     });
+    /**
+     * amount of times a product was placed into the cart
+     */
     const pamount = computed(() => {
       if (props.product) return getAmount(props.product[0]);
     });
+    /**
+     * total price of the cart
+     */
     const ptotal = computed(() => {
       if (props.product) {
         const t = getAmount(props.product[0]);
@@ -100,7 +120,10 @@ export default defineComponent({
       }
     }
     });
-
+  /**
+   * changes the amount of a given product in the cart
+   * @param am new amount
+   */
     function amChange(am: number): void {
       if (props.product) {
       /*  const a = getAmount(props.product[0]);
@@ -117,7 +140,9 @@ export default defineComponent({
 
       }
     }
-
+    /**
+     * deletes a product from the cart
+     */
     function trash(): void {
       if (props.product) deleteProduct(props.product[0]);
     }

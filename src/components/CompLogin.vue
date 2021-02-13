@@ -60,8 +60,17 @@ export default defineComponent({
   name: "CompLogin",
 
   setup(props, context) {
+    /**
+     * users entered email
+     */
     const email = ref("");
+    /**
+     * users entered password
+     */
     const password = ref("");
+    /**
+     * loginrequest containing email and password
+     */
     const loginRequest: LoginRequest = {
       email: email.value,
       password: password.value,
@@ -76,6 +85,9 @@ export default defineComponent({
       reseterrormessage();
     });
 
+  /**
+   * sends a request to the server, requesting to log in the user
+   */
     async function loginUser() {
       loginRequest.email = email.value;
       loginRequest.password = password.value;
@@ -90,7 +102,9 @@ export default defineComponent({
         router.push("/");
       }
     }
-
+    /**
+     * changes the current component to resetting the password
+     */
     function toResetPw() {
         context.emit("toggle-comp", email.value);
     }

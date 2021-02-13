@@ -92,31 +92,47 @@
             const{jwttokens} = useUserStore();
 
             const { getCartAmount } = useCartStore();
+            /**
+             * current amount of items in the cart
+             */
             const amount = computed(() => getCartAmount());
-
+            /**
+             * current input of the search field
+             */
             const searchinput = ref("");
 
-            //close filter
+            /**
+             * closes all filters
+             */
             function closeFilter(): void{
                 setFilterClose(true);
             }
-
+            /**
+             * searches for a product matching the input of the search field
+             */
             function search() {
                 setSearchactive(true);
                 setSearchword(searchinput.value);
                 router.push({ path: '/product', query: { room: 'all', productType: 'all', name: 'none' }});
             }
 
+            /**
+             * clears the search input
+             */
             function closeSearch() {
                 clearSearch();
             }
-
+            /**
+             * sets the search field input to an empty string if no search is active
+             */
             watch(searchaktive, (searchaktive) => {
                 if (!searchaktive) {
                     searchinput.value = "";
                 }
             })
-
+            /**
+             * calls search function
+             */
             function enterClicked() {
                 search();
             }

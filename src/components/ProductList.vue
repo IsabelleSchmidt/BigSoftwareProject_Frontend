@@ -24,13 +24,17 @@ export default /*defineComponent*/{
     },
     setup(){
 
-        const {allproductslist, update}  = useProduct(); //, errormessage
+        const{allproductslist,update} = useProduct();
 
-        // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
+        /**
+         * calls update function on initialization of this component
+         */
         onMounted(async () => {
             await update();
         });
-
+        /**
+         * current list of products
+         */
         const productlist = computed(() => {
         
           return allproductslist.value;
@@ -38,7 +42,7 @@ export default /*defineComponent*/{
         });
         const imgage = computed
 
-        return{ productlist}; //, errormessage 
+        return{ productlist}; 
     } 
 }
 </script>

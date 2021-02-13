@@ -26,8 +26,11 @@ export default defineComponent({
     product: Object,
   },
   setup(props, context) {
+    /**
+     * sends opening event to CompProduct
+     */
     function openproduct(): void {
-      // send event to component above (CompProduct)
+    
       context.emit("open-prod", props.product);
     }
 

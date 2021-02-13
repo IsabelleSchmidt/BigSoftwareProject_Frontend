@@ -42,6 +42,9 @@ export default defineComponent({
         const compref = computed(() => {
             return component.value; 
         });
+        /**
+         * Sets the filters to open on initialization of this component
+         */
         onMounted(async ()=>{
             setFilterClose(false);
         })
@@ -52,6 +55,9 @@ export default defineComponent({
                 component.value = comp; 
             }
         }
+        /**
+         * deletes an active filter
+         */
         function delFilter(): void{
             changeComp('');
             deleteFilter();
@@ -79,6 +85,9 @@ export default defineComponent({
                 return list.value
             });
 
+        /**
+         * deletes an active filter item
+         */
         function delFilItem(item: string){
             if(item[0] == 'P')
                 deletePriceFilter()

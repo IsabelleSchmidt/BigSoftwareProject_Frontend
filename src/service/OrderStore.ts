@@ -10,14 +10,36 @@ const {jwttokens} = useUserStore();
 
 
 const state = reactive({
+    /**
+     * map of products in the cart key:articlenumber, value:amount of times a product is in the cart
+     */
     errormessage: "",
+      /**
+     * messages of possible mistakes after updating a user for placing an order
+     */
     orderlist: list,
+    /**
+     * messages of possible mistakes after placing an order
+     */
     errormessages: Array<MessageResponse>(),
+    /**
+     * list of errors that occured while saving a new order
+     */
     ordererrormessages: Array<OrderResponse>(),
+    /**
+     * a set of all order identifiers of orders placed by the user in this session 
+     */
     allorders: new Set<number>(),
+    /**
+     * whether an order was successfully saved 
+     */
     orderSuccess: false
 })
-
+/**
+   * sends requests to the server to save new userinformation and place an order
+   * @param userorderreq new user information needed to place an order
+   * @param order order to be placed
+   */
 async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promise<boolean> {
     const token = jwttokens.value[0];
 
@@ -73,7 +95,9 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     });
     return state.orderSuccess;
 }
-
+/**
+ * checks whether all items in the cart are still available
+ */
 function checkAllItemsStillAvailable() {
     for (let i = 0; i < state.orderlist.size; i++) {
         const artnr = Array.from(state.orderlist.keys())[i];

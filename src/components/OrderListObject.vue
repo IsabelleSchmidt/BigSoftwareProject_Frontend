@@ -42,15 +42,28 @@ export default defineComponent({
   setup(props) {
     const { getProductByArtNr } = useProduct();
 
-
+    /**
+     * finds the first picture of a product
+     */
     const ppath = computed(() => {
       if (props.product)
         return (getProductByArtNr(props.product[0]) as Product).allPictures[0];
     });
+    /**
+     * name of the product
+     */
     const pname = ref("");
+    /**
+     * price of the product
+     */
     const pprice = ref(0);
+    /**
+     * articlenumber of the product
+     */
     const particlenr = ref(0);
-
+    /**
+     * product
+     */
     let p: Product = {
       articlenr: 0,
       version: 0,
@@ -68,6 +81,9 @@ export default defineComponent({
       information: "",
     };
 
+    /**
+     * finds product and sets values
+     */
     if (props.product) {
       p = getProductByArtNr(props.product[0]) as Product;
       pname.value = p.name;

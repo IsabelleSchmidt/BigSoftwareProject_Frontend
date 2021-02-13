@@ -50,7 +50,9 @@ export default defineComponent({
         const { searchword, clearSearch } = useSearchStore();
         const { allproductslist, update, getHightPrice, getHightHeigh, getHightWidth, getHightDepth, state } = useProduct();
 
-        // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
+        /**
+         * fills the list of actively shown products upon initialization
+         */
         onMounted(async () => {
 
             router.push({
@@ -69,11 +71,16 @@ export default defineComponent({
         });
 
         const {setFilterClose, colorlist, pricelow, pricehigh, widthlow, widthhigh, heighthigh, heightlow, depthlow, depthhigh} = useFilterStore();
-
+        /**
+         * array of colours
+         */
         const colorArray = computed(()=>{
             return Array.from(colorlist.value.keys());
         })
         
+        /**
+         * list of shown products
+         */
         const productlist = computed(() => {
 
             queryObject.room.value = route.query.room;
@@ -135,11 +142,16 @@ export default defineComponent({
             return merklist;
         });
 
-
+        /**
+         * word that is currently searched for
+         */
         const sw = computed(() => {
                 return searchword.value;
         }); 
 
+        /**
+         * filtered list of products
+         */
         const searchproductList = computed(() => {
 
             if (sw.value != "") {
@@ -152,13 +164,18 @@ export default defineComponent({
                         );
             }
         });
-
+        /**
+         * opens the single product page for a given product
+         * @param p chosen product
+         */
         function openProduct(p: Product): void {
             //send to component above (Product)
             context.emit("open-prod", p);
         }
 
-        //delete filters and searchinputs
+        /**
+         * clears filters and searchinput
+         */
         function closeFilter(){
             setFilterClose(true);
             clearSearch();

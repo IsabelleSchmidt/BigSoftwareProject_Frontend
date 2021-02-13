@@ -46,30 +46,54 @@ export default defineComponent({
       mailadress: String,
   },
   setup(props, context) {
-
-    const COLORS = ["red", "#ccc"];
+    /**
+     * colors used 
+     */
+    const COLORS= ["red", "#ccc"];
+    /**
+     * mailadress entered into the form
+     */
     const email = ref(props.mailadress);
-
+    /**
+     * whether the user with the given email exists
+     */
     const userExists = ref(true);
+    /**
+     * whether an error occured during the reset of the password
+     */
     const error = ref(false);
-
+    /**
+     * the message displayed when an error occured
+     */
     const errormessage = ref("");
+    /**
+     * 
+     */
     const message = ref("");
 
     const { checkIfEmailExists } = useUserStore();
     const { sendEmail } = useEmailStore();
-
+    /**
+     * whether a component is hidden or not
+     */
     const isHidden = ref(false);
 
-    //Callback
+    /**
+     * callback function
+     */
     function back(): void {
       context.emit("toggle-comp");
     }
 
+    /**
+     * returns to the login page
+     */
     function toLogin() {
         back();
     }
-
+    /**
+     * resets the page
+     */
     async function reset() {
 
         isHidden.value = false;

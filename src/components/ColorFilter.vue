@@ -80,7 +80,10 @@ export default defineComponent({
 
         const {colorlist, addColorFilter, deleteColorFilter} = useFilterStore();
     
-    
+      /**
+       * checks whether a colour is missing and adds missing colour to the filterlist
+       * @param color color to be checked
+       */
         function checked(color: string): void{
             if(colorlist.value.has(color)){
                     deleteColorFilter(color)
@@ -88,7 +91,9 @@ export default defineComponent({
                     addColorFilter(color)
                 }
         }
-
+        /**
+         * sets the values of the colour filter colours upon initialization of the component
+         */
          onMounted(async()=> {
             for(let i = 0; i< colorlist.value.size; i++){
                 const key = Array.from(colorlist.value.keys())[i];

@@ -83,45 +83,119 @@
         name:"newProduct",
    
     setup(){
+        /**
+         * the new product's pictures
+         */
         const files = Array<File>();
         const filesref= ref(files);
         const {sendPicture} = postPictures();
         const formData = new FormData;
         let lang = 0;
-
+      
+        /**
+         * the new product's name
+         */
         const name = ref("");
+        /**
+         * the new product's roomtype
+         */
         const roomType = ref("");
+        /**
+         * the new product's producttype
+         */
         const productType = ref("");
+        /**
+         * the new product's information
+         */
         const information = ref("");
+        /**
+         * the new product's decription
+         */
         const description = ref("");
+        /**
+         * how many times a product is available 
+         */
         const available = ref(0);
+        /**
+         * the new product's width
+         */
         const width = ref(0);
+        /**
+         * the new product's height
+         */
         const height = ref(0);
+        /**
+         * the new product's depth
+         */
         const depth = ref(0);
+        /**
+         * the new product's price
+         */
         const price = ref(0);
+        /**
+         * the name of a productpicture
+         */
         const picturename = ref("");
+        /**
+         * the new product's tag
+         */
         const tag = ref(Object);
         const {sendProduct, validationerrors} = postProduct();
         const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys} = useProduct();
         getAllTags()
+        /**
+         * All selected tags
+         */
         const allSelectTags = Array<Tag>();
         const allSelectTagsRef = ref(allSelectTags);
-        
+        /**
+         * error that occurs when a new product with a wrong name is tried to be saved
+         */
         const nameerror = ref("");
+          /**
+         * error that occurs when a new product cannot be saved
+         */
         const producterror = ref("");
+          /**
+         * error that occurs when a new product with a wrong roomtype is tried to be saved
+         */
         const roomerror = ref("");
+          /**
+         * error that occurs when a new product with a wrong information is tried to be saved
+         */
         const infoerror = ref("");
+          /**
+         * error that occurs when a new product with a wrong description is tried to be saved
+         */
         const descriptionerror = ref("");
+          /**
+         * error that occurs when a new product with a wrong price is tried to be saved
+         */
         const priceerror = ref("");
+          /**
+         * error that occurs when a new product with a wrong size is tried to be saved
+         */
         const sizeerror = ref("");
+          /**
+         * error that occurs when a new product with a wrong picture is tried to be saved
+         */
         const picerror = ref("");
 
-
+        /**
+         * whether a productpicture was successfully saved into the database
+         */
         let picSucsess = true
+
         
+        /**
+         * the new product
+         */
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':available.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0, allTags:[] };
 
+        /**
+         * changes the value of the selected Tags
+         */
         function tagChange(event: string){
             const t: Tag = {
                 id: Number(event.split(",")[0]),
@@ -135,7 +209,9 @@
             allSelectTagsRef.value.push({id: t.id, value: t.value});
             console.log(allSelectTagsRef.value)
         }
-
+        /**
+         * sends the new product to the server
+         */
         async function sendeProd(): Promise<void>{
 
             producterror.value = "";
@@ -170,33 +246,33 @@
                 
                     
                     // Validation Messages
-                    if(validationerrors.value.length > 0){
-                        for(const error of validationerrors.value){
-                            if(error.field == "price"){
+                    if(validationerrors.value.length > 0){ 
+                        for(const error of validationerrors.value){ 
+                                if(error.field == "price"){
                                 priceerror.value = error.message;
+                                }
+                                if(error.field == "roomType"){
+                                    roomerror.value = error.message;
+                                }
+                                if(error.field == "productType"){
+                                    producterror.value = error.message;
+                                }
+                                if(error.field == "name"){
+                                    nameerror.value = error.message;
+                                }
+                                if(error.field == "information"){
+                                    infoerror.value = error.message;
+                                }
+                                if(error.field == "description"){
+                                    descriptionerror.value = error.message;
+                                }
+                                if(error.field == "width"||error.field=="height"||error.field=="depth"){
+                                    sizeerror.value = error.message;
+                                }
+                                if(error.field == "picture"){
+                                    picerror.value = error.message;
+                                }
                             }
-                            if(error.field == "roomType"){
-                                roomerror.value = error.message;
-                            }
-                            if(error.field == "productType"){
-                                producterror.value = error.message;
-                            }
-                            if(error.field == "name"){
-                                nameerror.value = error.message;
-                            }
-                            if(error.field == "information"){
-                                infoerror.value = error.message;
-                            }
-                            if(error.field == "description"){
-                                descriptionerror.value = error.message;
-                            }
-                            if(error.field == "width"||error.field=="height"||error.field=="depth"){
-                                sizeerror.value = error.message;
-                            }
-                            if(error.field == "picture"){
-                                picerror.value = error.message;
-                            }
-                        }
                     }else{
                         console.log("ohne errors")
 
@@ -261,7 +337,9 @@
                 }
              }    
         }
-
+        /**
+         * adds a new picture to the productpictures
+         */
         function onFileChange(files: File[]): void{
             if(filesref.value.length == 0){
                 for(let i = 0; i <files.length; i++){
@@ -278,13 +356,17 @@
             }  
             console.log("Bild",filesref.value);
         }
-
+        /**
+         * deletes picture from chosen productpictures
+         */
         function deleteFile(index: number): void{
             filesref.value.splice(index,1);
             picerror.value = ""
             console.log(filesref.value);
         }
-
+        /**
+         * deletes tag from chosen tags
+         */
         function deleteTag(index: number): void{
             allSelectTagsRef.value.splice(index,1);
             console.log(allSelectTagsRef.value)

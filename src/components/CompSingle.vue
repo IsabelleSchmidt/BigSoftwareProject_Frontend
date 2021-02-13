@@ -103,23 +103,32 @@ export default defineComponent({
     const success = ref(false);
     const amount = ref(1);
     const timer = ref();
-
     const router = useRouter();
     const route = useRoute();
-
+    /**
+     * amount of times a product is still available
+     */
     const pavailable = computed(() => {
       return props.productObject.available;
     });
 
+    /**
+     * amount of a certain product
+     */
     const pamount = computed(() => {
       return amount.value;
     });
 
-    //Callback
+    /**
+     * callback function
+     */
     function openproductlist(): void {
       context.emit("open-all");
     }
 
+  /**
+   * sets the current query upon initialization of this component
+   */
     onMounted(async () => {
       router.push({
         path: "/product",
@@ -130,13 +139,22 @@ export default defineComponent({
         },
       });
 
-      //when back button in browser is pressed
+      /**
+       * is called when the back button in the browser is pressed
+       * goes back to the previous page
+       */
       window.onpopstate = function (event: any) {
         openproductlist();
       };
     });
 
+  /**
+   * adds a product to the currently shown products
+   */
     function add(): void {
+      /**
+       * amount of times a product is still available
+       */
       const am = ref(getAmount(props.productObject.articlenr));
       success.value = false
       if (
@@ -194,6 +212,9 @@ export default defineComponent({
       }
       amount.value = 1;
     }
+    /**
+     * changes the amount of times a product is in the cart
+     */
     function amChange(am: number): void {
       amount.value = am;
     }

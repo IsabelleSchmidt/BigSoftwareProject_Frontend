@@ -44,18 +44,33 @@ export default defineComponent({
         const width = ref(Array<number>())
         width.value = [setWidthLow(widthlow.value), setWidthHigh(widthhigh.value)]
         
+        /**
+         * Sets the new highest and lowest width 
+         */
         function changeWidth(w: Array<number>){
             width.value = [setWidthLow(w[0]), setWidthHigh(w[1])]
         }
+        /**
+         * sets the new heighest and lowest height
+         */
         const height = ref(Array<number>())
         height.value = [setHeightLow(heightlow.value), setHeightHigh(heighthigh.value)]
         
+        /**
+         * sets the new height filter value
+         */
         function changeHeight(h: Array<number>){
             height.value = [setHeightLow(h[0]), setHeightHigh(h[1])]
         }
+        /**
+         * sets the new depth filter value
+         */
         const depth = ref(Array<number>())
         depth.value = [setDepthLow(depthlow.value), setDepthHigh(depthhigh.value)]
         
+        /**
+         * sets the new depth filter value
+         */
         function changeDepth(d: Array<number>){
             depth.value = [setDepthLow(d[0]), setDepthHigh(d[1])]
         }
