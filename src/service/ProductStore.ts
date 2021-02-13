@@ -10,6 +10,10 @@ import '@/service/Validationerror'
 
 /**************************************************/
 
+const producttype = new Map<string, string>();
+
+const roomtype = new Map <string, string>();
+
 const state = reactive({
   /**
    * all existing products 
@@ -18,11 +22,11 @@ const state = reactive({
   /**
    * all existing roomtypes
    */
-  roomtypes:  {},
+  roomtypes:  roomtype,
   /**
    * all existing producttypes
    */
-  producttypes: {},
+  producttypes: producttype,
   /**
    * validation errors that are caused when an invalid order is placed
    */
@@ -126,7 +130,7 @@ async function getAllProductTypes(){
       return response.json();
     }
 
-  }).then((jsondata: object) =>{
+  }).then((jsondata: Map<string,string>) =>{
 
     state.producttypes = jsondata;
     
@@ -148,7 +152,7 @@ async function getAllRoomTypes(){
       return response.json();
     }
 
-  }).then((jsondata: object) =>{
+  }).then((jsondata: Map<string,string>) =>{
 
     state.roomtypes = jsondata;
 

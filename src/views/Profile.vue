@@ -106,7 +106,7 @@ export default defineComponent({
   name: "Profile",
 
   setup() {
-    const { getUser, user, adresses, bankcards, creditcards, jwttokens, resetUser } = useUserStore();
+    const { getUser, user, adresses, bankcards, creditcards, jwttoken, resetUser } = useUserStore();
     const { logoutUser, errormessages } = getLogoutUser();
 
     //user
@@ -168,7 +168,9 @@ export default defineComponent({
     async function logout(){
       await logoutUser();
       if (errormessages.value.length <= 0) {
+        console.log("HALLO LOGOUT");
         resetUser();
+        console.log("LÄNGE DANACH: " + jwttoken.value.accessToken.length);
           loggoutmessage.value = "";
           router.push("/");
       } else {
@@ -179,7 +181,8 @@ export default defineComponent({
    * fills out the profile info with the user's information upon initialization of the component
    */
     onMounted(async () => {
-      if(jwttokens.value.length > 0){
+      console.log("LÄNGE: " + jwttoken.value.accessToken.length);
+      if(jwttoken.value.accessToken.length > 0){
         await getUser();
         userInformation();
       }else{

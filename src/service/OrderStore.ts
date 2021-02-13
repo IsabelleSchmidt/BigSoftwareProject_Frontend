@@ -5,7 +5,7 @@ import { useUserStore } from './UserStore';
 
 const { list } = useCartStore();
 const { allproductslist, getAvailableByArtNr } = useProduct();
-const {jwttokens} = useUserStore();
+const {jwttoken} = useUserStore();
 
 
 
@@ -41,13 +41,13 @@ const state = reactive({
    * @param order order to be placed
    */
 async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promise<boolean> {
-    const token = jwttokens.value[0];
+    const token = jwttoken;
 
     //Fetch -> UserDetails
     await fetch(`/api/user/newOrder/user`, {
         method: 'POST',
         headers: { "Content-Type": "application/json",
-                    "Authorization" : "Bearer " + token.accessToken},
+                    "Authorization" : "Bearer " + token.value.accessToken},
         body: JSON.stringify(userorderreq)
     }).then((response) => {
         if (!response.ok) {
@@ -74,7 +74,7 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
     await fetch(`/api/order/new`, {
         method: 'POST',
         headers: { "Content-Type": "application/json",
-                   "Authorization" : "Bearer " + token.accessToken },
+                   "Authorization" : "Bearer " + token.value.accessToken },
         body: JSON.stringify(order)
     }).then((response) => {
         if (!response.ok) {

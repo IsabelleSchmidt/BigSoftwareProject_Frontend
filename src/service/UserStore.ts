@@ -3,6 +3,8 @@ import '../service/Requests'
 import '../service/Response'
 import '../service/User'
 
+const jwtToken1: JwtToken = {email: "", roles: new Array<string>(), accessToken: "" };
+
 const state = reactive({
     /**
      * the message that's placed when a login was unsuccessful
@@ -15,7 +17,7 @@ const state = reactive({
     /**
      * Array of authentification tokens
      */
-    jwttokens: Array<JwtToken>(),
+    jwttoken:  jwtToken1,
     /**
      * Array of messages describing (validation)errors
      */
@@ -42,7 +44,9 @@ const state = reactive({
  * Resets everything in context with the user.
  */
 function resetUser(){
-    state.jwttokens = [];
+    state.jwttoken.accessToken = "";
+    state.jwttoken.email = "";
+    state.jwttoken.roles = [];
     state.allAdresses = [];
     state.bankcard = [];
     state.creditcard = [];
@@ -68,8 +72,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         }
         return response.json();
     }).then((jsondata: JwtToken) => {
-        state.jwttokens.push(jsondata);
-        console.log(state.jwttokens);
+        state.jwttoken = jsondata;
     }).catch((error) => {
         console.log(error);
         state.errormessage = "Email-Adresse oder Passwort falsch."
@@ -106,7 +109,7 @@ async function sendUser(signUpRequest: SignUpRequest) {
  * sends a request to the server to logout a user that's logged in
  */
 async function logoutUser(){
-    const token = state.jwttokens[0];
+    const token: JwtToken = state.jwttoken;
     state.errormessage = "";
     state.errormessages = [];
     await fetch(`http://localhost:9090/api/user/logout`, {
@@ -133,8 +136,7 @@ async function getUser(): Promise<void> {
     const adresses = new Array<Adress>();
     const bankcards = new Array<Bankcard>();
     const creditcards = new Array<Creditcard>();
-    const token = state.jwttokens[0];
-    console.log("GET USER TOKEN: " + JSON.stringify(state.jwttokens[0]));
+    const token: JwtToken = state.jwttoken;
     await fetch(`http://localhost:9090/api/user/getUser`, {
         method: 'GET',
         headers: { "Content-Type": "application/json",
@@ -240,6 +242,7 @@ function reseterrormessage() {
 
 export function postLoginUser() {
     return {
+        jwttoken: computed(() => state.jwttoken),
         errormessage: computed(() => state.errormessage),
         sendLogin
     }
@@ -248,14 +251,14 @@ export function postLoginUser() {
 export function getLogoutUser() {
     return {
         errormessages: computed(() => state.errormessage),
-        jwttokens: computed(() => state.jwttokens),
+        jwttoken: computed(() => state.jwttoken),
         logoutUser
     }
 }
 
 export function useUserStore() {
     return {
-        jwttokens: computed(() => state.jwttokens),
+        jwttoken: computed(() => state.jwttoken),
         adresses: computed(() => state.allAdresses),
         bankcards: computed(() => state.bankcard),
         creditcards: computed(() => state.creditcard),

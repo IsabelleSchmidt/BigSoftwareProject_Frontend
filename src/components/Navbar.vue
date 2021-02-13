@@ -62,7 +62,7 @@
           </li>
           <li>
             <div id="margin"  @click="closeSearch()">
-              <router-link :to="jwttokens.length > 0 ? '/profile' : '/profile/login'" id="hitbox">
+              <router-link :to="jwttoken.accessToken.length > 0  ? '/profile' : '/profile/login'" id="hitbox">
                 <img src="../assets/profil.png" alt="profile" id="icon2"/>
               </router-link>
             </div>            
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" >
-    import {defineComponent, ref, watch, computed} from "vue";
+    import {defineComponent, ref, watch, computed, compile} from "vue";
     import {useFilterStore} from "../service/FilterStore";
     import {useSearchStore} from "../service/SearchStore"
     import {useRouter} from 'vue-router';
@@ -89,7 +89,7 @@
             const {setSearchactive, setSearchword, clearSearch, searchaktive} = useSearchStore();
             const router = useRouter();
             const {allproducttypes,allroomtypes, roomkeys, productkeys} = useProduct();
-            const{jwttokens} = useUserStore();
+            const{jwttoken} = useUserStore();
 
             const { getCartAmount } = useCartStore();
             /**
@@ -148,7 +148,7 @@
                productkeys,
                allroomtypes,
                allproducttypes,
-               jwttokens
+               jwttoken,
           };
         }
         
