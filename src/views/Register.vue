@@ -131,11 +131,12 @@
           <div class="error">{{ password1error }}</div>
         </div>
       </div>
-      <div class="row"> 
-         <input type="submit" name="registerUser" value="Registrieren" />
+      <div class="row">
+        <input type="submit" name="registerUser" value="Registrieren" />
       </div>
-      <div class="row">    
-          Bereits regestriert? <router-link id="link" to="/login">Hier einloggen</router-link>
+      <div class="row">
+        Bereits regestriert?
+        <router-link id="link" to="/login">Hier einloggen</router-link>
       </div>
     </form>
   </div>
@@ -143,14 +144,14 @@
 
 <script lang="ts">
 import { postUser } from "../service/UserStore";
-import { ref, defineComponent} from "vue";
-import { useRouter} from "vue-router";
+import { ref, defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "register",
 
   setup() {
-     //user
+    //user
     /**
      * a user's email adress
      */
@@ -183,7 +184,7 @@ export default defineComponent({
      * error that might've occured while trying to register
      */
     const message = ref("");
-    const minDate = "1921-02-12"
+    const minDate = "1921-02-12";
 
     const { sendUser, errormessages, check } = postUser();
     const router = useRouter();
@@ -191,38 +192,44 @@ export default defineComponent({
      * error that occured in the firstname field of the form
      */
     const firstnameerror = ref("");
-     /**
+    /**
      * error that occured in the lastname field of the form
      */
     const lastnameerror = ref("");
-     /**
+    /**
      * error that occured in the email field of the form
      */
     const emailerror = ref("");
-     /**
+    /**
      * error that occured in the birthdate field of the form
      */
     const birthdateerror = ref("");
-     /**
+    /**
      * error that occured in the gender field of the form
      */
     const gendererror = ref("");
-     /**
+    /**
      * error that occured in the new password field of the form
      */
     const password1error = ref("");
-     /**
+    /**
      * error that occured in the password confirmation field of the form
      */
     const password2error = ref("");
 
-  /**
-   * sends a registrationrequest to the server
-   * and fills out the errorfields with errors if they occured
-   */
+    /**
+     * Regex pattern for checking for a valid date
+     */
+    const dateRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
+
+    /**
+     * sends a registrationrequest to the server
+     * and fills out the errorfields with errors if they occured
+     */
     async function newUser(): Promise<void> {
-
-
+      if (!dateRegex.test(birthdate.value.toString())) {
+        birthdateerror.value = "Das Geburtsdatum ist ungültig.";
+      }
       if (password1.value == password2.value) {
         const signUpRequest: SignUpRequest = {
           firstName: firstname.value,
@@ -266,7 +273,7 @@ export default defineComponent({
             }
           }
         } else {
-           router.push("/login");
+          router.push("/login");
         }
       } else {
         password2error.value = "Die Passwörter stimmen nicht überein";
@@ -294,7 +301,7 @@ export default defineComponent({
       password1error,
       password2error,
       check,
-      minDate
+      minDate,
     };
   },
 });
@@ -327,35 +334,34 @@ label {
 .row {
   align-content: center;
 }
-input:focus{
-    outline-color: $color-green;
+input:focus {
+  outline-color: $color-green;
 }
-input[type=text]{
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid $color-grey3;
-    border-radius:3px;
-    resize: vertical;
-}
-
-input[type=submit]{
-    margin: 5% 0% 2.5% 15%;
-}
-#pw1{
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid $color-grey3;
-    border-radius:3px;
-    resize: vertical;
-
+input[type="text"] {
+  width: 30%;
+  padding: 0.25em;
+  border: 1px solid $color-grey3;
+  border-radius: 3px;
+  resize: vertical;
 }
 
-#pw2{
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid $color-grey3;
-    border-radius:3px;
-    resize: vertical;
+input[type="submit"] {
+  margin: 5% 0% 2.5% 15%;
+}
+#pw1 {
+  width: 30%;
+  padding: 0.25em;
+  border: 1px solid $color-grey3;
+  border-radius: 3px;
+  resize: vertical;
+}
+
+#pw2 {
+  width: 30%;
+  padding: 0.25em;
+  border: 1px solid $color-grey3;
+  border-radius: 3px;
+  resize: vertical;
 }
 
 .right {
@@ -368,22 +374,21 @@ input[type=submit]{
   font-size: 0.8em;
 }
 
-#registerB{
-    padding: 0%;
-    visibility: hidden;
+#registerB {
+  padding: 0%;
+  visibility: hidden;
 }
 
 #link {
-    text-decoration: none;
-    list-style: none;
-    list-style-type: none;
-    color: $color-green;
+  text-decoration: none;
+  list-style: none;
+  list-style-type: none;
+  color: $color-green;
 }
 
-.correct{
-    color: black;
-    margin-bottom: 0.15em;
-    font-size: 0.55em;
+.correct {
+  color: black;
+  margin-bottom: 0.15em;
+  font-size: 0.55em;
 }
-
 </style>
