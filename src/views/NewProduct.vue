@@ -201,13 +201,7 @@
                 id: Number(event.split(",")[0]),
                 value: event.split(",")[1],
             }
-            // if(allSelectTagsRef.value.length == 0){
-            //     allSelectTagsRef.value.push(t);
-            // }else{
-
-            // }
             allSelectTagsRef.value.push({id: t.id, value: t.value});
-            console.log(allSelectTagsRef.value)
         }
         /**
          * sends the new product to the server
@@ -221,8 +215,6 @@
             infoerror.value = "";
             descriptionerror.value = "";
             picerror.value = "";
-
-            console.log("Naaame",name.value);
             product.name = name.value;
             productType.value == "" ? producterror.value = "Bitte wähle einen Produkttypen aus.": product.productType = productType.value;
             roomType.value == "" ? roomerror.value = "Bitte Raumart auswählen." : product.roomType = roomType.value;
@@ -234,7 +226,6 @@
             product.depth = depth.value;
             product.available = available.value;
             product.allTags = allSelectTagsRef.value;
-            console.log('ProduuuukT:',product);
 
             formData.delete("picture")
             
@@ -274,14 +265,11 @@
                                 }
                             }
                     }else{
-                        console.log("ohne errors")
 
                         for(let i = 0; i < filesref.value.length; i++){
                             formData.append("picture",filesref.value[i],filesref.value[i].name);
-                            console.log("File1",formData.get('picture'))
                         }
 
-                        console.log("articlnr im newProd",articlenr);
                         picSucsess = await sendPicture(formData,articlenr)
                         if(picSucsess == true){
                             picerror.value = "";
@@ -312,7 +300,6 @@
 
                 for(let i = 0; i < filesref.value.length; i++){
                     formData.append("picture",filesref.value[i],filesref.value[i].name);
-                    console.log("File2",formData.get('picture'))
                 }
                 picSucsess = await sendPicture(formData,articlenr)
                 if(picSucsess==true){
@@ -354,7 +341,6 @@
                 }
                 lang = filesref.value.length;
             }  
-            console.log("Bild",filesref.value);
         }
         /**
          * deletes picture from chosen productpictures
@@ -362,14 +348,12 @@
         function deleteFile(index: number): void{
             filesref.value.splice(index,1);
             picerror.value = ""
-            console.log(filesref.value);
         }
         /**
          * deletes tag from chosen tags
          */
         function deleteTag(index: number): void{
             allSelectTagsRef.value.splice(index,1);
-            console.log(allSelectTagsRef.value)
         }
 
 

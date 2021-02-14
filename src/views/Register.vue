@@ -150,7 +150,6 @@ export default defineComponent({
   name: "register",
 
   setup() {
-     //user
     /**
      * a user's email adress
      */
@@ -265,8 +264,6 @@ export default defineComponent({
               password1error.value = error.message;
             }
           }
-        } else {
-         // router.push("/login");
         }
       } else {
         password2error.value = "Die Passwörter stimmen nicht überein";

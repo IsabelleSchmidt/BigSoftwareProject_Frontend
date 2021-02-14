@@ -22,15 +22,6 @@ export default {
   },
   setup() {
     const { jwttoken } = useUserStore();
-    // let check = useCartStore.check;
-
-
-        // if(jwttokens.value.length> 0){
-        //     check = useCartStore().setPreviousView(false);
-        // }else{
-        //     check = useCartStore().setPreviousView(true);
-        // }
-
     return { jwttoken };
   },
 };

@@ -1,6 +1,5 @@
 <template>
   <div class="product">
-    <!-- <button @click="toggle()">Toggle</button> -->
     <component
       v-bind:is="compref"
       @open-prod="changeComp($event)"

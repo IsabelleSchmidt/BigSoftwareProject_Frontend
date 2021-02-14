@@ -60,8 +60,8 @@ async function update(): Promise<void> {
       }
       state.list = productlist;
     })
-    .catch((fehler) => {
-      console.log(fehler);
+    .catch((error) => {
+      console.error(error);
     });
 }
 
@@ -122,7 +122,7 @@ async function getAllProductTypes(){
   await fetch('/api/product/all/producttypes', {method: 'GET'})
   .then((response) =>{
     if(!response.ok){
-      console.log("FEHLER BEIM HOLEN DER PRODUKTTYPEN");
+      console.error("Produkttypen nicht abrufbar.");
     }
     else{
       return response.json();
@@ -133,7 +133,7 @@ async function getAllProductTypes(){
     state.producttypes = jsondata;
     
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 }
 
@@ -144,7 +144,7 @@ async function getAllRoomTypes(){
  await fetch('/api/product/all/roomtypes', {method: 'GET'})
   .then((response) =>{
     if(!response.ok){
-      console.log("FEHLER BEIM HOLEN DER RAUMTYPEN");
+      console.error("Raumtypen nicht abrufbar.");
     }
     else{
       return response.json();
@@ -155,7 +155,7 @@ async function getAllRoomTypes(){
     state.roomtypes = jsondata;
 
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 }
 
@@ -177,8 +177,8 @@ async function getAllTags() {
     }
     state.tags = taglist
   })
-  .catch((fehler)=>{
-    console.log(fehler)
+  .catch((error)=>{
+    console.error(error)
   })
 }
 
@@ -189,8 +189,6 @@ async function getAllTags() {
  */
 async function sendProduct(newProduct: Product): Promise<void> {
   articlenr = -1;
-  console.log(" Sende Produkt mit Namen: " + newProduct.name + " an backend.")
-  console.log("Sende: " + 'Product ' + JSON.stringify(newProduct))
   await fetch(`/api/product/product/new`, {
     method: 'POST',
     headers: { "Content-Type": "application/json", access: 'Access-Control-Allow-Origin' },
@@ -201,27 +199,22 @@ async function sendProduct(newProduct: Product): Promise<void> {
       //errormessages holen
       const productResponse = JSON.parse(JSON.stringify(response.body)) as ProductResponse;
       state.validationerrors = productResponse.allErrors;
-      console.log("FEHLER: " + state.validationerrors)
     }
     return response.json();
   }).then((jsondata: ProductResponse) => {
 
-    console.log("Response json: " + JSON.stringify(jsondata));
     //wenn alles richtig war, neues Produkt hinzufuegen
     if (jsondata.allErrors.length == 0) {
       state.list.push(jsondata.product);
       state.validationerrors = jsondata.allErrors;
-      console.log("neues produkt!");
       articlenr = jsondata.product.articlenr;
-      console.log("articlenr", jsondata.product.articlenr);
     }
     else {
 
       state.validationerrors = jsondata.allErrors;
-      console.log("Fehlerliste: " + JSON.stringify(jsondata.allErrors));
     }
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
 }
@@ -232,7 +225,6 @@ async function sendProduct(newProduct: Product): Promise<void> {
  * @param articlenr articlenumber of the product to which the picture belongs
  */
 async function sendPicture(formData: FormData, articlenr: number) {
-  console.log("Sende Bild an Backend");
   let wassuccessful = false;
   if (articlenr != -1) {
     await fetch(`/api/product/product/${articlenr}/newpicture`, {
@@ -242,23 +234,20 @@ async function sendPicture(formData: FormData, articlenr: number) {
     }).then(function (response) {
       if (!response.ok) {
         state.validationerrors.push({ field: "picture", message: "Bild ist zu gross oder nicht vorhanden" })
-        console.log("FEHLER: " + JSON.stringify(state.validationerrors))
         wassuccessful = false
         return wassuccessful;
       }
       return response.json();
     }).then((jsondata: PictureResponse) => {
-      console.log("Erfolgreiche Bildübertragung? " + JSON.stringify(jsondata));
       if (jsondata.allErrors.length == 0) {
         wassuccessful = true;
       } else {
         state.validationerrors = jsondata.allErrors;
-        console.log("Fehlerliste: " + JSON.stringify(jsondata.allErrors));
         wassuccessful = false;
       }
     })
-      .catch((fehler) => {
-        console.log(fehler);
+      .catch((error) => {
+        console.error(error);
       });
   }
   return wassuccessful;
@@ -270,10 +259,9 @@ async function sendPicture(formData: FormData, articlenr: number) {
  */
 export function useProduct() {
   return {
-    // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
+    // computed() creates a read only version 
     allproductslist: computed(() => state.list),
     alltags: computed(()=> state.tags),
-    //errormessage: computed(() => state.errormessage),
     update,
     getProductByArtNr,
     getAvailableByArtNr,

@@ -35,12 +35,7 @@ export default defineComponent({
          */
         const email = ref("");
 
-        onMounted(async () => {
-        //when back button in browser is pressed
-        window.onpopstate = function (event: any) {
-            console.log("back");
-        };
-    });
+  
         /**
          * changes the currently visible component between login and password reset
          * @param e a user's entered email adress

@@ -21,8 +21,8 @@ async function getCode(email: string){
         return response.text();
     }).then((jsontext: string) => {
         code = jsontext;
-    }).catch((fehler) => {
-        console.log(fehler);
+    }).catch((error) => {
+        console.error(error);
     });
     return code;
 }
@@ -50,7 +50,7 @@ async function sendEmail(email: string): Promise<boolean> {
         }
         return response.json();
     }).catch((error) => {
-        console.log(error);
+        console.error(error);
     })
 
     return state.send;

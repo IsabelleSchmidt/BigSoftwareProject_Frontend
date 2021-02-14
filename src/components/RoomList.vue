@@ -1,8 +1,5 @@
 <template>
   <div class="roomList">
-    <!--BSP:  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
-        <router-link :to="{ path: 'register', query: { plan: 'private' }}">Register</router-link>
-        -->
     <router-link
       :to="{
         path: '/product',

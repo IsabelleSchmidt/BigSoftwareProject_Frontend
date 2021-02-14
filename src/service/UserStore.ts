@@ -73,12 +73,10 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
         return response.json();
     }).then((jsondata: JwtToken) => {
         state.jwttoken = jsondata;
-    }).catch((error) => {
-        console.log(error);
+    }).catch(() => {
         state.errormessage = "Email-Adresse oder Passwort falsch."
     })
 
-    console.log("RETURN");
     return state.check;
 }
 
@@ -100,7 +98,7 @@ async function sendUser(signUpRequest: SignUpRequest) {
     }).then((jsondata: Array<MessageResponse>) => {
         state.errormessages = jsondata;
     }).catch((error) => {
-        console.log(error)
+        console.error(error);
     });
 
 }
@@ -124,7 +122,7 @@ async function logoutUser(){
     }).then((jsondata: Array<MessageResponse>) => {
         state.errormessages = jsondata;
     }).catch((error) => {
-        console.log(JSON.stringify(error));
+       console.error(error);
     });
 
 }
@@ -145,7 +143,6 @@ async function getUser(): Promise<void> {
         if (!response.ok) {
             throw new Error(state.errormessage);
         }
-        console.log();
         return response.json();
     }).then((jsondata: User) => {
 
@@ -159,17 +156,14 @@ async function getUser(): Promise<void> {
             bankcards.push(Array.from(jsondata.bankcard)[i] as Bankcard);
         }
         state.bankcard= bankcards;
-        console.log("Bancard userstore inhalt", jsondata.bankcard.values)
         
         for (let i = 0; i < Array.from(jsondata.creditcard).length; i++) {
             creditcards.push(Array.from(jsondata.creditcard)[i] as Creditcard);  
         }
         state.creditcard = creditcards;
-        console.log("creditcard userstore inhalt", state.creditcard)
-
         state.user.push(jsondata);
-    }).catch((fehler) => {
-        console.log(fehler);
+    }).catch((error) => {
+        console.error(error);
     });
 }
 
@@ -194,8 +188,8 @@ async function checkIfEmailExists(email: string): Promise<boolean> {
         if (!jsondata.message)
             exists = true;
         
-    }).catch((exception) => {
-        console.log(exception)
+    }).catch((error) => {
+        console.error(error)
     });
 
     return exists;
@@ -223,10 +217,9 @@ async function changePassword(npr: NewPasswordRequest) {
         if (!jsondata.message)
             success = true;
         
-    }).catch((exception) => {
-        console.log(exception)
+    }).catch((error) => {
+        console.error(error)
     });
-    console.log("Success: " + success);
     return success;
 
 }

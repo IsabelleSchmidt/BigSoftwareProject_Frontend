@@ -38,6 +38,5 @@ img {
 .room {
   display: table;
   padding: 2em;
-  /* float: left; */
 }
 </style>
