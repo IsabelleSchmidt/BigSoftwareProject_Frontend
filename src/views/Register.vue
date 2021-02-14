@@ -227,10 +227,11 @@ export default defineComponent({
      * and fills out the errorfields with errors if they occured
      */
     async function newUser(): Promise<void> {
+
       if (!dateRegex.test(birthdate.value.toString())) {
         birthdateerror.value = "Das Geburtsdatum ist ungültig.";
       }
-      if (password1.value == password2.value) {
+      if (password1.value == password2.value && dateRegex.test(birthdate.value.toString())) {
         const signUpRequest: SignUpRequest = {
           firstName: firstname.value,
           lastName: lastname.value,
@@ -275,7 +276,7 @@ export default defineComponent({
         } else {
           router.push("/login");
         }
-      } else {
+      } else if (password1.value != password2.value) {
         password2error.value = "Die Passwörter stimmen nicht überein";
         password1.value = "";
         password2.value = "";
