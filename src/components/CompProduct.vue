@@ -44,7 +44,10 @@ export default defineComponent({
         const roomQuery = ref(route.query.room);
         const productTypeQuery = ref(route.query.productType);
         const nameQuery = ref(route.query.name);
-        const queryObject = {room: roomQuery, productType: productTypeQuery, name: nameQuery};
+        const queryObject = {
+            room: roomQuery, 
+            productType: productTypeQuery, 
+            name: nameQuery};
         const filter = reactive(queryObject);
 
         const { searchword, clearSearch } = useSearchStore();
@@ -64,9 +67,9 @@ export default defineComponent({
                 },
             });
             
-            queryObject.room.value = route.query.room;
-            queryObject.productType.value = route.query.productType;
-            queryObject.name.value = route.query.name;
+            filter.room = route.query.room;
+            filter.productType = route.query.productType;
+            filter.name = route.query.name;
             await update();
         });
 
@@ -79,13 +82,13 @@ export default defineComponent({
         })
         
         /**
-         * list of shown products
+         * list of shown products, filtered
          */
         const productlist = computed(() => {
 
-            queryObject.room.value = route.query.room;
-            queryObject.productType.value = route.query.productType;
-            queryObject.name.value = route.query.name;
+            filter.room = route.query.room;
+            filter.productType = route.query.productType;
+            filter.name = route.query.name;
 
             let merklist = allproductslist.value; 
             
@@ -99,8 +102,8 @@ export default defineComponent({
                 merklist = merklist.filter(p => p.productType === filter.productType?.toString());
             }
             else{
-                queryObject.room.value = route.query.room;
-                queryObject.productType.value = route.query.productType;
+                filter.room = route.query.room;
+                filter.productType = route.query.productType;
                 merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
 
@@ -150,7 +153,7 @@ export default defineComponent({
         }); 
 
         /**
-         * filtered list of products
+         * filtered list of products (contains the searchword)
          */
         const searchproductList = computed(() => {
 
@@ -164,6 +167,7 @@ export default defineComponent({
                         );
             }
         });
+        
         /**
          * opens the single product page for a given product
          * @param p chosen product
