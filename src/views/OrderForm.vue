@@ -202,7 +202,7 @@ export default defineComponent({
 
     const { postOrder, errormessages, ordererrormessages } = usePostOrder();
 
-    const { jwttokens, getUser, adresses } = useUserStore();
+    const {getUser, adresses } = useUserStore();
     const router = useRouter();
     /**
      * the value of the form field payment
@@ -284,12 +284,6 @@ export default defineComponent({
      * holds the error that occures if an item is not available anymore
      */
     const notavailableerrorempty = ref("");
-
-    //token
-    /**
-     * access token
-     */
-    const token = jwttokens.value[0];
 
     //delivery date
     /**

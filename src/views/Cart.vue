@@ -7,7 +7,7 @@
             <CartList/>
         </div>
         <div id="order">
-            <router-link :to="jwttokens.length> 0 ? '/orderform'  : '/cart/login'" append> <button id="checkout"> zur Kasse</button>  </router-link>
+            <router-link :to="jwttoken.accessToken.length > 0  ? '/orderform'  : '/cart/login'" append> <button id="checkout"> zur Kasse</button>  </router-link>
         </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     CartList,
   },
   setup() {
-    const { jwttokens } = useUserStore();
+    const { jwttoken } = useUserStore();
     // let check = useCartStore.check;
 
 
@@ -31,7 +31,7 @@ export default {
         //     check = useCartStore().setPreviousView(true);
         // }
 
-    return { jwttokens };
+    return { jwttoken };
   },
 };
 </script>

@@ -4,11 +4,13 @@ import { reactive, computed, readonly } from 'vue'
 
 import '@/service/Product'
 import '@/service/Picture'
-import '@/service/ProductResponse'
-import '@/service/PictureResponse'
-import '@/service/Validationerror'
+import '@/service/Response'
 
 /**************************************************/
+
+const producttype = new Map<string, string>();
+
+const roomtype = new Map <string, string>();
 
 const state = reactive({
   /**
@@ -18,15 +20,15 @@ const state = reactive({
   /**
    * all existing roomtypes
    */
-  roomtypes:  {},
+  roomtypes:  roomtype,
   /**
    * all existing producttypes
    */
-  producttypes: {},
+  producttypes: producttype,
   /**
    * validation errors that are caused when an invalid order is placed
    */
-  validationerrors: Array<Validationerror>(),
+  validationerrors: Array<MessageResponse>(),
   /**
    * all existing tags
    */
@@ -124,7 +126,7 @@ async function getAllProductTypes(){
       return response.json();
     }
 
-  }).then((jsondata: object) =>{
+  }).then((jsondata: Map<string,string>) =>{
 
     state.producttypes = jsondata;
     
@@ -146,7 +148,7 @@ async function getAllRoomTypes(){
       return response.json();
     }
 
-  }).then((jsondata: object) =>{
+  }).then((jsondata: Map<string,string>) =>{
 
     state.roomtypes = jsondata;
 

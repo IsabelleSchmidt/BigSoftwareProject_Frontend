@@ -106,7 +106,7 @@ export default defineComponent({
   name: "Profile",
 
   setup() {
-    const { getUser, user, adresses, bankcards, creditcards, jwttokens, resetUser } = useUserStore();
+    const { getUser, user, adresses, bankcards, creditcards, jwttoken, resetUser } = useUserStore();
     const { logoutUser, errormessages } = getLogoutUser();
 
     //user
@@ -179,7 +179,7 @@ export default defineComponent({
    * fills out the profile info with the user's information upon initialization of the component
    */
     onMounted(async () => {
-      if(jwttokens.value.length > 0){
+      if(jwttoken.value.accessToken.length > 0){
         await getUser();
         userInformation();
       }else{
