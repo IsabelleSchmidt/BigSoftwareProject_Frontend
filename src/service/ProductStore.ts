@@ -4,9 +4,7 @@ import { reactive, computed, readonly } from 'vue'
 
 import '@/service/Product'
 import '@/service/Picture'
-import '@/service/ProductResponse'
-import '@/service/PictureResponse'
-import '@/service/Validationerror'
+import '@/service/Response'
 
 /**************************************************/
 
@@ -30,7 +28,7 @@ const state = reactive({
   /**
    * validation errors that are caused when an invalid order is placed
    */
-  validationerrors: Array<Validationerror>(),
+  validationerrors: Array<MessageResponse>(),
   /**
    * all existing tags
    */

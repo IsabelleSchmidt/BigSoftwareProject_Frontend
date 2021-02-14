@@ -49,3 +49,25 @@ interface OrderResponse {
      */
     orderid: number;
 }
+
+/**
+ * the server's response to a post request of a new product
+ */
+interface ProductResponse{
+    /**
+     * all errors that occured during the posting process
+     */
+    allErrors: Array<MessageResponse>;
+    /**
+     * product to be saved into the database
+     */
+    product: Product;
+}
+
+/**
+ * Response from the server when a new picture is posted
+ */
+interface PictureResponse{
+    allErrors: Array<MessageResponse>;
+}
+
