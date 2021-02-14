@@ -266,7 +266,7 @@ export default defineComponent({
             }
           }
         } else {
-         // router.push("/login");
+           router.push("/login");
         }
       } else {
         password2error.value = "Die Passwörter stimmen nicht überein";
