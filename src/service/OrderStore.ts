@@ -79,7 +79,7 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         return response.json();
     }).then((jsondata: Array<OrderResponse>) => {
       
-        if (jsondata.length != 1 && jsondata[0].orderid == -1) {
+        if (jsondata[0].orderid == -1) {
             state.ordererrormessages = jsondata;
             orderSuccess = false;
         } else {

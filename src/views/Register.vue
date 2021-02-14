@@ -241,31 +241,35 @@ export default defineComponent({
         password1error.value = "";
         password2error.value = "";
 
-        await sendUser(signUpRequest);
-
-        if (errormessages.value.length > 0) {
-          for (const error of errormessages.value) {
-            if (error.field == "firstName") {
-              firstnameerror.value = error.message;
-            }
-            if (error.field == "lastName") {
-              lastnameerror.value = error.message;
-            }
-            if (error.field == "email") {
-              emailerror.value = error.message;
-            }
-            if (error.field == "birthdate") {
-              birthdateerror.value = error.message;
-            }
-            if (error.field == "gender") {
-              gendererror.value = error.message;
-            }
-            if (error.field == "password") {
-              password1error.value = error.message;
+        const wasregistered = await sendUser(signUpRequest);
+        if(!wasregistered){
+          if (errormessages.value.length > 0) {
+            for (const error of errormessages.value) {
+              if (error.field == "firstName") {
+                firstnameerror.value = error.message;
+              }
+              if (error.field == "lastName") {
+                lastnameerror.value = error.message;
+              }
+              if (error.field == "email") {
+                emailerror.value = error.message;
+              }
+              if (error.field == "birthdate") {
+                birthdateerror.value = error.message;
+              }
+              if (error.field == "gender") {
+                gendererror.value = error.message;
+              }
+              if (error.field == "password") {
+                password1error.value = error.message;
+              }
             }
           }
+        }else{
+          router.push("/login");
         }
-      } else {
+      } 
+      else {
         password2error.value = "Die Passwörter stimmen nicht überein";
         password1.value = "";
         password2.value = "";
