@@ -41,22 +41,20 @@ export let articlenr: number;
  * updates the available products
  */
 async function update(): Promise<void> {
-  const productlist = new Array<Product>();
  await fetch(`/api/product/products`, {
     method: 'GET'
   })
     .then((response) => {
       if (!response.ok) {
-        return productlist;
+        return state.list;
       }
      
       return response.json();
     })
     .then((jsondata: Array<Product>) => { 
-      for (let i = 0; i < jsondata.length; i++) {
-        productlist.push(jsondata[i]);
-      }
-      state.list = productlist;
+      jsondata.forEach(product => {
+        state.list.push(product);
+      })
     })
     .catch((fehler) => {
       console.log(fehler);
