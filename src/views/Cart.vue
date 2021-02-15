@@ -15,6 +15,7 @@
 import CartList from "@/components/CartList.vue";
 import "@/service/Product";
 import { useUserStore } from "../service/UserStore";
+import {routerHistory} from "../service/RouterStore";
 
 export default {
   components: {
@@ -22,6 +23,7 @@ export default {
   },
   setup() {
     const { jwttoken } = useUserStore();
+    routerHistory.add("/cart");
     return { jwttoken };
   },
 };

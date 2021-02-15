@@ -55,6 +55,7 @@ import {
   onMounted,
 } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import {routerHistory} from "../service/RouterStore";
 
 export default defineComponent({
   name: "CompLogin",
@@ -94,14 +95,15 @@ export default defineComponent({
       const loginSuccess = await sendLogin(loginRequest);
       const path = route.fullPath;
 
-      if (loginSuccess && path.includes("cart")) {
-        router.push("/orderform");
-      }else if(loginSuccess && path.includes("profile")){
-        router.push("/profile");
-      }else if (loginSuccess&& !path.includes("cart") && !path.includes("profile")){
-        router.push("/");
+      if(loginSuccess){
+        if(routerHistory.getPathReversed(2) === "/register"){
+          routerHistory.getPathReversed(4) == "/cart" ? router.push("/orderform") : router.push("/profile");
+        }else{
+          routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push("/profile");
+        }
       }
     }
+    
     /**
      * changes the current component to resetting the password
      */

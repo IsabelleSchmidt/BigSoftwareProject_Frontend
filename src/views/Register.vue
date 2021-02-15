@@ -150,6 +150,7 @@
 import { postUser } from "../service/UserStore";
 import { ref, defineComponent} from "vue";
 import { useRouter} from "vue-router";
+import {routerHistory} from "../service/RouterStore";
 
 export default defineComponent({
   name: "register",
@@ -191,6 +192,7 @@ export default defineComponent({
 
     const { sendUser, errormessages, check } = postUser();
     const router = useRouter();
+    routerHistory.add("/register");
     /**
      * error that occured in the firstname field of the form
      */
