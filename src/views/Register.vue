@@ -16,6 +16,7 @@
             class="right"
             pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
+            placeholder="Max"
           />
           <div class="error">{{ firstnameerror }}</div>
         </div>
@@ -34,6 +35,7 @@
             class="right"
             pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
+            placeholder="Mustermann"
           />
           <div class="error">{{ lastnameerror }}</div>
         </div>
@@ -51,6 +53,7 @@
             maxlenght="50"
             class="right"
             required
+            placeholder="max.mustermann@gmail.com"
           />
           <div class="error">{{ emailerror }}</div>
         </div>
