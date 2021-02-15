@@ -90,7 +90,6 @@
         const filesref= ref(files);
         const {sendPicture} = postPictures();
         const formData = new FormData;
-        let lang = 0;
       
         /**
          * the new product's name
@@ -194,16 +193,6 @@
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0, allTags:[] };
 
         /**
-         * changes the value of the selected Tags
-         */
-        function tagChange(event: string){
-            const t: Tag = {
-                id: Number(event.split(",")[0]),
-                value: event.split(",")[1],
-            }
-            allSelectTagsRef.value.push({id: t.id, value: t.value});
-        }
-        /**
          * sends the new product to the server
          */
         async function sendeProd(): Promise<void>{
@@ -266,8 +255,8 @@
                             }
                     }else{
 
-                        for(let i = 0; i < filesref.value.length; i++){
-                            formData.append("picture",filesref.value[i],filesref.value[i].name);
+                        for(const picture of filesref.value){
+                            formData.append("picture",picture,picture.name)
                         }
 
                         picSucsess = await sendPicture(formData,articlenr)
@@ -298,8 +287,8 @@
                 }
              }else{
 
-                for(let i = 0; i < filesref.value.length; i++){
-                    formData.append("picture",filesref.value[i],filesref.value[i].name);
+                for(const picture of filesref.value){
+                    formData.append("picture",picture,picture.name)
                 }
                 picSucsess = await sendPicture(formData,articlenr)
                 if(picSucsess==true){
@@ -328,19 +317,9 @@
          * adds a new picture to the productpictures
          */
         function onFileChange(files: File[]): void{
-            if(filesref.value.length == 0){
-                for(let i = 0; i <files.length; i++){
-                    filesref.value[i] = files[i];
-                }
-                lang = filesref.value.length;
-            }else{
-                let k = 0
-                for(let j = lang; j < lang+files.length; j++){
-                    filesref.value[j] = files[k];
-                    k++;
-                }
-                lang = filesref.value.length;
-            }  
+            for(const file of files){
+                filesref.value.push(file)
+            }
         }
         /**
          * deletes picture from chosen productpictures
@@ -348,6 +327,16 @@
         function deleteFile(index: number): void{
             filesref.value.splice(index,1);
             picerror.value = ""
+        }
+        /**
+         * changes the value of the selected Tags
+         */
+        function tagChange(event: string){
+            const t: Tag = {
+                id: Number(event.split(",")[0]),
+                value: event.split(",")[1],
+            }
+            allSelectTagsRef.value.push({id: t.id, value: t.value});
         }
         /**
          * deletes tag from chosen tags
