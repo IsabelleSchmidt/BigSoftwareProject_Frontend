@@ -186,7 +186,7 @@ export default defineComponent({
         await getUser();
         userInformation();
       }else{
-        router.push("/profile/login");
+        router.push("/login");
       }
       
     });

@@ -7,7 +7,7 @@
             <CartList/>
         </div>
         <div id="order">
-            <router-link :to="jwttoken.accessToken.length > 0  ? '/orderform'  : '/cart/login'" append> <button id="checkout"> zur Kasse</button>  </router-link>
+            <router-link :to="jwttoken.accessToken.length > 0  ? '/orderform'  : '/login'" append> <button id="checkout"> zur Kasse</button>  </router-link>
         </div>
   </div>
 </template>

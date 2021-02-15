@@ -15,6 +15,6 @@ describe('Navbar.vue Test', () => {
         expect(cmp.html()).toContain('Räume')
         expect(cmp.html()).toContain('cart')
         expect(cmp.html()).toContain('search')
-        expect(cmp.html()).toContain('<router-link to=\"/profile/login\" id=\"hitbox\">')
+        expect(cmp.html()).toContain('<router-link to=\"/login\" id=\"hitbox\">')
     })
 })
