@@ -14,6 +14,7 @@
             size="30"
             maxlenght="50"
             class="right"
+            pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
           />
           <div class="error">{{ firstnameerror }}</div>
@@ -31,6 +32,7 @@
             size="30"
             maxlenght="50"
             class="right"
+            pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
           />
           <div class="error">{{ lastnameerror }}</div>
