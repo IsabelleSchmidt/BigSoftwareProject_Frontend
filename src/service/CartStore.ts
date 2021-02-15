@@ -53,12 +53,11 @@ function deleteProduct(productartnr: number): void {
  * @param map the map that stores articlenumber to amount of all products in the cart
  */
 function calcTotal(value: number, key: number, map: any): void {
-    const zw = total.value;
 
     const prod = getProductByArtNr(key);
 
     if (prod) {
-        total.value = zw + (prod.price * value);
+        total.value +=(prod.price*value);
     }
 
 }
@@ -118,7 +117,6 @@ function getCartAmount() {
         cartAmount.value = Number(cartAmount.value) + Number(Array.from(state.list.values())[i]);
     }
     return cartAmount.value;
-
 }
 
 
