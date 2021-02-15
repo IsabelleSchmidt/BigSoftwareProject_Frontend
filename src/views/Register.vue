@@ -184,6 +184,10 @@ export default defineComponent({
      * error that might've occured while trying to register
      */
     const message = ref("");
+
+    /**
+     * MinDate for validating birthdate
+     */
     const minDate = "1921-02-12";
 
     const { sendUser, errormessages, check } = postUser();
