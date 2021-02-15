@@ -43,6 +43,7 @@ export let articlenr: number;
  * updates the available products
  */
 async function update(): Promise<void> {
+  const productlist = new Array<Product>();
  await fetch(`/api/product/products`, {
     method: 'GET'
   })
@@ -55,8 +56,9 @@ async function update(): Promise<void> {
     })
     .then((jsondata: Array<Product>) => { 
       jsondata.forEach(product => {
-        state.list.push(product);
+        productlist.push(product);
       })
+      state.list = productlist;
     })
     .catch((error) => {
       console.error(error);

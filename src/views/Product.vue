@@ -3,7 +3,7 @@
     <component
       v-bind:is="compref"
       @open-prod="changeComp($event)"
-      @open-all="toggle()"
+      @open-all="openAllProducts()"
       :productObject="prodref"
     />
   </div>
@@ -36,6 +36,20 @@ export default defineComponent({
         const component = COMPONENTS[0];
         const compref = ref(component);
 
+        onMounted(async () => {
+
+            router.afterEach((to) => {
+                if (to.query.name === "none" && to.query.room === "all") {  
+                    compref.value = COMPONENTS[0];
+                }
+            })
+
+        });
+
+        function openAllProducts(): void {
+            compref.value = COMPONENTS[0];
+        }
+
         function toggle(): void {
             if (compref.value === COMPONENTS[0]) {
                 compref.value = COMPONENTS[1];
@@ -55,6 +69,7 @@ export default defineComponent({
             changeComp,
             prodref,
             toggle,
+            openAllProducts
         };
     }
 });

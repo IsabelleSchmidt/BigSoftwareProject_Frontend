@@ -99,7 +99,7 @@ export default defineComponent({
         if(routerHistory.getPathReversed(2) === "/register"){
           routerHistory.getPathReversed(4) == "/cart" ? router.push("/orderform") : router.push("/profile");
         }else{
-          routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push("/profile");
+          routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push(routerHistory.getPathReversed(2));
         }
       }
     }

@@ -72,12 +72,13 @@
 
 <script lang="ts">
   import {postProduct,postPictures,articlenr,useProduct} from '../service/ProductStore'
-  import {useFilterStore} from '../service/FilterStore'
+  import {useUserStore} from '../service/UserStore'
   import '../service/Picture'
   import '../service/Product'
-  import {ref,defineComponent} from 'vue'
+  import {ref,defineComponent,onMounted} from 'vue'
   import Swal from "sweetalert2"
   import router from "../router"
+  import {routerHistory} from "../service/RouterStore"
   import '../service/Response'
   export default defineComponent ({
         name:"newProduct",
@@ -138,9 +139,9 @@
         /**
          * the new product's tag
          */
-        const tag = ref(Object);
+        const tag = ref("");
         const {sendProduct, validationerrors} = postProduct();
-        const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys} = useProduct();
+        const {alltags,getAllTags,allproducttypes,allroomtypes,roomkeys,productkeys,update} = useProduct();
         getAllTags()
         /**
          * All selected tags
@@ -185,12 +186,52 @@
          */
         let picSucsess = true
 
+        const {jwttoken,user,getUser} = useUserStore();
+
+        onMounted(async () => {
+            routerHistory.add("/newProduct");
+            if(jwttoken.value.accessToken.length <= 0){
+                router.push("/login");
+            }else{
+                await getUser();
+                
+                    if(user.value[0].roles.some(role =>(role.name ==="WAREHOUSE"||role.name==="ADMIN"||role.name==="STAFF"))){
+                        router.push("/newProduct");
+                    }else{
+                        router.push("/login");
+                    
+                }
+            }
+
+        });
+
         
+
         /**
          * the new product
          */
         const product: Product = {'name':name.value, 'roomType':roomType.value, 'productType':productType.value, 'available':available.value, 
         'width':width.value, 'height':height.value, 'depth':depth.value, 'price':price.value, 'information':information.value ,'description': description.value, articlenr:null, allPictures:[], version:0, allTags:[] };
+
+
+        function reset(){
+            name.value="";
+            roomType.value="";
+            productType.value="";
+            price.value = 0;
+            information.value = "";
+            description.value = "";
+            width.value = 0;
+            height.value = 0;
+            depth.value = 0;
+            available.value = 0;
+            tag.value = "";
+            picturename.value="";
+
+            allSelectTagsRef.value=[];
+            filesref.value=[];
+
+        }
 
         /**
          * sends the new product to the server
@@ -262,6 +303,7 @@
                         picSucsess = await sendPicture(formData,articlenr)
                         if(picSucsess == true){
                             picerror.value = "";
+                            await update();
                             // Pop UP
                             Swal.fire({
                                 title: 'neues Produkt angelegt!',
@@ -271,7 +313,7 @@
                                 confirmButtonColor: '#3BA07C',
                                 }).then((result)=>{
                                     if(result.isConfirmed){
-                                        location.reload();
+                                        reset();
                                     }
                             })
 
@@ -293,6 +335,7 @@
                 picSucsess = await sendPicture(formData,articlenr)
                 if(picSucsess==true){
                     picerror.value = "";
+                    await update();
                     Swal.fire({
                         title: 'neues Produkt angelegt!',
                         text: 'weiteres Produkt anlegen...',
@@ -301,7 +344,7 @@
                         confirmButtonColor: '#3BA07C',
                         }).then((result)=>{
                             if(result.isConfirmed){
-                                location.reload();
+                                reset();
                             }
                             })
                 }else{
@@ -313,6 +356,8 @@
                 }
              }    
         }
+
+
         /**
          * adds a new picture to the productpictures
          */

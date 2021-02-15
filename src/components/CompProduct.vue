@@ -89,60 +89,60 @@ export default defineComponent({
             filter.room = route.query.room;
             filter.productType = route.query.productType;
             filter.name = route.query.name;
-
-            let merklist = allproductslist.value; 
+            
+            let helplist = allproductslist.value; 
             
             if (filter.room === "all" && filter.productType === "all" ) {
-                merklist = allproductslist.value;
+                helplist = allproductslist.value;
             }
              else if (filter.room !== "all" && filter.productType === "all") {
-                 merklist =  merklist.filter(p => p.roomType === filter.room?.toString());
+                 helplist =  helplist.filter(p => p.roomType === filter.room?.toString());
             }
             else if (filter.room === "all" && filter.productType !== "all") {
-                merklist = merklist.filter(p => p.productType === filter.productType?.toString());
+                helplist = helplist.filter(p => p.productType === filter.productType?.toString());
             }
             else{
                 filter.room = route.query.room;
                 filter.productType = route.query.productType;
-                merklist =  merklist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
+                helplist =  helplist.filter(p => p.productType === filter.productType?.toString() && p.roomType === filter.room?.toString());
             }
 
             //Filteroptions
             if(colorArray.value.length != 0){
-                const gesamt = merklist;
-                const zwlist = ref(merklist);
-                const zw = ref(Array<Product>());
+                const total = helplist;
+                const storelist = ref(helplist);
+                const store = ref(Array<Product>());
                 for(let i = 0; i< colorArray.value.length; i++){
-                    zwlist.value = gesamt.filter(p=> p.allTags[0] && p.allTags[0].value === colorArray.value[i]);
-                    for(let x = 0; x<zwlist.value.length; x++){
-                        zw.value.push(zwlist.value[x]);
+                    storelist.value = total.filter(p=> p.allTags[0] && p.allTags[0].value === colorArray.value[i]);
+                    for(let x = 0; x<storelist.value.length; x++){
+                        store.value.push(storelist.value[x]);
                     
                     }
                     
                 }
-                merklist = zw.value;
+                helplist = store.value;
             }
               if(pricehigh.value == 1000)
-                merklist = merklist.filter(p => p.price >= pricelow.value && p.price <= getHightPrice());
+                helplist = helplist.filter(p => p.price >= pricelow.value && p.price <= getHightPrice());
                 else
-                merklist = merklist.filter(p => p.price >= pricelow.value && p.price <= pricehigh.value);
+                helplist = helplist.filter(p => p.price >= pricelow.value && p.price <= pricehigh.value);
                 
               if(widthhigh.value == 250)
-                merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= getHightWidth());
+                helplist = helplist.filter(p => p.width >= widthlow.value && p.width <= getHightWidth());
                 else
-                merklist = merklist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
+                helplist = helplist.filter(p => p.width >= widthlow.value && p.width <= widthhigh.value);
                 
               if(heighthigh.value == 250)
-                merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= getHightHeigh());
+                helplist = helplist.filter(p => p.height >= heightlow.value && p.height <= getHightHeigh());
                 else
-                merklist = merklist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
+                helplist = helplist.filter(p => p.height >= heightlow.value && p.height <= heighthigh.value);
                 
               if(depthhigh.value == 250)
-                merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= getHightDepth());
+                helplist = helplist.filter(p => p.depth >= depthlow.value && p.depth <= getHightDepth());
                 else
-                merklist = merklist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
+                helplist = helplist.filter(p => p.depth >= depthlow.value && p.depth <= depthhigh.value);
             
-            return merklist;
+            return helplist;
         });
 
         /**
