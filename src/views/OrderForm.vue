@@ -167,7 +167,12 @@
     </div>
     <br />
     <div class="row">
-      <input type="submit" @click="sendOrder()" value="Bestellen" />
+      <div id="other" class="error">{{FieldErrors.other.value}}</div>
+      <input v-if="!orderwassent" type="submit" @click="sendOrder()" value="Bestellen" />
+      <div id="loading-div" v-else-if="orderwassent">
+        <div id="loading-text">Lade..</div>
+        <div id="loading-content"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -208,6 +213,8 @@ export default defineComponent({
     const selectedadr = ref("");
     let dateOfExpiry;
 
+    const orderwassent = ref(false);
+
   /**
    * Object that contains all Fieldinput information of the Form
    * property names are of type Fieldnames
@@ -240,6 +247,7 @@ export default defineComponent({
       cowner: ref(""),
       creditcardnumber: ref(""),
       dateOfExpiry: ref(""),
+      other: ref(""),
     };
 
     /**
@@ -356,8 +364,9 @@ export default defineComponent({
         Object.values(FieldErrors).forEach(entry => entry.value = "");
 
         //sends a new Order transfer object to the server and waits for the response
+        orderwassent.value = true;
         const orderSuccess = await postOrder(userOrderRequest,{priceTotal: inTotal.value, allProductsOrdered: orderList} as OrderDT);
-
+       
         if (orderSuccess) {
           clearCart();
           router.push("/orderConf");
@@ -367,6 +376,9 @@ export default defineComponent({
           errormessages.value.map(entry =>({entry, field: entry.field.split(".").length > 1 ? entry.field.split(".")[1] as Fieldnames : undefined}))
           .filter((obj)=> obj.field != null && FieldErrors[obj.field] != null)
           .forEach((obj)=> FieldErrors[obj.field!].value = obj.entry.message);
+
+          FieldErrors.other.value =  errormessages.value.find(entry => entry.field.split(".").length == 1)?.message as string;
+          
       
           if (payment.value == "bankcard") {
             FieldErrors.dateOfExpiry.value = "";
@@ -415,6 +427,7 @@ export default defineComponent({
             }  
           }
         } 
+        orderwassent.value = false;
       }
       else {
         paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
@@ -455,6 +468,7 @@ export default defineComponent({
       notavailableerrorempty,
       adresses,
       selectedadr,
+      orderwassent,
       isHidden: computed(() => {
             if (adresses.value.length == 0) {
                 return true;
@@ -473,6 +487,7 @@ export default defineComponent({
         font-size: 10px;
         color: red;
     }
+
     .orderForm{
         margin: 1em 2em 2em 2em;
     } 
@@ -596,4 +611,62 @@ export default defineComponent({
         float: left;
         width: 70%;
     } 
+
+      #loading-div {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  #loading-text {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: rgb(20, 121, 60);
+    width: 100px;
+    height: 30px;
+    margin: -7px 0 0 -45px;
+    text-align: center;
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-size: 20px;
+  }
+
+  #loading-content {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 170px;
+    height: 170px;
+    margin: -85px 0 0 -85px;
+    border: 3px solid #F00;
+  }
+
+  #loading-content {
+    border: 3px solid transparent;
+    border-top-color: $color-green;
+    border-bottom-color: $color-green;
+    border-radius: 50%;
+    -webkit-animation: loader 2s linear infinite;
+    -moz-animation: loader 2s linear infinite;
+    -o-animation: loader 2s linear infinite;
+    animation: loader 2s linear infinite;
+  }
+
+  @keyframes loader {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
 </style>
