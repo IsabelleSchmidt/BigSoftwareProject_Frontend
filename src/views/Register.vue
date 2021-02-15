@@ -16,7 +16,6 @@
             class="right"
             required
             placeholder="Max"
-            pattern="[A-z]+"
           />
           <div class="error">{{ firstnameerror }}</div>
         </div>
@@ -34,7 +33,6 @@
             maxlenght="50"
             class="right"
             required
-            pattern="[A-z]+"
             placeholder="Mustermann"
           />
           <div class="error">{{ lastnameerror }}</div>
