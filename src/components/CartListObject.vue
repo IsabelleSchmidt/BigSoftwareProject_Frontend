@@ -126,18 +126,7 @@ export default defineComponent({
    */
     function amChange(am: number): void {
       if (props.product) {
-      /*  const a = getAmount(props.product[0]);
-        if (a) {
-          if (am < a) {
-            changeAmount(props.product[0], Number(am));
-          } else if (checkOneMoreAvailable(props.product[0])) {
-            changeAmount(props.product[0], Number(am));
-          } else {
-            changeAmount(props.product[0], a);
-          }
-        }*/
           changeAmount(props.product[0], Number(am));
-
       }
     }
     /**

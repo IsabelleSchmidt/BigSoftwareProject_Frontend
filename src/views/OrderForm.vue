@@ -10,10 +10,8 @@
           <select v-model="selectedadr"
             name="adress"
             @change="adrChange($event.target.value)"
-            
           >
             <option
-              
               v-for="item in adresses"
               :value="[
                 item.streetName,
@@ -32,10 +30,10 @@
           <label for="street" class="col7">Straße</label>
         </div>
         <div class="row">
-          <div class="error">{{ streetnameerror }}</div>
+          <div class="error">{{FieldErrors.streetName.value}}</div>
           <input
             id="street"
-            v-model="streetName"
+            v-model="Field.streetName.value"
             type="text"
             class="col6"
             required
@@ -45,11 +43,10 @@
           <label for="num" class="col1">Hausnummer</label>
         </div>
         <div class="row">
-          <div class="error">{{ housenumbererror }}</div>
+          <div class="error">{{FieldErrors.houseNumber.value}}</div>
           <input
             id="num"
-            v-model="houseNumber"
-            type="text"
+            v-model="Field.houseNumber.value" type="text"
             class="col1"
             required
           />
@@ -58,28 +55,25 @@
           <label for="num" class="col1">Postleitzahl</label>
         </div>
         <div class="row">
-          <div class="error">{{ postcodeerror }}</div>
+          <div class="error">{{FieldErrors.postCode.value}}</div>
           <input
             id="num"
-            v-model="postCode"
-            type="text"
+            v-model="Field.postCode.value" type="text"
             class="col1"
-            required
-          />
+            required/>
         </div>
         <div class="row">
           <label for="street" class="col7">Stadt</label>
         </div>
         <div class="row">
-          <div class="error">{{ cityerror }}</div>
-          <input id="street" v-model="city" type="text" class="col6" required />
+          <div class="error">{{FieldErrors.city.value}}</div>
+          <input id="street" v-model="Field.city.value" type="text" class="col6" required />
         </div>
       </div>
-
       <h2>Zahlungsart</h2>
       <div class="payment">
         <div class="row">
-          <p class="error">{{ paymenterror }}</p>
+          <p class="error"> {{ paymenterror }} </p>
           <input
             id="creditcard"
             type="radio"
@@ -90,14 +84,14 @@
         <div class="creditC">
           <div class="row">
             <label for="cardnumber" class="col3">Kartennummer</label
-            ><input v-model="creditcardnumber" type="number" />
+            ><input v-model="Field.creditcardnumber.value" type="number" />
           </div>
-          <div class="error">{{ creditcardnumbererror }}</div>
+          <div class="error">{{FieldErrors.creditcardnumber.value}}</div>
           <div class="row">
             <label for="cardholder" class="col3">Name des Karteninhabers</label
-            ><input v-model="creditcardOwner" type="text" />
+            ><input v-model="Field.cowner.value" type="text" />
           </div>
-          <div class="error">{{ creditcardownererror }}</div>
+          <div class="error">{{FieldErrors.cowner.value}}</div>
           <div class="row">
             <label for="expires" class="col3">Ablaufdatum</label>
             <select v-model="dateOfExpiryMonth">
@@ -127,12 +121,12 @@
               <option value="2030">2030</option>
               <option value="2031">2031</option>
             </select>
-            <div class="error">{{ dateofexpiryerror }}</div>
+            <div class="error">{{FieldErrors.dateOfExpiry.value}}</div>
           </div>
         </div>
 
         <div class="row">
-          <input
+          <input 
             id="bankcard"
             type="radio"
             value="bankcard"
@@ -142,19 +136,19 @@
         <div class="bankC">
           <div class="row">
             <label for="iban" class="col3">IBAN</label
-            ><input v-model="iban" id="iban" type="text" />
+            ><input v-model="Field.iban.value" id="iban" type="text" />
           </div>
-          <div class="error">{{ ibanerror }}</div>
+          <div class="error">{{FieldErrors.iban.value}}</div>
           <div class="row">
             <label for="bank" class="col3">Bank</label
-            ><input v-model="bank" id="bank" type="text" />
+            ><input v-model="Field.bank.value" id="bank" type="text" />
           </div>
-          <div class="error">{{ bankerror }}</div>
+          <div class="error">{{FieldErrors.bank.value}}</div>
           <div class="row">
             <label for="cardholder" class="col3">Name des Karteninhabers</label
-            ><input v-model="bankcardOwner" type="text" />
+            ><input v-model="Field.owner.value" type="text" />
           </div>
-          <div class="error">{{ bankcardownererror }}</div>
+          <div class="error">{{FieldErrors.owner.value}}</div>
         </div>
       </div>
     </form>
@@ -173,7 +167,12 @@
     </div>
     <br />
     <div class="row">
-      <input type="submit" @click="sendOrder()" value="Bestellen" />
+      <div id="other" class="error">{{FieldErrors.other.value}}</div>
+      <input v-if="!orderwassent" type="submit" @click="sendOrder()" value="Bestellen" />
+      <div id="loading-div" v-else-if="orderwassent">
+        <div id="loading-text">Lade..</div>
+        <div id="loading-content"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -191,7 +190,7 @@ export default defineComponent({
   components: {
     OrderListObject,
   },
-  setup(context) {
+  setup() {
     const {
       list,
       deleteProduct,
@@ -204,79 +203,58 @@ export default defineComponent({
 
     const {getUser, adresses } = useUserStore();
     const router = useRouter();
-    /**
-     * the value of the form field payment
-     */
-    const payment = ref("");
-   
-    
-    const selectedadr = ref("");
-
-    //adress
-
-    const streetName = ref("");
-    const houseNumber = ref("");
-    const postCode = ref("");
-    const city = ref("");
-
-    //bankcard
-    const iban = ref("");
-    const bankcardOwner = ref("");
-    const bank = ref("");
-
-    //creditcard
-    const creditcardOwner = ref("");
-    const creditcardnumber = ref("");
-    const dateOfExpiryMonth = ref(Number(1))
+ 
+    type Fieldnames = "streetName" | "houseNumber" | "postCode" | "city" | "iban" | "owner" | "bank" | "cowner" | "creditcardnumber" | "dateOfExpiry";
+  
+    //dateofexpiry
+    const dateOfExpiryMonth = ref(Number(1));
     const dateOfExpiryYear = ref(Number(2021));
+    const payment = ref("");
+    const selectedadr = ref("");
     let dateOfExpiry;
 
-    //errors
-    
+    const orderwassent = ref(false);
+
+  /**
+   * Object that contains all Fieldinput information of the Form
+   * property names are of type Fieldnames
+   */
+    const Field = {
+      streetName: ref("") ,
+      houseNumber: ref("") ,
+      postCode: ref(""),
+      city: ref("") ,
+      iban: ref(""),
+      owner: ref("") ,
+      bank: ref(""),
+      cowner: ref(""),
+      creditcardnumber: ref(""),
+      dateOfExpiry: ref(""),
+    }
+    /**
+     * Object that contains all errors belonging to a Field
+     * values are of type Fieldnames
+     */
+     const FieldErrors = {
+       
+      streetName: ref("") ,
+      houseNumber: ref("") ,
+      postCode: ref(""),
+      city: ref("") ,
+      iban: ref(""),
+      owner: ref("") ,
+      bank: ref(""),
+      cowner: ref(""),
+      creditcardnumber: ref(""),
+      dateOfExpiry: ref(""),
+      other: ref(""),
+    };
+
     /**
      * holds the error that occured in the payment field during the placement of an order
      */
     const paymenterror = ref("");
-    /**
-     * holds the error that occured in the street field during the placement of an order
-     */
-    const streetnameerror = ref("");
-    /**
-     * holds the error that occured in the house number field during the placement of an order
-     */
-    const housenumbererror = ref("");
-    /**
-     * holds the error that occured in the zipcode field during the placement of an order
-     */
-    const postcodeerror = ref("");
-    /**
-     * holds the error that occured in the city field during the placement of an order
-     */
-    const cityerror = ref("");
-    /**
-     * holds the error that occured in the iban field during the placement of an order
-     */
-    const ibanerror = ref("");
-    /**
-     * holds the error that occured in the bankcard field during the placement of an order
-     */
-    const bankcardownererror = ref("");
-    /**
-     * holds the error that occured in the bankname field during the placement of an order
-     */
-    const bankerror = ref("");
-    /**
-     * holds the error that occured in the creditcardowner field during the placement of an order
-     */
-    const creditcardownererror = ref("");
-    /**
-     * holds the error that occured in the creditcardnumber field during the placement of an order
-     */
-    const creditcardnumbererror = ref("");
-    /**
-     * holds the error that occured in the date of expiry field during the placement of an order
-     */
-    const dateofexpiryerror = ref("");
+ 
     /**
      * holds the error that occured during the placement of an order, if an item is not available anymore
      */
@@ -300,13 +278,13 @@ export default defineComponent({
       return Array.from(list.value.entries());
     });
     /**
-     * calculates the estimate delivery date
+     * calculates the estimated delivery date
      */
     const deliveryDate = computed(() => {
       const date = new Date();
       date.setDate(date.getDate() + 3);
       return date.toLocaleDateString();
-    })
+    });
 
     /**
      * gets the user's information upon initialization of the component
@@ -315,6 +293,7 @@ export default defineComponent({
       await getUser();
       
     });
+
     /**
      * changes the values of the adress form fields
      */
@@ -325,10 +304,45 @@ export default defineComponent({
         postCode: event.split(",")[2],
         city: event.split(",")[3],
       };
-      streetName.value = a.streetName;
-      houseNumber.value = a.houseNumber;
-      postCode.value = a.postCode;
-      city.value = a.city;
+
+      Field.streetName.value = a.streetName;
+      Field.houseNumber.value = a.houseNumber;
+      Field.postCode.value = a.postCode;
+      Field.city.value = a.city;
+    }
+
+  /**
+   * fills a UserOrderRequest Object with information 
+   * @returns a filled UserOrderRequest Object
+   */
+    function fillRequestInfo(): UserOrderRequest{
+           const adr: Adress = {
+          streetName: Field.streetName.value,
+          houseNumber: Field.houseNumber.value,
+          postCode: Field.postCode.value,
+          city: Field.city.value,
+        };
+        const bc: Bankcard = {
+          iban: Field.iban.value,
+          owner: Field.owner.value,
+          bank: Field.bank.value,
+        };
+
+        dateOfExpiry = new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1);
+        
+        const cc: Creditcard = {
+          cowner: Field.cowner.value,
+          creditcardnumber: Field.creditcardnumber.value,
+          dateOfExpiry: dateOfExpiry,
+        };
+
+        const uor: UserOrderRequest = {
+          adress: adr,
+          bankCard: bc,
+          creditcard: cc,
+        };
+
+        return uor;
     }
     /**
      * sends a new order to the server
@@ -339,108 +353,41 @@ export default defineComponent({
 
       if (payment.value !== "") {
         paymenterror.value = "";
-        const adr: Adress = {
-          streetName: streetName.value,
-          houseNumber: houseNumber.value,
-          postCode: postCode.value,
-          city: city.value,
-        };
-        const bc: Bankcard = {
-          iban: iban.value,
-          owner: bankcardOwner.value,
-          bank: bank.value,
-        };
 
-        dateOfExpiry = new Date(dateOfExpiryYear.value, dateOfExpiryMonth.value, 1);
-        
-        const cc: Creditcard = {
-          cowner: creditcardOwner.value,
-          creditcardnumber: creditcardnumber.value,
-          dateOfExpiry: dateOfExpiry,
-        };
+        const userOrderRequest = fillRequestInfo();
 
-        const uor: UserOrderRequest = {
-          adress: adr,
-          bankCard: bc,
-          creditcard: cc,
-        };
+        const orderList: ProductDTO[] = [];
+        //adds a new ProductDTO to the orderlist for every product in the productlist
+        productList.value.forEach(product => orderList.push({articleNR: product[0], amount: product[1]} as ProductDTO));
+       
+       //set all fielderror values to an empty string
+        Object.values(FieldErrors).forEach(entry => entry.value = "");
 
-        const orderList = [];
-        for (let i = 0; i < productList.value.length; i++) {
-          const p: ProductDTO = {
-            articleNR: productList.value[i][0],
-            amount: productList.value[i][1],
-          };
-          orderList.push(p);
-        }
-
-        const order: OrderDT = {
-          priceTotal: inTotal.value,
-          allProductsOrdered: orderList,
-          
-        };
-
-        streetnameerror.value = "";
-        housenumbererror.value = "";
-        postcodeerror.value = "";
-        cityerror.value = "";
-        ibanerror.value = "";
-        bankcardownererror.value = "";
-        bankerror.value = "";
-        creditcardownererror.value = "";
-        creditcardnumbererror.value = "";
-        dateofexpiryerror.value = "";
-
-        const orderSuccess = await postOrder(uor, order);
-
+        //sends a new Order transfer object to the server and waits for the response
+        orderwassent.value = true;
+        const orderSuccess = await postOrder(userOrderRequest,{priceTotal: inTotal.value, allProductsOrdered: orderList} as OrderDT);
+       
         if (orderSuccess) {
           clearCart();
           router.push("/orderConf");
-        } else {
-          for (const error of errormessages.value) {
-            if (error.field == "adress.streetName") {
-              streetnameerror.value = error.message;
-            }
-            if (error.field == "adress.houseNumber") {
-              housenumbererror.value = error.message;
-            }
-            if (error.field == "adress.postCode") {
-              postcodeerror.value = error.message;
-            }
-            if (error.field == "adress.city") {
-              cityerror.value = error.message;
-            }
-            if (error.field == "bankCard.iban") {
-              ibanerror.value = error.message;
-            }
+        } 
+        else {
+          //sets every errormessage that exists in fieldnames 
+          errormessages.value.map(entry =>({entry, field: entry.field.split(".").length > 1 ? entry.field.split(".")[1] as Fieldnames : undefined}))
+          .filter((obj)=> obj.field != null && FieldErrors[obj.field] != null)
+          .forEach((obj)=> FieldErrors[obj.field!].value = obj.entry.message);
 
-            if (error.field == "bankCard.owner") {
-              bankcardownererror.value = error.message;
-            }
-
-            if (error.field == "bankCard.bank") {
-              bankerror.value = error.message;
-            }
-
-            if (error.field == "creditcard.cowner") {
-              creditcardownererror.value = error.message;
-            }
-            if (error.field == "creditcard.creditcardnumber") {
-              creditcardnumbererror.value = error.message;
-            }
-            if (error.field == "creditcard.dateOfExpiry") {
-              dateofexpiryerror.value = error.message;
-            }
-          }
-
+          FieldErrors.other.value =  errormessages.value.find(entry => entry.field.split(".").length == 1)?.message as string;
+          
+      
           if (payment.value == "bankcard") {
-            dateofexpiryerror.value = "";
-            creditcardnumbererror.value = "";
-            creditcardownererror.value = "";
+            FieldErrors.dateOfExpiry.value = "";
+            FieldErrors.creditcardnumber.value = "";
+            FieldErrors.cowner.value = "";
           } else if (payment.value == "creditcard") {
-            bankcardownererror.value = "";
-            ibanerror.value = "";
-            bankerror.value = "";
+            FieldErrors.owner.value = "";
+            FieldErrors.iban.value = "";
+            FieldErrors.bank.value = "";
           }
 
           for (const ordererror of ordererrormessages.value) {
@@ -449,13 +396,14 @@ export default defineComponent({
             const amountchangestring =
               "Bei folgenden Artikeln musst die Menge aufgrund der Verfügbarkeit angepasst werden: ";
             const messages = ordererror.message.split("//");
-            const pnr = [];
-            const amount = [];
+            const pnr: number[] = [];
+            const amount: number[] = [];
+            
             for (let m = 0; m < messages.length; m++) {
               if (messages[m].split("--")[1] != null) {
-                const p = messages[m].split("--")[1] as any;
+                const p: string = messages[m].split("--")[1];
                 pnr.push(Number(p));
-                const a = messages[m].split("--")[3] as any;
+                const a: string = messages[m].split("--")[3];
                 amount.push(Number(a));
               }
             }
@@ -476,10 +424,12 @@ export default defineComponent({
                   deleteProduct(pnr[i]);
                 }
               }
-            }
+            }  
           }
-        }
-      } else {
+        } 
+        orderwassent.value = false;
+      }
+      else {
         paymenterror.value = "Sie müssen eine Zahlungsmethode angeben.";
       }
     }
@@ -490,13 +440,13 @@ export default defineComponent({
     watch(payment, (payment) => {
         if(payment === "creditcard") {
           //delete bankcard input
-          iban.value = "";
-          bank.value = "";
-          bankcardOwner.value = "";
+          Field.iban.value = "";
+          Field.bank.value = "";
+          Field.owner.value = "";
         } else {
           //delete creditcard input
-          creditcardnumber.value = "";
-          creditcardOwner.value = "";
+          Field.creditcardnumber.value = "";
+          Field.cowner.value = "";
           dateOfExpiryMonth.value = 1;
           dateOfExpiryYear.value = 2021;
         }
@@ -506,35 +456,19 @@ export default defineComponent({
       inTotal,
       productList,
       sendOrder,
-      streetName,
-      houseNumber,
-      postCode,
-      city,
-      iban,
-      bankcardOwner,
-      bank,
-      creditcardOwner,
-      creditcardnumber,
       dateOfExpiryMonth,
       dateOfExpiryYear,
       dateOfExpiry,
       payment,
       paymenterror,
       adrChange,
-      streetnameerror,
-      housenumbererror,
-      postcodeerror,
-      cityerror,
-      ibanerror,
-      bankcardownererror,
-      bankerror,
-      creditcardownererror,
-      creditcardnumbererror,
-      dateofexpiryerror,
+      FieldErrors,
+      Field,
       notavailableerror,
       notavailableerrorempty,
       adresses,
       selectedadr,
+      orderwassent,
       isHidden: computed(() => {
             if (adresses.value.length == 0) {
                 return true;
@@ -553,6 +487,7 @@ export default defineComponent({
         font-size: 10px;
         color: red;
     }
+
     .orderForm{
         margin: 1em 2em 2em 2em;
     } 
@@ -676,4 +611,62 @@ export default defineComponent({
         float: left;
         width: 70%;
     } 
+
+      #loading-div {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  #loading-text {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: rgb(20, 121, 60);
+    width: 100px;
+    height: 30px;
+    margin: -7px 0 0 -45px;
+    text-align: center;
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-size: 20px;
+  }
+
+  #loading-content {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 170px;
+    height: 170px;
+    margin: -85px 0 0 -85px;
+    border: 3px solid #F00;
+  }
+
+  #loading-content {
+    border: 3px solid transparent;
+    border-top-color: $color-green;
+    border-bottom-color: $color-green;
+    border-radius: 50%;
+    -webkit-animation: loader 2s linear infinite;
+    -moz-animation: loader 2s linear infinite;
+    -o-animation: loader 2s linear infinite;
+    animation: loader 2s linear infinite;
+  }
+
+  @keyframes loader {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
 </style>

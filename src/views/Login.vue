@@ -9,6 +9,7 @@ import CompLogin from "../components/CompLogin.vue"
 import CompResetPw from "../components/CompResetPw.vue"
 import { defineComponent, ref, onMounted } from "vue"
 import '../service/Product'
+import {routerHistory} from "../service/RouterStore";
 
 export default defineComponent({
     name: "Login",
@@ -35,12 +36,8 @@ export default defineComponent({
          */
         const email = ref("");
 
-        onMounted(async () => {
-        //when back button in browser is pressed
-        window.onpopstate = function (event: any) {
-            console.log("back");
-        };
-    });
+        routerHistory.add("/login");
+
         /**
          * changes the currently visible component between login and password reset
          * @param e a user's entered email adress

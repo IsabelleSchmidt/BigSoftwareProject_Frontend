@@ -14,7 +14,9 @@
             size="30"
             maxlenght="50"
             class="right"
+            pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
+            placeholder="Max"
           />
           <div class="error">{{ firstnameerror }}</div>
         </div>
@@ -31,7 +33,9 @@
             size="30"
             maxlenght="50"
             class="right"
+            pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
             required
+            placeholder="Mustermann"
           />
           <div class="error">{{ lastnameerror }}</div>
         </div>
@@ -49,6 +53,7 @@
             maxlenght="50"
             class="right"
             required
+            placeholder="max.mustermann@gmail.com"
           />
           <div class="error">{{ emailerror }}</div>
         </div>
@@ -144,14 +149,14 @@
 
 <script lang="ts">
 import { postUser } from "../service/UserStore";
-import { ref, defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { ref, defineComponent} from "vue";
+import { useRouter} from "vue-router";
+import {routerHistory} from "../service/RouterStore";
 
 export default defineComponent({
   name: "register",
 
   setup() {
-    //user
     /**
      * a user's email adress
      */
@@ -192,6 +197,7 @@ export default defineComponent({
 
     const { sendUser, errormessages, check } = postUser();
     const router = useRouter();
+    routerHistory.add("/register");
     /**
      * error that occured in the firstname field of the form
      */
@@ -255,32 +261,33 @@ export default defineComponent({
         password2error.value = "";
 
         await sendUser(signUpRequest);
-
-        if (errormessages.value.length > 0) {
-          for (const error of errormessages.value) {
-            if (error.field == "firstName") {
-              firstnameerror.value = error.message;
-            }
-            if (error.field == "lastName") {
-              lastnameerror.value = error.message;
-            }
-            if (error.field == "email") {
-              emailerror.value = error.message;
-            }
-            if (error.field == "birthdate") {
-              birthdateerror.value = error.message;
-            }
-            if (error.field == "gender") {
-              gendererror.value = error.message;
-            }
-            if (error.field == "password") {
-              password1error.value = error.message;
+          if (errormessages.value.length > 0) {
+            for (const error of errormessages.value) {
+              if (error.field == "firstName") {
+                firstnameerror.value = error.message;
+              }
+              if (error.field == "lastName") {
+                lastnameerror.value = error.message;
+              }
+              if (error.field == "email") {
+                emailerror.value = error.message;
+              }
+              if (error.field == "birthdate") {
+                birthdateerror.value = error.message;
+              }
+              if (error.field == "gender") {
+                gendererror.value = error.message;
+              }
+              if (error.field == "password") {
+                password1error.value = error.message;
+              }
             }
           }
-        } else {
+         else {
           router.push("/login");
         }
       } else if (password1.value != password2.value) {
+        
         password2error.value = "Die Passwörter stimmen nicht überein";
         password1.value = "";
         password2.value = "";

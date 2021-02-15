@@ -101,6 +101,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useUserStore, getLogoutUser } from "../service/UserStore";
 import "../service/User";
 import { useRouter } from "vue-router";
+import {routerHistory} from "../service/RouterStore";
 
 export default defineComponent({
   name: "Profile",
@@ -108,6 +109,7 @@ export default defineComponent({
   setup() {
     const { getUser, user, adresses, bankcards, creditcards, jwttoken, resetUser } = useUserStore();
     const { logoutUser, errormessages } = getLogoutUser();
+   
 
     //user
     /**
@@ -127,6 +129,7 @@ export default defineComponent({
      */
     const birthdate = ref(new Date());
     const router = useRouter();
+    routerHistory.add("/profile");
     /**
      * error that occured while logging out
      */
@@ -183,7 +186,7 @@ export default defineComponent({
         await getUser();
         userInformation();
       }else{
-        router.push("/profile/login");
+        router.push("/login");
       }
       
     });

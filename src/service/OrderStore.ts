@@ -10,32 +10,28 @@ const {jwttoken} = useUserStore();
 
 
 const state = reactive({
+
     /**
      * map of products in the cart key:articlenumber, value:amount of times a product is in the cart
      */
-    errormessage: "",
-      /**
-     * messages of possible mistakes after updating a user for placing an order
-     */
     orderlist: list,
     /**
-     * messages of possible mistakes after placing an order
+     * messages of possible mistakes after updating a user for placing an order
      */
     errormessages: Array<MessageResponse>(),
     /**
-     * list of errors that occured while saving a new order
+     * messages of possible mistakes after placing an order
      */
     ordererrormessages: Array<OrderResponse>(),
     /**
-     * a set of all order identifiers of orders placed by the user in this session 
-     */
-    allorders: new Set<number>(),
-    /**
      * whether an order was successfully saved 
      */
-    orderSuccess: false
+  
 })
-/**
+  let orderSuccess = false;
+  const errormessage= "Fehler beim aktualisieren des Users.";
+
+  /**
    * sends requests to the server to save new userinformation and place an order
    * @param userorderreq new user information needed to place an order
    * @param order order to be placed
@@ -51,23 +47,23 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         body: JSON.stringify(userorderreq)
     }).then((response) => {
         if (!response.ok) {
-            state.orderSuccess = false;
-            throw new Error(state.errormessage);
+            orderSuccess = false;
+            throw new Error(errormessage);
 
         }
         return response.json();
     }).then((jsondata: Array<MessageResponse>) => {
         state.errormessages = jsondata;
         if (state.errormessages.length > 0) {
-            state.orderSuccess = false;
+            orderSuccess = false;
         } else {
-            state.orderSuccess = true;
+            orderSuccess = true;
         }
-    }).catch((exception) => {
-        console.log(exception)
+    }).catch((error) => {
+        console.error(error)
     });
 
-    if (!state.orderSuccess) {
+    if (!orderSuccess) {
         return false;
     }
     //Fetch -> ordered Articles
@@ -78,36 +74,37 @@ async function postOrder(userorderreq: UserOrderRequest, order: OrderDT): Promis
         body: JSON.stringify(order)
     }).then((response) => {
         if (!response.ok) {
-            throw new Error(state.errormessage);
+            throw new Error(errormessage);
         }
         return response.json();
     }).then((jsondata: Array<OrderResponse>) => {
-
-        if (!(jsondata.length == 1 && jsondata[0].orderid != -1)) {
+      
+        if (jsondata[0].orderid == -1) {
             state.ordererrormessages = jsondata;
-            state.orderSuccess = false;
+            orderSuccess = false;
         } else {
-            state.allorders.add(jsondata[0].orderid);
-            state.orderSuccess = true;
+            orderSuccess = true;
         }
-    }).catch((exception) => {
-        console.log(exception)
+    }).catch((error) => {
+        console.error(error)
     });
-    return state.orderSuccess;
+    return orderSuccess;
 }
+
 /**
  * checks whether all items in the cart are still available
  */
 function checkAllItemsStillAvailable() {
-    for (let i = 0; i < state.orderlist.size; i++) {
-        const artnr = Array.from(state.orderlist.keys())[i];
-        const available = getAvailableByArtNr(artnr) as number;
-        const needtobeavailable = Array.from(state.orderlist.values())[i]
-        if (needtobeavailable > available) {
-            return false;
+    //orderlist holds an articlenumber and the number of times this article is still available
+        for (let i = 0; i < state.orderlist.size; i++) {
+            const artnr = Array.from(state.orderlist.keys())[i];
+            const available = getAvailableByArtNr(artnr) as number;
+            const needtobeavailable = Array.from(state.orderlist.values())[i]
+            if (needtobeavailable > available) {
+                return false;
+            }
         }
-    }
-    return true;
+        return true;
 }
 
 
@@ -116,7 +113,6 @@ export function usePostOrder() {
         postOrder,
         errormessages: computed(() => state.errormessages),
         ordererrormessages: computed(() => state.ordererrormessages),
-        allorders: state.allorders,
         checkAllItemsStillAvailable
     }
 }

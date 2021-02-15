@@ -13,7 +13,6 @@
           <li id="prPrice">
             <span>{{ product[1] }} x {{ pprice }}€</span>
           </li>
-          <!-- <li id="prPrice">{{pprice}} €</li>  -->
           <li id="inTotal">
             <span
               >{{
