@@ -241,8 +241,7 @@ export default defineComponent({
         password1error.value = "";
         password2error.value = "";
 
-        const wasregistered = await sendUser(signUpRequest);
-        if(!wasregistered){
+        await sendUser(signUpRequest);
           if (errormessages.value.length > 0) {
             for (const error of errormessages.value) {
               if (error.field == "firstName") {
@@ -264,7 +263,6 @@ export default defineComponent({
                 password1error.value = error.message;
               }
             }
-          }
         }else{
           router.push("/login");
         }

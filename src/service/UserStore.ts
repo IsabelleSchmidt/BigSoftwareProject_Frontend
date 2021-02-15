@@ -84,8 +84,7 @@ async function sendLogin(loginRequest: LoginRequest): Promise<boolean> {
  * sends a request to the server to signup a new user
  * @param signUpRequest information needed to sign up
  */
-async function sendUser(signUpRequest: SignUpRequest): Promise<boolean> {
-
+async function sendUser(signUpRequest: SignUpRequest) {
     await fetch(`/api/user/register`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -97,11 +96,9 @@ async function sendUser(signUpRequest: SignUpRequest): Promise<boolean> {
         return response.json();
     }).then((jsondata: Array<MessageResponse>) => {
         state.errormessages = jsondata;
-        return false;
     }).catch((error) => {
         console.error(error);
     });
-    return true;
 }
 
 /**
