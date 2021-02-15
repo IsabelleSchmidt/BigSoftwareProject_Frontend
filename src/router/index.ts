@@ -1,7 +1,12 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-
+/**
+ * HTML5 history
+ */
 const history = createWebHistory();
+/**
+ * creates a router and sets possible routes
+ */
 const router = createRouter({
   history,
    routes: 
@@ -14,10 +19,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'About',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+      component: () => import('../views/About.vue')
     },
     {
       path: '/cart',
@@ -25,14 +27,9 @@ const router = createRouter({
       component: () => import('../views/Cart.vue')
     },
     {
-      path: '/favorits',
-      name: 'Favorits',
-      component: () => import('../views/Favorits.vue')
-    },
-    {
-      path: '/profil',
-      name: 'Profil',
-      component: () => import('../views/Profil.vue')
+      path: '/profile',
+      name: 'Profile',
+      component: () => import('../views/Profile.vue')
     }
     ,
     {
@@ -46,12 +43,6 @@ const router = createRouter({
       component: () => import('../views/Product.vue'),
       props: true
     },
-    // {
-    //   path: '/product/:ProductName',
-    //   name: 'Product',
-    //   component: () => import('../views/Product.vue'),
-    //   props: true
-    // },
     {
       path: '/register',
       name: 'Register',
@@ -61,13 +52,42 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/Login.vue')
-    }
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: () => import('../views/Home.vue')
+    },
+    {
+      path: '/orderform',
+      name: 'OrderForm',
+      component: () => import('../views/OrderForm.vue')
+    },
+    
+    { 
+      path: '/404', 
+      component: () => import('../components/NotFound.vue') 
+    },
+    {
+      path: '/:catchAll(.*)', redirect:'404'
+    },
+    {
+      path: '/orderConf',
+      name: 'OrderConf',
+      component: () => import('../components/OrderConfirmation.vue'),
+    },
+    {
+      path: '/resetPassword/:email/:code',
+      name: 'ResetPassword',
+      component: () => import('../views/ResetPassword.vue'),
+      props: true,
+    },
+    {
+      path: '/newProduct',
+      name: 'newProduct',
+      component: () => import('../views/NewProduct.vue'),
+    },
   ]
 });
-
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes,
-// });
 
 export default router;

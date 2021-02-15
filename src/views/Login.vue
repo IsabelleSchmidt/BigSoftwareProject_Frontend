@@ -1,166 +1,62 @@
 <template>
-    <div class="login">
-        <h1 align="center">Login</h1>
-        <p id="error" align="center">{{message}}</p>
-        <form @submit.prevent="loginUser()">
-            <div class="row">
-                <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
-                <div class="col2"><input v-model="email" id="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
-            </div>  
-            <div class="row">
-                <div class="col1"><label for="password" class="left">Passwort</label></div>
-                <div class="col2"><input v-model="password" id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
-            </div>
-            <div class="row">    
-            <input type="submit" name="loginUser" value="Login">
-            </div>
-            <div class="row">    
-                <router-link class="link" to="/register">Noch kein Kunde? Hier registrieren.</router-link>
-            </div>
-        </form>
-    </div>
+  <div class="login">
+    <component v-bind:is="compref" @toggle-comp="toggle($event)" :mailadress="email"/>
+  </div>
 </template>
 
 <script lang="ts">
+import CompLogin from "../components/CompLogin.vue"
+import CompResetPw from "../components/CompResetPw.vue"
+import { defineComponent, ref, onMounted } from "vue"
+import '../service/Product'
+import {routerHistory} from "../service/RouterStore";
 
-    import{postLoginUser} from '../service/UserStore'
-    import{ref, defineComponent, computed} from 'vue'
+export default defineComponent({
+    name: "Login",
+    components:{
+        CompLogin,
+        CompResetPw
+    },
+    setup() {
+        /**
+         * options of visible components
+         */
+        const COMPONENTS = ["CompLogin", "CompResetPw"];
+        /**
+         * default component is login
+         */
+        const component = COMPONENTS[0];
+        /**
+         * currently visible component
+         */
+        const compref = ref(component);
 
-    export default defineComponent({
-        name:"Login",
+        /**
+         * a user's email adress
+         */
+        const email = ref("");
 
-        setup(){
-            const email = ref("");
-            const password = ref("");
-            const user: User = {'firstName':"",'lastName':"", 'email': email.value, 'birthdate': new Date(), 'password':password.value};
-            const {sendLogin, errormessage} = postLoginUser();
-            
+        routerHistory.add("/login");
 
-            const COLORS = [
-                "red",
-                "#ccc"
-            ]
-
-            async function loginUser(): Promise<void>{
-                console.log("Emaaail", email.value);
-                user.email = email.value;
-                user.password = password.value;
-                console.log('UuuuseR:', user);
-                
-                sendLogin(user);
-                console.log("Errormessage: " + errormessage.value.toString);
-            } 
-
-            return {
-                loginUser, 
-                user, 
-                email, 
-                password, 
-                errormessage,
-                message : computed(() => {
-                    if(errormessage.value === "WRONG"){
-                        return "Passwort ist ungültig.";
-                    }else if(errormessage.value ==="NOTVALID"){
-                        return "Email-Adresse ist ungültig.";
-                    }else{
-                        return "";
-                    }   
-                }),
-                colorEmail: computed(() => {
-                    if(errormessage.value === "NOTVALID"){
-                        return COLORS[0];
-                    }else{
-                        return COLORS[1];
-                    }
-                    
-                }),
-                colorPW: computed(() => {
-                    if(errormessage.value === "WRONG"){
-                        return COLORS[0];
-                    }else{
-                        return COLORS[1];
-                    }
-                    
-                })
-
-                
-            };
+        /**
+         * changes the currently visible component between login and password reset
+         * @param e a user's entered email adress
+         */
+        function toggle(e: string): void {
+            email.value = e;
+            if (compref.value === COMPONENTS[0]) {
+                compref.value = COMPONENTS[1];
+            } else {
+                compref.value = COMPONENTS[0];
+            }
         }
 
-    });
-
+        return {
+            component,
+            compref,
+            toggle,
+            email
+        };
+    }
+});
 </script>
-
-<style scoped lang="scss">
-
-form{
-    margin: 5% 0% 15% 35%;
-}
-label{
-    padding: 12px 12px 12px 0;
-    display: inline-block;
-}
-.col1{
-    float: left;
-    width: 25%;
-}
-
-.col2{
-    float: left;
-    width:75%;
-}
-
-.row:after{
-    content:"";
-    display: table;
-    clear: both;
-}
-input:focus{
-    outline-color: #3BA07C;
-}
-input[type=text]{
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid #ccc;
-    border-radius:3px;
-    resize: vertical;
-}
-input[type=submit]{
-    margin: 5% 0% 5% 15%;
-    padding: 1% 5%;
-    background-color: black;
-    border-style: none;
-    color: #fff;
-    &:hover{
-        background-color: #3BA07C;
-    }
-    &:focus{
-        outline: none;
-    }
-}
-
-.link {
-    margin: 4% 0% 5% 6.5%;
-    color: black;
-    text-decoration: none;
-    list-style: none;
-    list-style-type: none;
-}
-
-#pw {
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid v-bind('colorPW');
-    border-radius:3px;
-    resize: vertical;
-}
-
-#email {
-    width: 30%;
-    padding: 0.25em;
-    border: 1px solid v-bind('colorEmail');
-    border-radius:3px;
-    resize: vertical;
-}
-
-</style>

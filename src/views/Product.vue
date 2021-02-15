@@ -1,9 +1,12 @@
 <template>
-    <div class="product">
-        <!-- <button @click="toggle()">Toggle</button> -->
-        <component v-bind:is="compref" @open-prod="changeComp($event)" @open-all="toggle()" :tst="prodref"/>
-        
-    </div>
+  <div class="product">
+    <component
+      v-bind:is="compref"
+      @open-prod="changeComp($event)"
+      @open-all="openAllProducts()"
+      :productObject="prodref"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -21,27 +24,31 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
-
-        const component = "CompProduct";
-        const compref = ref(component);
+        /**
+         * possible components
+         */
+        const COMPONENTS = ["CompProduct", "CompSingle"];
         const prod: Product = {'articlenr': 0, 'version': 0, 'name': "", 'productType': "", 
                                 'roomType': "", 'price': 0, 'allPictures': [], 'height': 0,
-                                'width': 0, 'depth': 0, 'available': 0, 'description': "", 'information': ""};
+                                'width': 0, 'depth': 0, 'allTags': [], 'available': 0, 'description': "", 'information': ""};
         const prodref = ref(prod);
-        const COMPONENTS = ["CompProduct", "CompSingle"];
-
-
-
+        
+        const component = COMPONENTS[0];
+        const compref = ref(component);
 
         onMounted(async () => {
 
             router.afterEach((to) => {
-                if (to.query.name === "none" && to.query.room === "all") {
+                if (to.query.name === "none" && to.query.room === "all") {  
                     compref.value = COMPONENTS[0];
                 }
             })
 
         });
+
+        function openAllProducts(): void {
+            compref.value = COMPONENTS[0];
+        }
 
         function toggle(): void {
             if (compref.value === COMPONENTS[0]) {
@@ -62,6 +69,7 @@ export default defineComponent({
             changeComp,
             prodref,
             toggle,
+            openAllProducts
         };
     }
 });

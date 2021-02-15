@@ -1,278 +1,390 @@
 <template>
-    <div class="compSingle">
-        <div class="top">
-            <a @click="openproductlist()">  &laquo; zurück zur Übersicht</a> 
-        </div>
-        <div class="top2">
-        <div class="left"> 
-            <!-- v-for="(i,p) in tst.allPictures.path" :key="p" -->
-            <div v-for="i in tst.allPictures" :key="i">
-                <img class="pic" v-bind:src="i.path"  alt="Picture"/>
-            </div>    
-        </div>
-        <div class="right"> 
-            <ul>
-                <li><h3 class="name">{{tst.name}}</h3></li>
-                <li><p class="description">{{tst.description}}</p></li>
-                <li><p class="price">{{tst.price}} €</p></li>
-                <li class="buttons">
-                    <button class="buttoncart">In den Warenkorb</button>
-                    <button class="buttonfav">
-                        <img src="../assets/fav.png" alt="Wunschzettel" height="24px" />
-                    </button>
-                </li>
-                <li class="available">
-                    <img class="icontruck" src="../assets/truckicon.png"  alt="Picture"/>
-                    <p class="availabletxt">verfügbar</p>
-                    <p class="availablepoint">&bull;</p>
-                </li>
-            </ul>
-        </div>
-        </div>
-        <div class="bottom"> 
-            <hr>
-            <details>
-                <summary>Produktinformationen</summary>
-                <p class="p1">  {{tst.information}}</p>
-            </details>
-            <hr>
-            <details>
-                <summary>Produktgröße</summary>
-                <p class="p1">{{tst.width}} (Breite) x {{tst.depth}} (Länge) x {{tst.height}} (Höhe) </p>
-            </details> 
-            <hr>
-        </div>
+  <div class="compSingle">
+    <div class="top">
+      <a id="link" @click="openproductlist()"> &laquo; zurück zur Übersicht</a>
     </div>
+    <div class="top2">
+      <div class="left">
+        <div v-for="i in productObject.allPictures" :key="i">
+          <img class="pic" v-bind:src="'/api/product/picture/'+i.id" alt="Picture" />
+        </div>
+      </div>
+      <div class="right">
+        <ul>
+          <li>
+            <h3 class="name">{{ productObject.name }}</h3>
+          </li>
+          <li>
+            <p class="description">{{ productObject.description }}</p>
+          </li>
+          <li class="priceLi">
+            <p class="price">{{ productObject.price }} €</p>
+          </li>
+          <li>
+            <label>Menge:</label>
+            <select
+              :value="pamount"
+              name="pamount"
+              id="am"
+              @change="amChange($event.target.value)"
+            >
+              <option v-for="item in pavailable" :value="[item]" :key="item.id">
+                {{ item }}
+              </option>
+            </select>
+          </li>
+          <li class="buttons">
+            <button class="buttoncart" @click="add()">In den Warenkorb</button>
+          </li>
+          <li class="success">
+            <v-alert type="success" v-if="success"
+              >Artikel wurde zum Warenkorb hinzugefügt
+            </v-alert>
+          </li>
+          <li class="alert">
+            <v-alert type="success" v-if="alert"
+              >Artikel ist in dieser Menge nicht mehr verfügbar
+            </v-alert>
+          </li>
+          <li class="available">
+            <img
+              class="icontruck"
+              src="../assets/truckicon.png"
+              alt="Picture"
+            />
+            <p class="availabletxt">verfügbar</p>
+            <p class="availablepoint">&bull;</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <hr />
+      <details>
+        <summary>Produktinformationen</summary>
+        <p class="p1">{{ productObject.information }}</p>
+      </details>
+      <hr />
+      <details>
+        <summary>Produktgröße</summary>
+        <p class="p1">
+          {{ productObject.width }} (Breite) x {{ productObject.depth }} (Länge) x
+          {{ productObject.height }} (Höhe)
+        </p>
+      </details>
+      <hr />
+    </div>
+  </div>
 </template>
 
 <script lang = "ts">
-import { defineComponent, computed, onMounted, ref} from 'vue';
-import { useRouter, useRoute } from 'vue-router'
+import { defineComponent, computed, ref, PropType, onMounted } from "vue";
 
-import '@/service/Product'
+import "@/service/Product";
+import { useCartStore } from "../service/CartStore";
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
-    name: "CompSingle",
-    components:{
-    }, props: {
-        tst: {
-            type: Object,
-            default: () => ({}),
-        }
-    }, setup(props, context) {
+  name: "CompProducts",
+  components: {},
+  props: {
+    productObject: {
+      type: Object as PropType<Product>,
+      required: true,
+    },
+  },
+  setup(props, context) {
+    const {
+      addProduct,
+      checkOneMoreAvailable,
+      getAmount,
+    } = useCartStore();
+    const alert = ref(false);
+    const success = ref(false);
+    const amount = ref(1);
+    const timer = ref();
+    const router = useRouter();
+    const route = useRoute();
+    /**
+     * amount of times a product is still available
+     */
+    const pavailable = computed(() => {
+      return props.productObject.available;
+    });
 
-        const router = useRouter();
+    /**
+     * amount of a certain product
+     */
+    const pamount = computed(() => {
+      return amount.value;
+    });
 
-
-        const route = useRoute();
-        const ro = ref(route.query.room);
-        const pr = ref(route.query.productType);
-        // const n = ref(route.query.name);
-        // const q = {room: ro, productType: pr, name: n};
-        // const filter = reactive(q);
-
-        //Callback
-        function openproductlist(): void { 
-            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: "none" }});
-            context.emit("open-all");
-            // router.go(-1);
-        }
-
-
-        onMounted(async () => {
-
-            router.push({ path: '/product', query: { room: ro.value, productType: pr.value, name: props.tst.name }});
-            // router.afterEach((to, from, failure) => {
-            //     console.log("--------" + to.query.name);
-            // })
-
-            // q.room.value = route.query.room;
-            // console.log(q.room.value);
-            // q.productType.value = route.query.productType;
-            // console.log(q.productType.value);
-            // q.name.value = route.query.name;
-            // console.log(q.name.value);
-
-            // console.log(filter.room + " " + filter.productType + " " + filter.name);
-
-            //when back button in browser is pressed
-            window.onpopstate = function(event: any) {
-                // context.emit("open-all");
-                openproductlist();
-                // router.go(-1);
-            };
-        });
-
-        const COLORS = [
-            "red",
-            "#FFBF00",
-            "green",
-        ];   
-
-        return {
-            openproductlist,
-            color: computed(() => {
-                if (props.tst.nrAvailableItems <= 0) {
-                    return COLORS[0];
-                } else if (props.tst.nrAvailableItems < 20) {
-                    return COLORS[1];
-                } else {
-                    return COLORS[2];
-                }
-            }),
-        };
+    /**
+     * callback function
+     */
+    function openproductlist(): void {
+      context.emit("open-all");
     }
-});
- </script>
 
-<style scoped>
+  /**
+   * sets the current query upon initialization of this component
+   */
+    onMounted(async () => {
+      router.push({
+        path: "/product",
+        query: {
+          room: route.query.room,
+          productType: route.query.productType,
+          name: props.productObject.name,
+        },
+      });
+
+      /**
+       * is called when the back button in the browser is pressed
+       * goes back to the previous page
+       */
+      window.onpopstate = function (event: any) {
+        openproductlist();
+      };
+    });
+
+  /**
+   * adds a product to the currently shown products
+   */
+    function add(): void {
+      /**
+       * amount of times a product is still available
+       */
+      const am = ref(getAmount(props.productObject.articlenr));
+      success.value = false
+      if (
+        !checkOneMoreAvailable(props.productObject.articlenr) ||
+        props.productObject.available <= 0
+      ) {
+        if(timer.value){
+            clearTimeout(timer.value)
+            alert.value = false
+            success.value = false
+            timer.value = setTimeout(()=>{
+              alert.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
+            alert.value = false;
+        }, 10000) 
+      } else if (am.value) {
+        if (Number(am.value) + Number(amount.value) > props.productObject.available) {
+          if(timer.value){
+            clearTimeout(timer.value)
+            alert.value = false
+            success.value = false
+            timer.value = setTimeout(()=>{
+              alert.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
+            alert.value = false;
+        }, 10000);
+        } else {
+          if(timer.value){
+            clearTimeout(timer.value)
+            success.value = false
+            alert.value = false
+            timer.value = setTimeout(()=>{
+              success.value = true;
+              }, 200)    
+          }
+        timer.value = setTimeout(()=>{
+            success.value = false;
+        }, 10000)    
+          addProduct(props.productObject.articlenr, amount.value);
+        }
+      } else {
+        if(timer.value){
+          clearTimeout(timer.value)
+          success.value = false;
+        }
+        success.value = true;
+        timer.value = setTimeout(()=>{
+            success.value = false;
+        }, 10000)        
+        addProduct(props.productObject.articlenr, amount.value);
+      }
+      amount.value = 1;
+    }
+    /**
+     * changes the amount of times a product is in the cart
+     */
+    function amChange(am: number): void {
+      amount.value = am;
+    }
+
+    const COLORS = ["red", "#FFBF00", "green"];
+
+    return {
+      alert,
+      success,
+      pamount,
+      pavailable,
+      amChange,
+      add,
+      openproductlist,
+      color: computed(() => {
+        if (props.productObject.available <= 0) {
+          return COLORS[0];
+        } else if (props.productObject.available < 20) {
+          return COLORS[1];
+        } else {
+          return COLORS[2];
+        }
+      }),
+    };
+  },
+});
+</script>
+
+<style lang="scss" scoped>
 
 .availablepoint {
-    float:left;
-    font-size: 2.5em;
-    margin: 6px 10px;
-    width: 5%;
-    color: v-bind('color');
+  float: left;
+  font-size: 2.5em;
+  margin: 6px 10px;
+  width: 5%;
+  color: v-bind("color");
 }
 
 .pic {
-    width: 250px;
-    height: 300px;
-    object-fit:cover;
-    object-position: bottom center;
-    margin: 0.5em;
-    float: left;
+  width: 250px;
+  height: 300px;
+  object-fit: cover;
+  object-position: bottom center;
+  margin: 0.5em;
+  float: left;
 }
 
 .top {
-    margin: 1em 1em 0em 3em;
+  margin: 1em 1em 0em 3em;
 }
 
-.top2{
-    height: 400px;
+.top2 {
+  height: 400px;
 }
 
 .left {
-    width: 40%;
-    height: 75%;
-    margin: 1em 3em 3em 3em;
-    float:left;
-} 
+  width: 40%;
+  height: 75%;
+  margin: 1em 3em 3em 3em;
+  float: left;
+}
 
 .right {
-    margin: 1em 0em;
-    float:left;
-    width: 40%;
-    height: 75%;
+  margin: 1em 0em;
+  float: left;
+  width: 40%;
+  height: 75%;
 }
 
 .bottom {
-    width: 95%;
-    position: relative;
-    height: 350px;
-    margin-top: 350px;
-    margin-left: 3.5em;
-    
-      
-} 
+  width: 95%;
+  position: relative;
+  height: 350px;
+  margin-top: 350px;
+  margin-left: 3.5em;
+}
 
 hr {
-    width: 95%;
-    height: 0.15em;
-    background-color: #f3f3f3;
-    color: #f3f3f3;
-    
+  width: 95%;
+  height: 0.15em;
+  background-color: $color-grey;
+  color: $color-grey;
 }
 
 summary {
-    list-style: none;
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    font-size: 1.3em;
-    
-}  
+  list-style: none;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.3em;
+}
 
 summary::-webkit-details-marker {
-    display: none;
+  display: none;
 }
 
-summary::after{
-    content: '+';
-    position: absolute;
-    right: 1em;
-    color: #3BA07C;
-    margin-right: 4em;
-    transition: all 0.5s;
-
-
-} 
-details[open] summary::after{
-    content: '-';
-    color:#3BA07C;
-    margin-right: 4em;
-} 
-
-.p1{
-    padding-top: 1em;
-} 
-
-
-.back{
-    text-decoration: none;
-    color: black;
+summary::after {
+  content: "+";
+  position: absolute;
+  right: 1em;
+  color: $color-green;
+  margin-right: 4em;
+  transition: all 0.5s;
+}
+details[open] summary::after {
+  content: "-";
+  color: $color-green;
+  margin-right: 4em;
 }
 
-.back:hover{
-    color: #3BA07C;
+.p1 {
+  padding-top: 1em;
+}
+
+.p1 {
+  padding-top: 1em;
+}
+
+.back {
+  text-decoration: none;
+  color: black;
+}
+
+.back:hover {
+  color: $color-green;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 .price {
-    float: right;
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
-
+.priceLi {
+  float: right;
+}
+.alert {
+  color: red;
+  margin-bottom: 3%;
+  margin-top: 3%;
+}
+.success {
+  color: $color-green;
+  margin-bottom: 3%;
+  margin-top: 3%;
+}
 .buttoncart {
-    margin: 60px 0px 0px 0px;
-    padding: 3% 9%;
-    background-color: #3BA07C;
-    border-style: none;
-    color: white;
-    border-radius: 40px;
+  margin: 60px 0px 0px 0px;
+  padding: 3% 9%;
 }
-
-.buttoncart:hover {
-    background-color: #87E1A6;
-}
-
-.buttoncart:focus {
-    outline: none;
-}
-
-.buttonfav {
-    border-style: none;
-    background: none;
-    margin: 0% 5%;
-}
-
-.buttons {
-    margin: 10% 0% 0% 0%;
-}
-
 .icontruck {
-    width: 25px;
-    margin: 10px 10px 15px 10px;
-    float: left;
+  width: 25px;
+  margin: 10px 10px 15px 10px;
+  float: left;
 }
 .availabletxt {
-    float:left;
-    margin-bottom: 0px;
-    margin-top: 18px;
+  float: left;
+  margin-bottom: 0px;
+  margin-top: 18px;
 }
-
-
-
+#am {
+  margin-left: 10px;
+}
+#link {
+    text-decoration: none;
+    list-style: none;
+    list-style-type: none;
+    color: $color-green;
+    &:hover{
+        cursor: pointer;
+    } 
+}
 </style>

@@ -1,10 +1,9 @@
 <template>
   <ul class="productlistline">
-      <!-- v-link="{path: product.name}" -->
-    <a @click="openproduct()" >
+    <a id="hitbox" @click="openproduct()" >
       <div class="productListObject">
         <img
-          v-bind:src="product.allPictures[0].path"
+          v-bind:src="'/api/product/picture/'+product.allPictures[0].id"
           alt="Picture"
           class="pic"
         />
@@ -18,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import "@/service/Product";
+import "../service/Product";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -27,8 +26,11 @@ export default defineComponent({
     product: Object,
   },
   setup(props, context) {
+    /**
+     * sends opening event to CompProduct
+     */
     function openproduct(): void {
-      // send event to component above (CompProduct)
+    
       context.emit("open-prod", props.product);
     }
 
@@ -51,9 +53,12 @@ export default defineComponent({
   border-radius: 0px 0px 10px 10px;
   padding-top: 0.7em;
   padding-bottom: 0.7em;
-  background-color: #f3f3f3;
+  background-color: $color-grey;
   width: 300px;
   text-align: center;
+}
+#hitbox{
+  cursor: pointer;
 }
 
 ul {

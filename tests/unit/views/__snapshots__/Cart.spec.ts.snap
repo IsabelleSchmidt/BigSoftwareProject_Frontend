@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CartList.vue has the expected html structur 1`] = `
+<div
+  class="cart"
+>
+  <div
+    id="carthead"
+  >
+    <h3>
+      Ihre Produkte
+    </h3>
+  </div>
+  <div
+    id="list"
+  >
+    <cart-list-stub />
+  </div>
+  <div
+    id="order"
+  >
+    <router-link
+      to="/cart/login"
+    >
+      <button
+        id="checkout"
+      >
+         zur Kasse
+      </button>
+    </router-link>
+  </div>
+</div>
+`;

@@ -1,0 +1,615 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Orderform.vue test HTML + structur snapshot test 1`] = `
+<div class="orderForm">
+  <h1>Bestellübersicht</h1>
+  <form>
+    <div class="adress">
+      <h2>Versandadresse</h2>
+      <!--v-if-->
+      <div class="row"><label for="street" class="col7">Straße</label></div>
+      <div class="row">
+        <div class="error"></div><input id="street" type="text" class="col6" required="">
+      </div>
+      <div class="row"><label for="num" class="col1">Hausnummer</label></div>
+      <div class="row">
+        <div class="error"></div><input id="num" type="text" class="col1" required="">
+      </div>
+      <div class="row"><label for="num" class="col1">Postleitzahl</label></div>
+      <div class="row">
+        <div class="error"></div><input id="num" type="text" class="col1" required="">
+      </div>
+      <div class="row"><label for="street" class="col7">Stadt</label></div>
+      <div class="row">
+        <div class="error"></div><input id="street" type="text" class="col6" required="">
+      </div>
+    </div>
+    <h2>Zahlungsart</h2>
+    <div class="payment">
+      <div class="row">
+        <p class="error"></p><input id="creditcard" type="radio" value="creditcard"><label for="creditcard">Kredit- oder Debitkarte</label>
+      </div>
+      <div class="creditC">
+        <div class="row"><label for="cardnumber" class="col3">Kartennummer</label><input type="number"></div>
+        <div class="error"></div>
+        <div class="row"><label for="cardholder" class="col3">Name des Karteninhabers</label><input type="text"></div>
+        <div class="error"></div>
+        <div class="row"><label for="expires" class="col3">Ablaufdatum</label><select>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select><select>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <option value="2031">2031</option>
+          </select>
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="row"><input id="bankcard" type="radio" value="bankcard"><label for="bankcard">Bankkarte</label></div>
+      <div class="bankC">
+        <div class="row"><label for="iban" class="col3">IBAN</label><input id="iban" type="text"></div>
+        <div class="error"></div>
+        <div class="row"><label for="bank" class="col3">Bank</label><input id="bank" type="text"></div>
+        <div class="error"></div>
+        <div class="row"><label for="cardholder" class="col3">Name des Karteninhabers</label><input type="text"></div>
+        <div class="error"></div>
+      </div>
+    </div>
+  </form>
+  <h2>Vorausichtliches Lieferdatum: 14.2.2021</h2>
+  <div class="error"></div>
+  <div class="error"></div>
+  <div class="row"></div>
+  <div class="row">
+    <hr>
+  </div>
+  <div class="row">
+    <p class="price">0€</p>
+  </div><br>
+  <div class="row"><input type="submit" value="Bestellen"></div>
+</div>
+`;
+
+exports[`Orderform.vue test HTML + structur snapshot test 2`] = `
+VueWrapper {
+  "__app": Object {
+    "_component": Object {
+      "__emits": Object {},
+      "__props": Array [
+        Object {},
+        Array [],
+      ],
+      "name": "VTU_ROOT",
+      "render": [Function],
+    },
+    "_container": <div
+      data-v-app=""
+    >
+      <div
+        class="orderForm"
+      >
+        <h1>
+          Bestellübersicht
+        </h1>
+        <form>
+          <div
+            class="adress"
+          >
+            <h2>
+              Versandadresse
+            </h2>
+            <!--v-if-->
+            <div
+              class="row"
+            >
+              <label
+                class="col7"
+                for="street"
+              >
+                Straße
+              </label>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="error"
+              />
+              <input
+                class="col6"
+                id="street"
+                required=""
+                type="text"
+              />
+            </div>
+            <div
+              class="row"
+            >
+              <label
+                class="col1"
+                for="num"
+              >
+                Hausnummer
+              </label>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="error"
+              />
+              <input
+                class="col1"
+                id="num"
+                required=""
+                type="text"
+              />
+            </div>
+            <div
+              class="row"
+            >
+              <label
+                class="col1"
+                for="num"
+              >
+                Postleitzahl
+              </label>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="error"
+              />
+              <input
+                class="col1"
+                id="num"
+                required=""
+                type="text"
+              />
+            </div>
+            <div
+              class="row"
+            >
+              <label
+                class="col7"
+                for="street"
+              >
+                Stadt
+              </label>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="error"
+              />
+              <input
+                class="col6"
+                id="street"
+                required=""
+                type="text"
+              />
+            </div>
+          </div>
+          <h2>
+            Zahlungsart
+          </h2>
+          <div
+            class="payment"
+          >
+            <div
+              class="row"
+            >
+              <p
+                class="error"
+              />
+              <input
+                id="creditcard"
+                type="radio"
+                value="creditcard"
+              />
+              <label
+                for="creditcard"
+              >
+                Kredit- oder Debitkarte
+              </label>
+            </div>
+            <div
+              class="creditC"
+            >
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="cardnumber"
+                >
+                  Kartennummer
+                </label>
+                <input
+                  type="number"
+                />
+              </div>
+              <div
+                class="error"
+              />
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="cardholder"
+                >
+                  Name des Karteninhabers
+                </label>
+                <input
+                  type="text"
+                />
+              </div>
+              <div
+                class="error"
+              />
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="expires"
+                >
+                  Ablaufdatum
+                </label>
+                <select>
+                  <option
+                    value="1"
+                  >
+                    1
+                  </option>
+                  <option
+                    value="2"
+                  >
+                    2
+                  </option>
+                  <option
+                    value="3"
+                  >
+                    3
+                  </option>
+                  <option
+                    value="4"
+                  >
+                    4
+                  </option>
+                  <option
+                    value="5"
+                  >
+                    5
+                  </option>
+                  <option
+                    value="6"
+                  >
+                    6
+                  </option>
+                  <option
+                    value="7"
+                  >
+                    7
+                  </option>
+                  <option
+                    value="8"
+                  >
+                    8
+                  </option>
+                  <option
+                    value="9"
+                  >
+                    9
+                  </option>
+                  <option
+                    value="10"
+                  >
+                    10
+                  </option>
+                  <option
+                    value="11"
+                  >
+                    11
+                  </option>
+                  <option
+                    value="12"
+                  >
+                    12
+                  </option>
+                </select>
+                <select>
+                  <option
+                    value="2021"
+                  >
+                    2021
+                  </option>
+                  <option
+                    value="2022"
+                  >
+                    2022
+                  </option>
+                  <option
+                    value="2023"
+                  >
+                    2023
+                  </option>
+                  <option
+                    value="2024"
+                  >
+                    2024
+                  </option>
+                  <option
+                    value="2025"
+                  >
+                    2025
+                  </option>
+                  <option
+                    value="2026"
+                  >
+                    2026
+                  </option>
+                  <option
+                    value="2027"
+                  >
+                    2027
+                  </option>
+                  <option
+                    value="2028"
+                  >
+                    2028
+                  </option>
+                  <option
+                    value="2029"
+                  >
+                    2029
+                  </option>
+                  <option
+                    value="2030"
+                  >
+                    2030
+                  </option>
+                  <option
+                    value="2031"
+                  >
+                    2031
+                  </option>
+                </select>
+                <div
+                  class="error"
+                />
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <input
+                id="bankcard"
+                type="radio"
+                value="bankcard"
+              />
+              <label
+                for="bankcard"
+              >
+                Bankkarte
+              </label>
+            </div>
+            <div
+              class="bankC"
+            >
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="iban"
+                >
+                  IBAN
+                </label>
+                <input
+                  id="iban"
+                  type="text"
+                />
+              </div>
+              <div
+                class="error"
+              />
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="bank"
+                >
+                  Bank
+                </label>
+                <input
+                  id="bank"
+                  type="text"
+                />
+              </div>
+              <div
+                class="error"
+              />
+              <div
+                class="row"
+              >
+                <label
+                  class="col3"
+                  for="cardholder"
+                >
+                  Name des Karteninhabers
+                </label>
+                <input
+                  type="text"
+                />
+              </div>
+              <div
+                class="error"
+              />
+            </div>
+          </div>
+        </form>
+        <h2>
+          Vorausichtliches Lieferdatum: 14.2.2021
+        </h2>
+        <div
+          class="error"
+        />
+        <div
+          class="error"
+        />
+        <div
+          class="row"
+        >
+          
+          
+        </div>
+        <div
+          class="row"
+        >
+          <hr />
+        </div>
+        <div
+          class="row"
+        >
+          <p
+            class="price"
+          >
+            0€
+          </p>
+        </div>
+        <br />
+        <div
+          class="row"
+        >
+          <input
+            type="submit"
+            value="Bestellen"
+          />
+        </div>
+      </div>
+    </div>,
+    "_context": Object {
+      "app": [Circular],
+      "components": Object {
+        "transition": Object {
+          "name": "transition",
+          "props": Object {},
+          "render": [Function],
+        },
+        "transition-group": Object {
+          "name": "transition-group",
+          "props": Object {},
+          "render": [Function],
+        },
+      },
+      "config": Object {
+        "errorHandler": undefined,
+        "globalProperties": Object {},
+        "isCustomElement": [Function],
+        "isNativeTag": [Function],
+        "optionMergeStrategies": Object {},
+        "performance": false,
+        "warnHandler": undefined,
+      },
+      "directives": Object {},
+      "mixins": Array [
+        Object {
+          "__emits": null,
+          "__props": Array [],
+          "beforeCreate": [Function],
+        },
+        Object {
+          "__emits": null,
+          "__props": Array [],
+          "beforeCreate": [Function],
+        },
+      ],
+      "provides": Object {},
+      "reload": [Function],
+    },
+    "_props": null,
+    "_uid": 0,
+    "component": [Function],
+    "config": Object {
+      "errorHandler": undefined,
+      "globalProperties": Object {},
+      "isCustomElement": [Function],
+      "isNativeTag": [Function],
+      "optionMergeStrategies": Object {},
+      "performance": false,
+      "warnHandler": undefined,
+    },
+    "directive": [Function],
+    "mixin": [Function],
+    "mount": [Function],
+    "provide": [Function],
+    "unmount": [Function],
+    "use": [Function],
+    "version": "3.0.5",
+  },
+  "__setProps": [Function],
+  "componentVM": Object {
+    "__emitted": Object {},
+    "adrChange": [Function],
+    "adresses": Array [],
+    "bank": "",
+    "bankcardOwner": "",
+    "bankcardownererror": "",
+    "bankerror": "",
+    "city": "",
+    "cityerror": "",
+    "creditcardOwner": "",
+    "creditcardnumber": "",
+    "creditcardnumbererror": "",
+    "creditcardownererror": "",
+    "dateOfExpiry": undefined,
+    "dateOfExpiryMonth": 1,
+    "dateOfExpiryYear": 2021,
+    "dateofexpiryerror": "",
+    "deliveryDate": "14.2.2021",
+    "houseNumber": "",
+    "housenumbererror": "",
+    "iban": "",
+    "ibanerror": "",
+    "inTotal": 0,
+    "isHidden": true,
+    "notavailableerror": "",
+    "notavailableerrorempty": "",
+    "payment": "",
+    "paymenterror": "",
+    "postCode": "",
+    "postcodeerror": "",
+    "productList": Array [],
+    "selectedadr": "",
+    "sendOrder": [Function],
+    "streetName": "",
+    "streetnameerror": "",
+  },
+  "rootVM": Object {
+    "__emitted": Object {},
+  },
+}
+`;

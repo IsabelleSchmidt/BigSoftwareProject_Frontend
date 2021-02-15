@@ -1,44 +1,42 @@
 <template>
     <div id="productList">
         <ul>
-                <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id"/> <!-- v-for="product in products"-->
-                <!--Platzhalter 
-                <ProductListObject id="listOrder"/> 
-                <ProductListObject id="listOrder"/>
-                <ProductListObject id="listOrder"/>-->
+                <ProductListObject id="listOrder" :product="pr" v-for="pr in productlist" :key="pr.id"/> 
         </ul>
         
     </div>
 </template>
 
 <script lang="ts">
-//import {defineComponent} from "@vue/composition-api";
 import ProductListObject from "../components/ProductListObject.vue"
 import { useProduct } from "../service/ProductStore";
 import { computed, onMounted } from 'vue';
 
-export default /*defineComponent*/{
-    //name: "ProductList", 
+export default{
     components:{
         ProductListObject
     },
     setup(){
 
-        const {list, update}  = useProduct(); //, errormessage
+        const{allproductslist,update} = useProduct();
 
-        // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
+        /**
+         * calls update function on initialization of this component
+         */
         onMounted(async () => {
             await update();
         });
-
+        /**
+         * current list of products
+         */
         const productlist = computed(() => {
         
-          return list.value;
+          return allproductslist.value;
         
         });
         const imgage = computed
 
-        return{ productlist}; //, errormessage 
+        return{ productlist}; 
     } 
 }
 </script>
@@ -49,7 +47,6 @@ export default /*defineComponent*/{
         float: left;
         width: 27.5%;
         margin-bottom: 20px;
-        //margin: 0px 0px 20px 10px;
 
     } 
 
