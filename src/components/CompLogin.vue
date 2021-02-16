@@ -97,9 +97,19 @@ export default defineComponent({
 
       if(loginSuccess){
         if(routerHistory.getPathReversed(2) === "/register"){
-          routerHistory.getPathReversed(4) == "/cart" ? router.push("/orderform") : router.push("/profile");
+          if(routerHistory.getPathReversed !== undefined){
+            routerHistory.getPathReversed(4) == "/cart" ? router.push("/orderform") : router.push("/profile");
+          }else{
+            router.push("/");
+          }
+          
         }else{
-          routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push(routerHistory.getPathReversed(2));
+          if(routerHistory.getPathReversed(2) === "/login"){
+            router.push("/");
+          }else{
+            routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push(routerHistory.getPathReversed(2));
+          }
+
         }
       }
     }

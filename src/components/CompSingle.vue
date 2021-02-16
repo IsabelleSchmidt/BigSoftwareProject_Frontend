@@ -216,7 +216,7 @@ export default defineComponent({
      * changes the amount of times a product is in the cart
      */
     function amChange(am: number): void {
-      amount.value = am;
+      amount.value = Number(am);
     }
 
     const COLORS = ["red", "#FFBF00", "green"];

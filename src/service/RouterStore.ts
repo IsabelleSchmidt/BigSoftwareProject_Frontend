@@ -20,4 +20,4 @@ class RouterHistory {
     }
 
 }
-export const routerHistory = new RouterHistory(new Array<string>());
+export const routerHistory = new RouterHistory(new Array<string>("/"));
