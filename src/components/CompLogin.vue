@@ -16,6 +16,7 @@
             size="30"
             maxlenght="50"
             class="right"
+            style="border:1px solid grey"
           />
         </div>
       </div>
@@ -32,6 +33,7 @@
             size="20"
             maxlenght="50"
             class="right"
+            style="border:1px solid grey"
           />
         </div>
       </div>

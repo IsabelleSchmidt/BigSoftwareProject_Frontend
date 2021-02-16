@@ -28,7 +28,7 @@ exports[`Navbar.vue Test Has the expected HTML structure 1`] = `
         </li>
         <li>
           <div id="margin">
-            <router-link to="/login" id="hitbox"><img alt="profile" id="icon2"></router-link>
+            <router-link to="/profile" id="hitbox"><img alt="profile" id="icon2"></router-link>
           </div>
         </li>
       </div>

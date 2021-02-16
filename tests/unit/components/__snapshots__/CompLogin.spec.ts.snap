@@ -7,11 +7,11 @@ exports[`CompLogin Test snapshot test 1`] = `
   <form>
     <div class="row">
       <div class="col1"><label for="email" class="left">E-Mail Adresse</label></div>
-      <div class="col2"><input id="email" type="text" name="email" size="30" maxlenght="50" class="right"></div>
+      <div class="col2"><input id="email" type="text" name="email" size="30" maxlenght="50" class="right" style="border: 1px solid grey;"></div>
     </div>
     <div class="row">
       <div class="col1"><label for="password" class="left">Passwort</label></div>
-      <div class="col2"><input id="pw" type="password" name="password" size="20" maxlenght="50" class="right"></div>
+      <div class="col2"><input id="pw" type="password" name="password" size="20" maxlenght="50" class="right" style="border: 1px solid grey;"></div>
     </div><input type="submit" name="loginUser" value="Login">
     <div class="row"> Noch kein Kunde? <router-link id="link" to="/register">Hier registrieren</router-link>
     </div>
@@ -70,6 +70,7 @@ VueWrapper {
                 maxlenght="50"
                 name="email"
                 size="30"
+                style="border: 1px solid grey;"
                 type="text"
               />
             </div>
@@ -96,6 +97,7 @@ VueWrapper {
                 maxlenght="50"
                 name="password"
                 size="20"
+                style="border: 1px solid grey;"
                 type="password"
               />
             </div>
