@@ -107,7 +107,7 @@ export default defineComponent({
           if(routerHistory.getPathReversed(2) === "/login"){
             router.push("/");
           }else{
-            routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push("/profile");
+            routerHistory.getPathReversed(2) === "/cart" ? router.push("/orderform") : router.push(routerHistory.getPathReversed(2));
           }
 
         }
