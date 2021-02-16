@@ -74,7 +74,7 @@ exports[`Orderform.vue test HTML + structur snapshot test 1`] = `
       </div>
     </div>
   </form>
-  <h2>Vorausichtliches Lieferdatum: 14.2.2021</h2>
+  <h2>Vorausichtliches Lieferdatum: 19.2.2021</h2>
   <div class="error"></div>
   <div class="error"></div>
   <div class="row"></div>
@@ -84,7 +84,9 @@ exports[`Orderform.vue test HTML + structur snapshot test 1`] = `
   <div class="row">
     <p class="price">0€</p>
   </div><br>
-  <div class="row"><input type="submit" value="Bestellen"></div>
+  <div class="row">
+    <div id="other" class="error"></div><input type="submit" value="Bestellen">
+  </div>
 </div>
 `;
 
@@ -472,7 +474,7 @@ VueWrapper {
           </div>
         </form>
         <h2>
-          Vorausichtliches Lieferdatum: 14.2.2021
+          Vorausichtliches Lieferdatum: 19.2.2021
         </h2>
         <div
           class="error"
@@ -504,6 +506,10 @@ VueWrapper {
         <div
           class="row"
         >
+          <div
+            class="error"
+            id="other"
+          />
           <input
             type="submit"
             value="Bestellen"
@@ -572,41 +578,153 @@ VueWrapper {
   },
   "__setProps": [Function],
   "componentVM": Object {
+    "Field": Object {
+      "bank": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "city": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "cowner": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "creditcardnumber": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "dateOfExpiry": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "houseNumber": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "iban": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "owner": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "postCode": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "streetName": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+    },
+    "FieldErrors": Object {
+      "bank": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "city": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "cowner": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "creditcardnumber": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "dateOfExpiry": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "houseNumber": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "iban": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "other": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "owner": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "postCode": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+      "streetName": RefImpl {
+        "__v_isRef": true,
+        "_rawValue": "",
+        "_shallow": false,
+        "_value": "",
+      },
+    },
     "__emitted": Object {},
     "adrChange": [Function],
     "adresses": Array [],
-    "bank": "",
-    "bankcardOwner": "",
-    "bankcardownererror": "",
-    "bankerror": "",
-    "city": "",
-    "cityerror": "",
-    "creditcardOwner": "",
-    "creditcardnumber": "",
-    "creditcardnumbererror": "",
-    "creditcardownererror": "",
     "dateOfExpiry": undefined,
     "dateOfExpiryMonth": 1,
     "dateOfExpiryYear": 2021,
-    "dateofexpiryerror": "",
-    "deliveryDate": "14.2.2021",
-    "houseNumber": "",
-    "housenumbererror": "",
-    "iban": "",
-    "ibanerror": "",
+    "deliveryDate": "19.2.2021",
     "inTotal": 0,
     "isHidden": true,
     "notavailableerror": "",
     "notavailableerrorempty": "",
+    "orderwassent": false,
     "payment": "",
     "paymenterror": "",
-    "postCode": "",
-    "postcodeerror": "",
     "productList": Array [],
     "selectedadr": "",
     "sendOrder": [Function],
-    "streetName": "",
-    "streetnameerror": "",
   },
   "rootVM": Object {
     "__emitted": Object {},

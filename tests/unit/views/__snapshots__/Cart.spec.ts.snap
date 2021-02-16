@@ -20,7 +20,7 @@ exports[`Test CartList.vue has the expected html structur 1`] = `
     id="order"
   >
     <router-link
-      to="/cart/login"
+      to="/login"
     >
       <button
         id="checkout"

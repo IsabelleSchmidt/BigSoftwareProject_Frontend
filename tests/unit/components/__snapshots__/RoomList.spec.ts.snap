@@ -2,9 +2,6 @@
 
 exports[`Test room.vue has the expected html structur 1`] = `
 <div class="roomList">
-  <!--BSP:  <router-link :to="{ name: 'user', params: { userId: 123 }}">User</router-link>
-        <router-link :to="{ path: 'register', query: { plan: 'private' }}">Register</router-link>
-        -->
   <router-link to="[object Object]">
     <div class="room listOrder"><img src="" class="pic" alt="Picture">
       <div class="roomName">Bad</div>
